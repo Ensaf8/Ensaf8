@@ -142,10 +142,10 @@ public class MapPageQuery {
                 }
                 if(check02){
                     stmt02 = " INNER JOIN " + Tend.TABLE
-                            + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + Tend.TABLE + Tend.KEY_Ind2ID;
-                    if(tendTitle != null){
-                        stmt01 = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " BETWEEN " + state01 +" and  " + state02 + ") and " + Tend.TABLE + "." +Tend.KEY_Title + " LIKE '" + tendTitle + "'";
-                    }
+                            + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + Tend.TABLE +"."+ Tend.KEY_Ind2ID;
+                    //if(tendTitle != null){
+                      //  stmt01 = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " BETWEEN " + state01 +" and  " + state02 + ") and " + Tend.TABLE + "." +Tend.KEY_Title + " LIKE '" + tendTitle + "'";
+                    //}
                 }
         String showQuery = " SELECT "
                 + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + ","

@@ -170,15 +170,14 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         }
     }////End of onCreate
     public void showOnMap(){
-        MapPageQuery mapPageQuery = new MapPageQuery();
-        if (drawerFragmentMap.isCheck01){
-            showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
-        }else {
-            showCursor = mapPageQuery.showAllConsIndi();
-        }
+        MapPageQuery mapPageQuery = new MapPageQuery(drawerFragmentMap.isCheck01,drawerFragmentMap.isCheck02,"");
+        showCursor = mapPageQuery.showAllConsIndiWhereFilter02(state01,state02);
         int C = showCursor.getCount();
         int D = showCursor.getColumnCount();
+
         Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
+
+        drawerLayoutMap.closeDrawer(GravityCompat.START);
         showAllWaypoints(showCursor);
     }
     public void imgFilter(){
@@ -187,25 +186,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             public void onClick(View v) {
                 state01 = String.valueOf(drawerFragmentMap.SeekProgress01);
                 state02 = String.valueOf(drawerFragmentMap.SeekProgress02);
-                if (drawerFragmentMap.isCheck01){
-                    MapPageQuery mapPageQuery = new MapPageQuery();
-                    showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
-                    int C = showCursor.getCount();
-                    int D = showCursor.getColumnCount();
-
-                    Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
-                    showAllWaypoints(showCursor);
-                    drawerLayoutMap.closeDrawer(GravityCompat.START);
-                }else {
-                    MapPageQuery mapPageQuery = new MapPageQuery();
-                    showCursor = mapPageQuery.showAllConsIndi();
-                    int C = showCursor.getCount();
-                    int D = showCursor.getColumnCount();
-
-                    Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
-                    showAllWaypoints(showCursor);
-                    drawerLayoutMap.closeDrawer(GravityCompat.START);
-                }
+                showOnMap();
 
             }
         });
