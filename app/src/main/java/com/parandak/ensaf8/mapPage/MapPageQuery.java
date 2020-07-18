@@ -9,14 +9,21 @@ import com.parandak.ensaf8.dataBase.model_Indivi.CreateViews;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Coop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
+import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 
 public class MapPageQuery {
-
+    boolean check01;
+    boolean check02;
+    String tendTitle;
     public MapPageQuery() {
 
     }
 
-    
+    public MapPageQuery(boolean check01,boolean check02,String tendTitle){
+        this.check01 = check01;
+        this.check02 = check02;
+        this.tendTitle = tendTitle;
+    }
 
     public Cursor singleTapOnConsIndFirst(String consID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -123,6 +130,38 @@ public class MapPageQuery {
                 + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_ID_cons
                 + " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " BETWEEN " + state01 +" and  " + state02
                 + " ORDER BY " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lat + "," + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lon + " ASC ";
+        Cursor cursor = db.rawQuery(showQuery, null);
+        return cursor;
+    }
+    public Cursor showAllConsIndiWhereFilter02(String state01,String state02){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String stmt01 = "";
+        String stmt02 = "";
+                if(check01){
+                    stmt01 = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " BETWEEN " + state01 +" and  " + state02;
+                }
+                if(check02){
+                    stmt02 = " INNER JOIN " + Tend.TABLE
+                            + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + Tend.TABLE + Tend.KEY_Ind2ID;
+                    if(tendTitle != null){
+                        stmt01 = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " BETWEEN " + state01 +" and  " + state02 + ") and " + Tend.TABLE + "." +Tend.KEY_Title + " LIKE '" + tendTitle + "'";
+                    }
+                }
+        String showQuery = " SELECT "
+                + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + ","
+                + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_consName + ","
+                + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lat + ","
+                + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lon + ","
+                + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + ","
+                + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate
+                + " FROM " + CreateViews.Construction.VIEW
+                + " INNER JOIN " + CreateViews.LastUpConsInd.VIEW
+                + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_ID_cons
+                + stmt02
+                + stmt01
+                + " GROUP BY " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons
+                + " ORDER BY " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lat + "," + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lon + " ASC ";
+
         Cursor cursor = db.rawQuery(showQuery, null);
         return cursor;
     }
