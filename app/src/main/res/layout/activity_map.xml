@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".mapPage.MapActivity">
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_map"
+        android:layout_marginBottom="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            tools:context=".mapPage.MapActivity">
+
+            <org.osmdroid.views.MapView
+                android:id="@+id/map"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+            </org.osmdroid.views.MapView>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="@dimen/fab_margin_right"
+                android:layout_marginBottom="@dimen/fab_margin_right"
+                app:srcCompat="@drawable/ic_my_location"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_map_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_marginEnd="@dimen/fab_margin_right"
+                android:layout_marginBottom="@dimen/fab_margin_right"
+                app:srcCompat="@drawable/ic_filter_map"/>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nestedScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/darker_gray"
+                android:layout_gravity="bottom"
+                app:behavior_hideable="true"
+                app:behavior_fitToContents="false"
+                app:behavior_peekHeight="340dp"
+                app:layout_behavior="@string/bottom_sheet_behavior"
+                tools:ignore="MissingConstraints">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btn_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="60dp"
+                            android:layout_weight="10"
+                            android:text="4.5.1398" />
+
+                        <Button
+                            android:id="@+id/button_edit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="60dp"
+                            android:layout_weight="1"
+                            android:text=">>" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/bottom_sheet_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:textSize="25sp"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:layout_weight="6"
+                        android:hint="Name"
+                        android:layout_marginTop="10dp"/>
+
+
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="15dp"
+                        >
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/viewPager2"
+                            android:layout_marginRight="50dp"
+                            android:layout_marginLeft="50dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"/>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content">
+
+                            <Button
+                                android:id="@+id/bottom_sheet_delete_cons"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:layout_marginTop="35dp"
+                                android:layout_margin="25dp"
+                                android:layout_weight="1"
+                                android:layout_alignParentTop="true"
+                                android:alpha="0.8"
+                                android:text="DELETE"
+                                android:textStyle="bold"
+                                android:textSize="19sp"
+                                android:ems="10"/>
+
+                            <Button
+                                android:id="@+id/bottom_sheet_add_reminder"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:layout_marginTop="35dp"
+                                android:layout_margin="25dp"
+                                android:layout_weight="1"
+                                android:layout_alignParentTop="true"
+                                android:alpha="0.8"
+                                android:text="ADD Tend"
+                                android:textStyle="bold"
+                                android:textSize="19sp"
+                                android:ems="10"/>
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/button_add_customer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Button ADD Customer!" />
+
+
+                    <include layout="@layout/content_rvbottom"/>
+
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <fragment
+            android:id="@+id/fragment_navigation_drawer_map"
+            android:name="com.parandak.ensaf8.mapPage.drawer.FragmentDrawer_map"
+            android:layout_width="@dimen/nav_drawer_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:layout="@layout/fragment_drawer_map"
+            tools:layout="@layout/fragment_drawer_map" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+    <include
+        android:id="@+id/navigation"
+        layout="@layout/element_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

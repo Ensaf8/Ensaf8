@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+
+    <RelativeLayout
+        android:id="@+id/nav_header_container"
+        android:layout_width="match_parent"
+        android:layout_height="262dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/darkGray">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerInParent="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_profile" />
+
+        <Button
+            android:id="@+id/btnLoginLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/transparent_bg_bordered_button"
+            android:alpha="0.8"
+            android:layout_marginStart="162dp"
+            android:layout_marginLeft="162dp"
+            android:layout_marginTop="208dp"
+            android:layout_marginEnd="161dp"
+            android:layout_marginRight="161dp"
+            android:textColor="@color/d1Gray"
+            android:text="@string/login" />
+
+    </RelativeLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/drawerList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nav_header_container"
+        android:layout_marginTop="7dp" />
+
+    <TextView
+        android:id="@+id/txtProfileName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nav_header_container"
+        android:layout_marginTop="-93dp"
+        android:gravity="center"
+        android:textColor="@color/d1Gray"
+        android:text="* * *  * * *"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_task_Today"
+        android:orderInCategory="100"
+        android:title="امروز" />
+
+    <item
+        android:id="@+id/menu_task_Tomorrow"
+        android:orderInCategory="101"
+        android:title="فردا" />
+
+    <item
+        android:id="@+id/menu_task_ThisWeek"
+        android:orderInCategory="102"
+        android:title="این هفته" />
+
+    <item
+        android:id="@+id/menu_task_NextWeek"
+        android:orderInCategory="103"
+        android:title="هفته آینده" />
+
+    <item
+        android:id="@+id/menu_task_ThisMonth"
+        android:orderInCategory="104"
+        android:title="این ماه" />
+
+    <item
+        android:id="@+id/menu_task_All"
+        android:orderInCategory="105"
+        android:title="همه" />
+
+</menu>
