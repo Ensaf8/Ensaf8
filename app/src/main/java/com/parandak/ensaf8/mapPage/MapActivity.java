@@ -101,8 +101,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }
     Context context = this;
     Activity activity = this;
-
-
     Double lat,lon;
     int inisatatus , status = 0;
     String statusdate;
@@ -111,7 +109,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     private static final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     private boolean mPermissionsGranted;
     private List<String> mMissingPermissions;
-
     String INSTANCE_LATITUDE_MAIN_MAP = "latitudeMainMap";
     String INSTANCE_LONGITUDE_MAIN_MAP = "longitudeMainMap";
     String INSTANCE_ZOOM_LEVEL_MAIN_MAP = "zoomLevelMainMap";
@@ -119,18 +116,14 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     double DEFAULT_LONGITUDE = 52.48157;
     double DEFAULT_ZOOM_LEVEL_MAIN_MAP = 14.5;
     MapView map;
-
-
     DrawerLayout drawerLayoutMap;
     FragmentDrawer_map drawerFragmentMap;
-
     private MyLocationNewOverlay mLocationOverlay;
     IMapController mController;
     List<OverlayItem> mStartGoalItems = new ArrayList<>();
     ItemizedOverlayWithFocus<OverlayItem> mOverlay;
     Cursor showCursor;
-    Drawable marker_home,marker_01,marker_02,marker_03,marker_04,marker_05,marker_06,marker_07,marker_08,marker_09,marker_10,marker_11,historyBlack,historyGrey;
-
+    Drawable marker_home,historyBlack,historyGrey;
     /////BottomSheet
     private BottomSheetBehavior mBottomSheetBehaviour;
     Button button_edit,bottom_sheet_status_data,button_add_customer,bottom_sheet_delete_cons,bottom_sheet_add_reminder;
@@ -145,10 +138,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     ////ViewPager
     ViewPager2 viewPager2;
     Dialog dialog;
-
     ////ConsSate
     List<ConsState> consStateList = new ArrayList<>();
-
     /////Filter
     String state01 = "2";
     String state02 = "6";
@@ -171,30 +162,24 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             viewPager();
             initDrawable ();
             initConsStateList();
-            if (drawerFragmentMap.isCheck01){
-                MapPageQuery mapPageQuery = new MapPageQuery();
-                showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
-                int C = showCursor.getCount();
-                int D = showCursor.getColumnCount();
-                Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
-                showAllWaypoints(showCursor);
-            }else {
-                MapPageQuery mapPageQuery = new MapPageQuery();
-                showCursor = mapPageQuery.showAllConsIndi();
-                int C = showCursor.getCount();
-                int D = showCursor.getColumnCount();
-
-                Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
-                showAllWaypoints(showCursor);
-            }
+            showOnMap();
             imgFilter();
             mapEvent();
         } else {
             showOnboarding();
         }
     }////End of onCreate
-    public void filterSeekbar(){
-
+    public void showOnMap(){
+        MapPageQuery mapPageQuery = new MapPageQuery();
+        if (drawerFragmentMap.isCheck01){
+            showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
+        }else {
+            showCursor = mapPageQuery.showAllConsIndi();
+        }
+        int C = showCursor.getCount();
+        int D = showCursor.getColumnCount();
+        Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
+        showAllWaypoints(showCursor);
     }
     public void imgFilter(){
         drawerFragmentMap.imgFilter.setOnClickListener(new View.OnClickListener() {
@@ -532,10 +517,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                     }
 
                 }
-                MapPageQuery mapPageQuery = new MapPageQuery();
                 drawerFragmentMap.setCheckBox01(false);
-                showCursor = mapPageQuery.showAllConsIndi();
-                showAllWaypoints(showCursor);
+                showOnMap();
                 hideKeyboard();
             }
         });
@@ -822,7 +805,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             });*/
         }
     }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         if(map != null) {
@@ -964,25 +946,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         }else {
                             Toast.makeText(getBaseContext(), test , Toast.LENGTH_LONG).show();
                         }
-
-
-                        if (drawerFragmentMap.isCheck01){
-                            mapPageQuery = new MapPageQuery();
-                            showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
-                            int C = showCursor.getCount();
-                            int D = showCursor.getColumnCount();
-                            Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
-                            showAllWaypoints(showCursor);
-                        }else {
-                            mapPageQuery = new MapPageQuery();
-                            showCursor = mapPageQuery.showAllConsIndi();
-                            int C = showCursor.getCount();
-                            int D = showCursor.getColumnCount();
-
-                            Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
-                            showAllWaypoints(showCursor);
-                        }
-
+                        showOnMap();
                     }
                 });
                 builderInner.setNegativeButton("No", new DialogInterface.OnClickListener() {
