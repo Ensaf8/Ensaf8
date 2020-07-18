@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -32,8 +33,10 @@ public class FragmentDrawer_map extends Fragment {
     public int SeekProgress02 = 7;
     SeekBar seekBar01;
     SeekBar seekBar02;
-    CheckBox checkBox01;
+    CheckBox checkBox01,checkBox02;
+    EditText ediFilterTend;
     public boolean isCheck01  = false;
+    public boolean isCheck02  = false;
     int [] seekProgress = new int[]{SeekProgress01,SeekProgress02};
     List<ConsState> consStateList = new ArrayList<>();
     private ActionBarDrawerToggle mDrawerToggle;
@@ -68,6 +71,11 @@ public class FragmentDrawer_map extends Fragment {
         checkBox01.setChecked(isCheck01);
     }
 
+    public void setCheckBox02(Boolean isCheck02){
+        this.isCheck02 = isCheck02;
+        checkBox02.setChecked(isCheck02);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,6 +87,9 @@ public class FragmentDrawer_map extends Fragment {
         seekBar02 = view.findViewById(R.id.seekBar02);
         checkBox01 = view.findViewById(R.id.checkBoxFilter01);
         checkBox01.setChecked(isCheck01);
+        checkBox02 = view.findViewById(R.id.checkBoxFilter02);
+        checkBox02.setChecked(isCheck02);
+        ediFilterTend = view.findViewById(R.id.ediTendFilter);
         initConsStateList();
         seekBar01.setProgress(SeekProgress01);
         seekBar01.setThumb(mcontext.getResources().getDrawable(consStateList.get(SeekProgress01).getDrawable()));
@@ -130,7 +141,15 @@ public class FragmentDrawer_map extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isCheck01 = isChecked;
-                Toast.makeText(mcontext, "is Changed : " + isCheck01, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mcontext, "is Changed01 : " + isCheck01, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        checkBox02.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isCheck02 = isChecked;
+                Toast.makeText(mcontext, "is Changed02 : " + isCheck02, Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -16,6 +16,8 @@ public class MapPageQuery {
 
     }
 
+    
+
     public Cursor singleTapOnConsIndFirst(String consID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = " SELECT "
