@@ -56,6 +56,14 @@ public class FragmentDrawer_map extends Fragment {
         ///titles = getActivity().getResources().getStringArray(R.array.nav_drawer_labels);
     }
 
+    public void setProgressOn01(int p){
+        seekBar01.setProgress(p);
+    }
+
+    public void setProgressOn02(int p){
+        seekBar02.setProgress(p);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

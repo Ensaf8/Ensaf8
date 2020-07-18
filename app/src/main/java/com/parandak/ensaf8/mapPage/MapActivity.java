@@ -150,8 +150,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     List<ConsState> consStateList = new ArrayList<>();
 
     /////Filter
-    String state01 = "2";
-    String state02 = "4";
+    String state01 = "0";
+    String state02 = "10";
     TextView txtFilterSeek;
     String titleFilterSeek;
     int SeekProgress01 = 2;
@@ -179,7 +179,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             initDrawable ();
             initConsStateList();
             MapPageQuery mapPageQuery = new MapPageQuery();
-            showCursor = mapPageQuery.showAllConsIndi();
+            showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
             int C = showCursor.getCount();
             int D = showCursor.getColumnCount();
             Toast.makeText(this,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
@@ -222,6 +222,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         drawerFragmentMap = (FragmentDrawer_map)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer_map);
         drawerFragmentMap.setUp(R.id.fragment_navigation_drawer_map,drawerLayoutMap);
+        drawerFragmentMap.setProgressOn01(Integer.valueOf(state01));
+        drawerFragmentMap.setProgressOn02(Integer.valueOf(state02));
 
     }
     public void initMap(Bundle savedInstanceState){
@@ -527,7 +529,11 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
                 }
                 MapPageQuery mapPageQuery = new MapPageQuery();
-                showCursor = mapPageQuery.showAllConsIndi();
+                state01 = "0";
+                state02 = "10";
+                drawerFragmentMap.setProgressOn01(Integer.valueOf(state01));
+                drawerFragmentMap.setProgressOn02(Integer.valueOf(state02));
+                showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
                 showAllWaypoints(showCursor);
                 hideKeyboard();
 
@@ -961,7 +967,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         }
 
 
-                        showCursor = mapPageQuery.showAllConsIndi();
+                        showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
                         showAllWaypoints(showCursor);
 
                     }
