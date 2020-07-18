@@ -150,16 +150,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     List<ConsState> consStateList = new ArrayList<>();
 
     /////Filter
-    String state01 = "0";
-    String state02 = "10";
-    TextView txtFilterSeek;
-    String titleFilterSeek;
-    int SeekProgress01 = 2;
-    int SeekProgress02 = 7;
-    SeekBar seekBar01;
-    SeekBar seekBar02;
-
-
+    String state01 = "2";
+    String state02 = "6";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -173,26 +165,33 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         locationButton();
         initDrawer();
         filterButton();
+        drawerFragmentMap.setCheckBox01(false);
         if (mPermissionsGranted){
             initMap(savedInstanceState);
             viewPager();
             initDrawable ();
             initConsStateList();
-            MapPageQuery mapPageQuery = new MapPageQuery();
-            showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
-            int C = showCursor.getCount();
-            int D = showCursor.getColumnCount();
-            Toast.makeText(this,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
-            showAllWaypoints(showCursor);
-            imgFilter();
+            if (drawerFragmentMap.isCheck01){
+                MapPageQuery mapPageQuery = new MapPageQuery();
+                showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
+                int C = showCursor.getCount();
+                int D = showCursor.getColumnCount();
+                Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
+                showAllWaypoints(showCursor);
+            }else {
+                MapPageQuery mapPageQuery = new MapPageQuery();
+                showCursor = mapPageQuery.showAllConsIndi();
+                int C = showCursor.getCount();
+                int D = showCursor.getColumnCount();
 
+                Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
+                showAllWaypoints(showCursor);
+            }
+            imgFilter();
             mapEvent();
         } else {
-
             showOnboarding();
         }
-
-
     }////End of onCreate
     public void filterSeekbar(){
 
@@ -203,15 +202,26 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             public void onClick(View v) {
                 state01 = String.valueOf(drawerFragmentMap.SeekProgress01);
                 state02 = String.valueOf(drawerFragmentMap.SeekProgress02);
-                MapPageQuery mapPageQuery = new MapPageQuery();
-                showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
-                int C = showCursor.getCount();
-                int D = showCursor.getColumnCount();
+                if (drawerFragmentMap.isCheck01){
+                    MapPageQuery mapPageQuery = new MapPageQuery();
+                    showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
+                    int C = showCursor.getCount();
+                    int D = showCursor.getColumnCount();
 
-                Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
-                showAllWaypoints(showCursor);
-                drawerLayoutMap.closeDrawer(GravityCompat.START);
-                Toast.makeText(context, "drawerFragmentMap" , Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
+                    showAllWaypoints(showCursor);
+                    drawerLayoutMap.closeDrawer(GravityCompat.START);
+                }else {
+                    MapPageQuery mapPageQuery = new MapPageQuery();
+                    showCursor = mapPageQuery.showAllConsIndi();
+                    int C = showCursor.getCount();
+                    int D = showCursor.getColumnCount();
+
+                    Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
+                    showAllWaypoints(showCursor);
+                    drawerLayoutMap.closeDrawer(GravityCompat.START);
+                }
+
             }
         });
     }
@@ -440,7 +450,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bottom_sheet_delete_cons = (Button) findViewById(R.id.bottom_sheet_delete_cons);
         bottom_sheet_add_reminder = (Button) findViewById(R.id.bottom_sheet_add_reminder);
         button_add_customer = (Button) findViewById(R.id.button_add_customer);
-
         bottom_sheet_add_reminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -455,12 +464,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bottom_sheet_status_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 showDialog(MapActivity.this);
-                //MapPageQuery mapPageQuery = new MapPageQuery();
-                //Cursor cursor2 = mapPageQuery.getHistory(ID_CONS_SELECTED);
-                //Toast.makeText(getBaseContext(), "Cons : " + ID_CONS_SELECTED + "has " + cursor2.getCount() + " update " , Toast.LENGTH_LONG).show();
             }
         });
         button_add_customer.setOnClickListener(new View.OnClickListener() {
@@ -529,16 +533,11 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
                 }
                 MapPageQuery mapPageQuery = new MapPageQuery();
-                state01 = "0";
-                state02 = "10";
-                drawerFragmentMap.setProgressOn01(Integer.valueOf(state01));
-                drawerFragmentMap.setProgressOn02(Integer.valueOf(state02));
-                showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
+                drawerFragmentMap.setCheckBox01(false);
+                showCursor = mapPageQuery.showAllConsIndi();
                 showAllWaypoints(showCursor);
                 hideKeyboard();
-
             }
-
         });
         View nestedScrollView = (View) findViewById(R.id.nestedScrollView);
         mBottomSheetBehaviour = BottomSheetBehavior.from(nestedScrollView);
@@ -967,8 +966,22 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         }
 
 
-                        showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
-                        showAllWaypoints(showCursor);
+                        if (drawerFragmentMap.isCheck01){
+                            mapPageQuery = new MapPageQuery();
+                            showCursor = mapPageQuery.showAllConsIndiWhereFilter01(state01,state02);
+                            int C = showCursor.getCount();
+                            int D = showCursor.getColumnCount();
+                            Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
+                            showAllWaypoints(showCursor);
+                        }else {
+                            mapPageQuery = new MapPageQuery();
+                            showCursor = mapPageQuery.showAllConsIndi();
+                            int C = showCursor.getCount();
+                            int D = showCursor.getColumnCount();
+
+                            Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
+                            showAllWaypoints(showCursor);
+                        }
 
                     }
                 });

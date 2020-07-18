@@ -78,6 +78,8 @@ public class TaskHomePageAdapter extends RecyclerView.Adapter<TaskHomePageAdapte
                     }
                 }
             });
+
+
         }
     }
 

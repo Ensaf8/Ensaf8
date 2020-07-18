@@ -2,25 +2,22 @@ package com.parandak.ensaf8.mapPage.drawer;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.homePage.adapter.NavigationDrawerAdapter;
-import com.parandak.ensaf8.homePage.model.NavDrawerItem;
 import com.parandak.ensaf8.mapPage.model.ConsState;
 
 import java.util.ArrayList;
@@ -35,6 +32,8 @@ public class FragmentDrawer_map extends Fragment {
     public int SeekProgress02 = 7;
     SeekBar seekBar01;
     SeekBar seekBar02;
+    CheckBox checkBox01;
+    public boolean isCheck01  = false;
     int [] seekProgress = new int[]{SeekProgress01,SeekProgress02};
     List<ConsState> consStateList = new ArrayList<>();
     private ActionBarDrawerToggle mDrawerToggle;
@@ -64,6 +63,11 @@ public class FragmentDrawer_map extends Fragment {
         seekBar02.setProgress(p);
     }
 
+    public void setCheckBox01(Boolean isCheck01){
+        this.isCheck01 = isCheck01;
+        checkBox01.setChecked(isCheck01);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,6 +77,8 @@ public class FragmentDrawer_map extends Fragment {
         txtFilterSeek = view.findViewById(R.id.txtFilterSeek);
         seekBar01 = view.findViewById(R.id.seekBar01);
         seekBar02 = view.findViewById(R.id.seekBar02);
+        checkBox01 = view.findViewById(R.id.checkBoxFilter01);
+        checkBox01.setChecked(isCheck01);
         initConsStateList();
         seekBar01.setProgress(SeekProgress01);
         seekBar01.setThumb(mcontext.getResources().getDrawable(consStateList.get(SeekProgress01).getDrawable()));
@@ -117,6 +123,14 @@ public class FragmentDrawer_map extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
+            }
+        });
+
+        checkBox01.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isCheck01 = isChecked;
+                Toast.makeText(mcontext, "is Changed : " + isCheck01, Toast.LENGTH_SHORT).show();
             }
         });
 
