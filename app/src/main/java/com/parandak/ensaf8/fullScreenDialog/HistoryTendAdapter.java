@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.parandak.ensaf8.R;
+import com.parandak.ensaf8.tendHistoryDialog.HistoryTend;
 
 import java.util.ArrayList;
 import java.util.List;

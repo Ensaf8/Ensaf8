@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.dateAndReminder.AddReminderDialouge;
+import com.parandak.ensaf8.tendHistoryDialog.HistoryTend;
+import com.parandak.ensaf8.tendHistoryDialog.TendHistoryDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +47,6 @@ public class FullDialog extends DialogFragment {
     TextView full_txt_name;
     Button full_btn_addTend,full_btn_history;
     Cursor cursor;
-    Dialog dialog;
-    List<HistoryTend> historyTendList = new ArrayList<>();
 
     private Toolbar toolbar;
 
@@ -77,12 +77,11 @@ public class FullDialog extends DialogFragment {
             dialog.getWindow().setWindowAnimations(R.style.AppTheme_Slide);
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.full_dialog, container, false);
-        initHistoryTendList();
+
         initCusProfile(view);
         initBtnReminder(view);
         initBtnHistory(view);
@@ -123,48 +122,10 @@ public class FullDialog extends DialogFragment {
         full_btn_history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mcontext,"history!!!!" + historyTendList.size() , Toast.LENGTH_SHORT).show();
-                showDialogHistory(mactivity);
+                TendHistoryDialog  tendHistoryDialog = new TendHistoryDialog(mcontext,mactivity,CUS_ID);
+                tendHistoryDialog.showDialogHistory();
             }
         });
-    }
-    public void showDialogHistory(Activity activity){
-        dialog = new Dialog(activity);
-        // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.history_dialo_tend_recycler);
-
-        TextView txtHistoryTitleName = dialog.findViewById(R.id.txtHistoryNameTend);
-        txtHistoryTitleName.setText(fullDialogQuery.getIndiName(CUS_ID));
-        RecyclerView recyclerView = dialog.findViewById(R.id.history_tend_recycler);
-        HistoryTendAdapter historyTendAdapter = new HistoryTendAdapter(mcontext,historyTendList);
-        recyclerView.setAdapter(historyTendAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mcontext, LinearLayoutManager.VERTICAL, false));
-        historyTendAdapter.setOnItemClickListener(new HistoryTendAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                AddReminderDialouge addReminderDialouge = new AddReminderDialouge(mcontext,mactivity);
-                addReminderDialouge.showDialogueEdit(historyTendList.get(position).tendID,fullDialogQuery.getIndiName(CUS_ID));
-            }
-        });
-
-        dialog.show();
-    }
-    public void initHistoryTendList(){
-        FullDialogQuery fullDialogQuery = new FullDialogQuery();
-        Cursor cursor = fullDialogQuery.getHistoryTend(CUS_ID);
-        HistoryTend historyTend ;
-        if (cursor.moveToFirst()){
-            do{
-            historyTend = new HistoryTend();
-            historyTend.setTendID(cursor.getString(0));
-            historyTend.setTendTitle(cursor.getString(1));
-            String [] arrOfFomattedDate1 = cursor.getString(2).split(" ",2);
-            String [] arrOfGreDate1 = arrOfFomattedDate1[0].split("-",3);
-            historyTend.setTendDate(getPersianDate(Integer.valueOf(arrOfGreDate1[0]), Integer.valueOf(arrOfGreDate1[1]), Integer.valueOf(arrOfGreDate1[2]))+ " " + arrOfFomattedDate1[1]);
-            historyTendList.add(historyTend);
-            }while (cursor.moveToNext());
-        }
     }
     @Override
     public void onAttach(Activity activity) {

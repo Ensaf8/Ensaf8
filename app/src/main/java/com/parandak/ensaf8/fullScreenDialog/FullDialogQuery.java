@@ -27,7 +27,6 @@ public class FullDialogQuery {
         Cursor cursor = db.rawQuery(getIndiCooperate, null);
         return cursor;
     }
-
     public String getIndiName(String CUS_ID){
         String id = "error";
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -42,15 +41,6 @@ public class FullDialogQuery {
         return id;
     }
 
-    public Cursor getHistoryTend(String CUS_ID){
-        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-        String getHistoryTend = " SELECT "
-                + Tend.TABLE + "." + Tend.KEY_ID_Tend + " , "
-                + Tend.TABLE + "." + Tend.KEY_Title + " , "
-                + Tend.TABLE + "." + Tend.KEY_TendDate
-                + " FROM " + Tend.TABLE
-                + " WHERE " + Tend.TABLE + "." + Tend.KEY_Ind2ID + " = " + CUS_ID;
-        Cursor cursor = db.rawQuery(getHistoryTend, null);
-        return cursor;
-    }
+
+
 }

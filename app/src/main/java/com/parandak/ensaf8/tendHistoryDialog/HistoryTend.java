@@ -1,4 +1,4 @@
-package com.parandak.ensaf8.fullScreenDialog;
+package com.parandak.ensaf8.tendHistoryDialog;
 
 public class HistoryTend {
     String tendID,tendTitle,tendDate;
