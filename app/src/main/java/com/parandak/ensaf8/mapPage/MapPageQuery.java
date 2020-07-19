@@ -18,13 +18,11 @@ public class MapPageQuery {
     public MapPageQuery() {
 
     }
-
     public MapPageQuery(boolean check01,boolean check02,String tendTitle){
         this.check01 = check01;
         this.check02 = check02;
         this.tendTitle = tendTitle;
     }
-
     public Cursor singleTapOnConsIndFirst(String consID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = " SELECT "
