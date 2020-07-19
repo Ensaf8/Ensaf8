@@ -64,6 +64,7 @@ import com.parandak.ensaf8.mapPage.model.Customer;
 import com.parandak.ensaf8.mapPage.model.History;
 import com.parandak.ensaf8.mapPage.model.HistoryAdapter;
 import com.parandak.ensaf8.searchPage.SearchPageActivity;
+import com.parandak.ensaf8.tendHistoryDialog.TendHistoryDialog;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -420,6 +421,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             @Override
             public void onClick(View v) {
                 Toast.makeText(getBaseContext(), "TEND HISTORY . . . . ." , Toast.LENGTH_SHORT).show();
+                TendHistoryDialog tendHistoryDialog = new TendHistoryDialog(context,activity,ID_CONS_SELECTED);
+                tendHistoryDialog.showDialogHistory();
             }
         });
         bottom_sheet_add_reminder.setOnClickListener(new View.OnClickListener() {
