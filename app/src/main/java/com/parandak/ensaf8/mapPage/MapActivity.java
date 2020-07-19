@@ -36,6 +36,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -127,6 +128,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     /////BottomSheet
     private BottomSheetBehavior mBottomSheetBehaviour;
     Button button_edit,bottom_sheet_status_data,button_add_customer,bottom_sheet_delete_cons,bottom_sheet_add_reminder;
+    ImageButton bottom_tend_history;
     EditText bottom_sheet_name;
     boolean BOTTOM_SHEET_IS_HIDDEN = true;
     boolean isSingle = true;
@@ -413,6 +415,13 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bottom_sheet_delete_cons = (Button) findViewById(R.id.bottom_sheet_delete_cons);
         bottom_sheet_add_reminder = (Button) findViewById(R.id.bottom_sheet_add_reminder);
         button_add_customer = (Button) findViewById(R.id.button_add_customer);
+        bottom_tend_history = (ImageButton) findViewById(R.id.bottom_tend_history);
+        bottom_tend_history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getBaseContext(), "TEND HISTORY . . . . ." , Toast.LENGTH_SHORT).show();
+            }
+        });
         bottom_sheet_add_reminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
