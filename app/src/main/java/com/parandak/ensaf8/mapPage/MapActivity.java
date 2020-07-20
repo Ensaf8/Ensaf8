@@ -19,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -37,15 +36,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.app.BaseActivity;
-import com.parandak.ensaf8.dataBase.DBQuery;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
@@ -55,7 +51,6 @@ import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.GPointRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Indi_GeopRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.IndividualRepo;
 import com.parandak.ensaf8.dateAndReminder.AddReminderDialouge;
-import com.parandak.ensaf8.homePage.HomePageActivity;
 import com.parandak.ensaf8.fullScreenDialog.FullDialog;
 import com.parandak.ensaf8.mapPage.drawer.FragmentDrawer_map;
 import com.parandak.ensaf8.mapPage.model.BottomRVAdapter;
@@ -174,7 +169,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }////End of onCreate
     public void showOnMap(){
         MapPageQuery mapPageQuery = new MapPageQuery(drawerFragmentMap.isCheck01,drawerFragmentMap.isCheck02,"");
-        showCursor = mapPageQuery.showAllConsIndiWhereFilter02(state01,state02);
+        showCursor = mapPageQuery.showConsIndiWhereFilter02(state01,state02);
         int C = showCursor.getCount();
         int D = showCursor.getColumnCount();
         Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
@@ -870,7 +865,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         statusdate = formattedDate;
 
         MapPageQuery mapPageQuery = new MapPageQuery();
-        Cursor cursorHistory = mapPageQuery.getHistory(ID_CONS_SELECTED);
+        Cursor cursorHistory = mapPageQuery.getHistoryConsPhase(ID_CONS_SELECTED);
         if (cursorHistory.moveToFirst()){
             do {
                 History history =new History();

@@ -145,28 +145,8 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
         String formattedDate = df.format(c);
         Filename = "backUp " + formattedDate;
         sessionManaging();
-        insertTtIntCons_Phase();
 
     }///end of on create
-    private void insertTtIntCons_Phase(){
-        HomePageQuery homePageQuery = new HomePageQuery();
-        Cursor cursor = homePageQuery.getAllConsPhaseInt();
-        /*Cons_Phase cons_phase;
-        Cons_Phase_IntRepo consPhaseIntRepo;
-        if (cursor.moveToFirst()){
-            do{
-                cons_phase = new Cons_Phase();
-                consPhaseIntRepo = new Cons_Phase_IntRepo();
-                consPhaseIntRepo.insert(cons_phase);
-                cons_phase.setIndID(cursor.getString(0));
-                cons_phase.setPhase(cursor.getString(0));
-                cons_phase.setPhaseDate(cursor.getString(0));
-
-            }while (cursor.moveToNext());
-        }*/
-
-        Toast.makeText(context, "insertTtIntCons_Phase : " + cursor.getCount() , Toast.LENGTH_LONG).show();
-    }
     private void sessionManaging() {
         txtProfileName = (TextView)findViewById(R.id.txtProfileName);
         sessionManager = new SessionManager(getApplicationContext());

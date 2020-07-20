@@ -60,7 +60,7 @@ public class MapPageQuery {
         //DatabaseManager.getInstance().closeDatabase();
         return cursor;
     }
-    public Cursor getHistory(String consID){
+    public Cursor getHistoryConsPhase(String consID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = " SELECT "
                 + Cons_Phase.TABLE + "." + Cons_Phase.KEY_ID_Cons_Phase+ " , "
@@ -131,7 +131,7 @@ public class MapPageQuery {
         Cursor cursor = db.rawQuery(showQuery, null);
         return cursor;
     }
-    public Cursor showAllConsIndiWhereFilter02(String state01,String state02){
+    public Cursor showConsIndiWhereFilter02(String state01, String state02){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String stmt01 = "";
         String stmt02 = "";
