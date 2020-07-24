@@ -46,6 +46,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     CheckBox checkBox01,checkBox02,checkBox03;
     EditText ediFilterTend;
     Button btnDateFilter01,btnDateFilter02;
+    String DateFilter01,DateFilter02;
     boolean btnDateFilter01_Isclick;
     public boolean isCheck01  = false;
     public boolean isCheck02  = false;
@@ -80,6 +81,22 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         seekBar02.setProgress(p);
     }
 
+    public void setDateFilter01 (String date01){
+        DateFilter01 = date01;
+    }
+
+    public void setDateFilter02 (String date02){
+        DateFilter02 = date02;
+    }
+
+    public String getDateFilter01(){
+        return  DateFilter01;
+    }
+
+    public String getDateFilter02(){
+        return DateFilter02;
+    }
+
     public void setCheckBox01(Boolean isCheck01){
         this.isCheck01 = isCheck01;
         checkBox01.setChecked(isCheck01);
@@ -88,6 +105,11 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     public void setCheckBox02(Boolean isCheck02){
         this.isCheck02 = isCheck02;
         checkBox02.setChecked(isCheck02);
+    }
+
+    public void setCheckBox03(Boolean isCheck03){
+        this.isCheck03 = isCheck03;
+        checkBox03.setChecked(isCheck03);
     }
 
     @Override
@@ -329,8 +351,10 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
 
         if(btnDateFilter01_Isclick){
             btnDateFilter01.setText(finalResult);
+            DateFilter01 = finalResult;
         }else {
             btnDateFilter02.setText(finalResult);
+            DateFilter02 = finalResult;
         }
 
     }
