@@ -503,6 +503,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
                 }
                 drawerFragmentMap.setCheckBox01(false);
+                drawerFragmentMap.setCheckBox02(false);
                 showOnMap();
                 hideKeyboard();
             }
