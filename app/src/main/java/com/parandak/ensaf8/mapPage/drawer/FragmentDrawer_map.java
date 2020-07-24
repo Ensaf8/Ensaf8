@@ -1,10 +1,12 @@
 package com.parandak.ensaf8.mapPage.drawer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -17,32 +19,44 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
+import com.mohamadamin.persianmaterialdatetimepicker.time.RadialPickerLayout;
+import com.mohamadamin.persianmaterialdatetimepicker.time.TimePickerDialog;
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 import com.parandak.ensaf8.R;
+import com.parandak.ensaf8.dateAndReminder.AddReminderDialouge;
+import com.parandak.ensaf8.dateAndReminder.PersianCalendarAli;
 import com.parandak.ensaf8.homePage.adapter.NavigationDrawerAdapter;
 import com.parandak.ensaf8.mapPage.model.ConsState;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
-public class FragmentDrawer_map extends Fragment {
+public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnDateSetListener {
     private static String TAG = FragmentDrawer_map.class.getSimpleName();
     TextView txtFilterSeek;
     String titleFilterSeek;
     private Context mcontext;
+    private Activity mactivity;
     public int SeekProgress01 = 2;
     public int SeekProgress02 = 7;
     SeekBar seekBar01;
     SeekBar seekBar02;
-    CheckBox checkBox01,checkBox02;
+    CheckBox checkBox01,checkBox02,checkBox03;
     EditText ediFilterTend;
+    Button btnDateFilter01,btnDateFilter02;
+    boolean btnDateFilter01_Isclick;
     public boolean isCheck01  = false;
     public boolean isCheck02  = false;
+    public boolean isCheck03  = false;
     int [] seekProgress = new int[]{SeekProgress01,SeekProgress02};
     List<ConsState> consStateList = new ArrayList<>();
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private NavigationDrawerAdapter adapter;
     //private View containerView;
+    String finalResult,finalResult_fa;
 
     public ImageView imgFilter;
 
@@ -89,8 +103,42 @@ public class FragmentDrawer_map extends Fragment {
         checkBox01.setChecked(isCheck01);
         checkBox02 = view.findViewById(R.id.checkBoxFilter02);
         checkBox02.setChecked(isCheck02);
+        checkBox03 = view.findViewById(R.id.checkBoxFilter03);
+        checkBox03.setChecked(isCheck03);
         ediFilterTend = view.findViewById(R.id.ediTendFilter);
+        btnDateFilter01 = view.findViewById(R.id.btnDateFilter01);
+        btnDateFilter02 = view.findViewById(R.id.btnDateFilter02);
         initConsStateList();
+        btnDateFilter01.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PersianCalendar persianCalendar = new PersianCalendar();
+                DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                        FragmentDrawer_map.this,
+                        persianCalendar.getPersianYear(),
+                        persianCalendar.getPersianMonth(),
+                        persianCalendar.getPersianDay()
+                );
+                datePickerDialog.setThemeDark(true);
+                datePickerDialog.show(mactivity.getFragmentManager(), "Datepickerdialog");
+                btnDateFilter01_Isclick =true;
+            }
+        });
+        btnDateFilter02.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PersianCalendar persianCalendar = new PersianCalendar();
+                DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                        FragmentDrawer_map.this,
+                        persianCalendar.getPersianYear(),
+                        persianCalendar.getPersianMonth(),
+                        persianCalendar.getPersianDay()
+                );
+                datePickerDialog.setThemeDark(true);
+                datePickerDialog.show(mactivity.getFragmentManager(), "Datepickerdialog");
+                btnDateFilter01_Isclick =false;
+            }
+        });
         seekBar01.setProgress(SeekProgress01);
         seekBar01.setThumb(mcontext.getResources().getDrawable(consStateList.get(SeekProgress01).getDrawable()));
         titleFilterSeek = consStateList.get(SeekProgress01).getState()+" تا " +consStateList.get(SeekProgress02).getState(); ;
@@ -153,6 +201,14 @@ public class FragmentDrawer_map extends Fragment {
             }
         });
 
+        checkBox03.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isCheck03 = isChecked;
+                Toast.makeText(mcontext, "is Changed03 : " + isCheck03, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return view;
     }
 
@@ -162,9 +218,15 @@ public class FragmentDrawer_map extends Fragment {
         mcontext = context;
     }
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mactivity = activity;
+    }
+    @Override
     public void onDetach() {
         super.onDetach();
         mcontext = null;
+        mactivity = null;
     }
 
     public void setUp(int fragmentId, DrawerLayout drawerLayout ) {
@@ -249,5 +311,28 @@ public class FragmentDrawer_map extends Fragment {
     }
 
 
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        int correct = monthOfYear+1;
+        final Calendar[] gregorian = new Calendar[1];
+        final PersianCalendarAli persianCalendarAli = new PersianCalendarAli();
+        gregorian[0] = persianCalendarAli.getGregorianCalendar(year,correct,dayOfMonth);
+        String month = String.valueOf(gregorian[0].get(Calendar.MONTH)+1);
+        if ((gregorian[0].get(Calendar.MONTH)+1)<10)
+            month = "0"+(gregorian[0].get(Calendar.MONTH)+1);
+
+        String day = String.valueOf(gregorian[0].get(Calendar.DAY_OF_MONTH));
+        if ((gregorian[0].get(Calendar.DAY_OF_MONTH))<10)
+            day = "0"+(gregorian[0].get(Calendar.DAY_OF_MONTH));
+        finalResult = gregorian[0].get(Calendar.YEAR)+"-"+month+"-"+day;
+        finalResult_fa =  year + "/" + correct + "/" + dayOfMonth;
+
+        if(btnDateFilter01_Isclick){
+            btnDateFilter01.setText(finalResult);
+        }else {
+            btnDateFilter02.setText(finalResult);
+        }
+
+    }
 
 }
