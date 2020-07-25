@@ -14,14 +14,20 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 public class MapPageQuery {
     boolean check01;
     boolean check02;
+    boolean check03;
     String tendTitle;
+    String date01;
+    String date02;
     public MapPageQuery() {
 
     }
-    public MapPageQuery(boolean check01,boolean check02,String tendTitle){
+    public MapPageQuery(boolean check01,boolean check02,String tendTitle,boolean check03,String date01,String date02){
         this.check01 = check01;
         this.check02 = check02;
         this.tendTitle = tendTitle;
+        this.check03 = check03;
+        this.date01 = date01;
+        this.date02 = date02;
     }
     public Cursor singleTapOnConsIndFirst(String consID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -135,8 +141,10 @@ public class MapPageQuery {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String stmt01 = "";
         String stmt02 = "";
-                if(check01){
+                if(check01 && !check03){
                     stmt01 = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " BETWEEN " + state01 +" and  " + state02;
+                }else if(check03 && !check01){
+                    stmt01 = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate + " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "'";
                 }
                 if(check02){
                     stmt02 = " INNER JOIN " + Tend.TABLE
