@@ -8,7 +8,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 
 public class BookMarkRepo {
     BookMark bookMark;
-    BookMarkRepo(){
+    public BookMarkRepo(){
         bookMark = new BookMark();
     }
 

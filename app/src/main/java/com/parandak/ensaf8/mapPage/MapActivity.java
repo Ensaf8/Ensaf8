@@ -34,6 +34,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -42,10 +44,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.app.BaseActivity;
+import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
+import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Cons_PhaseRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.GPointRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Indi_GeopRepo;
@@ -124,12 +128,13 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     /////BottomSheet
     private BottomSheetBehavior mBottomSheetBehaviour;
     Button button_edit,bottom_sheet_status_data,button_add_customer,bottom_sheet_delete_cons,bottom_sheet_add_reminder;
+    CheckBox checkBoxBookmark;
     ImageButton bottom_tend_history;
     EditText bottom_sheet_name;
     boolean BOTTOM_SHEET_IS_HIDDEN = true;
     boolean isSingle = true;
     String ID_CONS_SELECTED;
-    
+    boolean isConsBooked,isConsBookChanged = false;
     BottomRVAdapter bottomRVAdapter;
     List<Customer> customerList =new ArrayList<>();
     RecyclerView recyclerView;
@@ -420,6 +425,14 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bottom_sheet_add_reminder = (Button) findViewById(R.id.bottom_sheet_add_reminder);
         button_add_customer = (Button) findViewById(R.id.button_add_customer);
         bottom_tend_history = (ImageButton) findViewById(R.id.bottom_tend_history);
+        checkBoxBookmark = (CheckBox) findViewById(R.id.checkBoxBookmark);
+        checkBoxBookmark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isConsBooked = isChecked;
+                isConsBookChanged = true;
+            }
+        });
         bottom_tend_history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -480,6 +493,18 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         }
                     }else {
                         Toast.makeText(getBaseContext(), "CONS Name with ID : "+ ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
+                    }
+                    if(isConsBookChanged){
+                        BookMark bookMark = new BookMark();
+                        bookMark.setIndID(ID_CONS_SELECTED);
+                        BookMarkRepo bookMarkRepo = new BookMarkRepo();
+                        if(isConsBooked){
+                            if(bookMarkRepo.insert(bookMark)>0)
+                                Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isBookMarked ", Toast.LENGTH_SHORT).show();
+                        }else{
+                            if(bookMarkRepo.delete_indID_BookMark(ID_CONS_SELECTED))
+                                Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isNOT BookMarked ", Toast.LENGTH_SHORT).show();;
+                        }
                     }
 
                 }else {
@@ -558,6 +583,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         //customerAdapter.notifyDataSetChanged();
                         bottomRVAdapter.notifyDataSetChanged();
                         historyList.clear();
+                        isConsBookChanged = false;
+                        checkBoxBookmark.setChecked(false);
                         break;
                     }
                     case BottomSheetBehavior.STATE_HALF_EXPANDED: {
