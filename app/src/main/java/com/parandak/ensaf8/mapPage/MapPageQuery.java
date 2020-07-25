@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.parandak.ensaf8.dataBase.DatabaseManager;
+import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.CreateViews;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Coop;
@@ -37,11 +38,14 @@ public class MapPageQuery {
                 + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lat + " , "
                 + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lon + " , "
                 + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " , "
-                + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate
+                + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate + " , "
+                + BookMark.TABLE + "." + BookMark.KEY_ID_BookMark
                 + " FROM "
                 + CreateViews.Construction.VIEW
                 + " INNER JOIN " + CreateViews.LastUpConsInd.VIEW
                 + " ON " +  CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_ID_cons
+                + " LEFT JOIN " + BookMark.TABLE
+                + " ON " +  CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + BookMark.TABLE + "." + BookMark.KEY_IndID
                 + " WHERE " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = ' " + consID + " ';";
 
         Cursor cursor = db.rawQuery(selectQuery, null);

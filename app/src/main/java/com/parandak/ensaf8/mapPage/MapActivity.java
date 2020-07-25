@@ -1004,6 +1004,12 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 bottom_sheet_status_data.setText("Last UpDate : " + cursor.getString(5));
             }
 
+            if(cursor.getString(6)!=null){
+                checkBoxBookmark.setChecked(true);
+            }else {
+                checkBoxBookmark.setChecked(false);
+            }
+
         }
         if (cursor1.moveToFirst()){
             //Toast.makeText(getBaseContext(), "Second is  : " + cursor1.getCount() + " * " + cursor1.getColumnCount() + " ID : " + ID_CONS_SELECTED , Toast.LENGTH_SHORT).show();
