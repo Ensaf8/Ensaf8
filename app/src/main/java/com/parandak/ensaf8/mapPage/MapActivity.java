@@ -129,6 +129,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     boolean BOTTOM_SHEET_IS_HIDDEN = true;
     boolean isSingle = true;
     String ID_CONS_SELECTED;
+    
     BottomRVAdapter bottomRVAdapter;
     List<Customer> customerList =new ArrayList<>();
     RecyclerView recyclerView;
