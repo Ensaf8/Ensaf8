@@ -7,7 +7,6 @@
 
     <TextView
         android:id="@+id/txtFilterSeek"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -91,6 +90,16 @@
             android:layout_weight="6" />
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/txtFilterDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="315dp"
+        android:gravity="bottom"
+        android:text="1399-4-1 تا 1399-5-4 "
+        android:textAlignment="center"
+        android:textSize="15sp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -112,7 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="1399.02.01"
+                android:text="1399/4/1"
                 android:layout_weight="1"
                  />
 
@@ -121,7 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="1399.05.03"
+                android:text="1399/5/4"
                 android:layout_weight="1" />
         </LinearLayout>
 

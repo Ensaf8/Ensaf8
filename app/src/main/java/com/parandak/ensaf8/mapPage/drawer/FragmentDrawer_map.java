@@ -35,7 +35,7 @@ import java.util.List;
 
 public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnDateSetListener {
     private static String TAG = FragmentDrawer_map.class.getSimpleName();
-    TextView txtFilterSeek;
+    TextView txtFilterSeek,txtFilterDate;
     String titleFilterSeek;
     private Context mcontext;
     private Activity mactivity;
@@ -51,6 +51,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     public boolean isCheck01  = false;
     public boolean isCheck02  = false;
     public boolean isCheck03  = false;
+    String fa_date01 = "1399-4-1",fa_date02 = "1399-5-4" ;
     int [] seekProgress = new int[]{SeekProgress01,SeekProgress02};
     List<ConsState> consStateList = new ArrayList<>();
     private ActionBarDrawerToggle mDrawerToggle;
@@ -119,6 +120,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         View view = inflater.inflate(R.layout.fragment_drawer_map, container, false);
         imgFilter = view.findViewById(R.id.imgFilter);
         txtFilterSeek = view.findViewById(R.id.txtFilterSeek);
+        txtFilterDate = view.findViewById(R.id.txtFilterDate);
         seekBar01 = view.findViewById(R.id.seekBar01);
         seekBar02 = view.findViewById(R.id.seekBar02);
         checkBox01 = view.findViewById(R.id.checkBoxFilter01);
@@ -211,7 +213,6 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isCheck01 = isChecked;
-                Toast.makeText(mcontext, "is Changed01 : " + isCheck01, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -219,7 +220,6 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isCheck02 = isChecked;
-                Toast.makeText(mcontext, "is Changed02 : " + isCheck02, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -227,7 +227,6 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isCheck03 = isChecked;
-                Toast.makeText(mcontext, "is Changed03 : " + isCheck03, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -350,10 +349,14 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         finalResult_fa =  year + "/" + correct + "/" + dayOfMonth;
 
         if(btnDateFilter01_Isclick){
-            btnDateFilter01.setText(finalResult);
+            btnDateFilter01.setText(finalResult_fa);
             DateFilter01 = finalResult;
+            fa_date01 = finalResult_fa;
+            txtFilterDate.setText(fa_date01 + " تا " + fa_date02);
         }else {
-            btnDateFilter02.setText(finalResult);
+            fa_date02 = finalResult_fa;
+            txtFilterDate.setText(fa_date01 + " تا " + fa_date02);
+            btnDateFilter02.setText(finalResult_fa);
             DateFilter02 = finalResult;
         }
 
