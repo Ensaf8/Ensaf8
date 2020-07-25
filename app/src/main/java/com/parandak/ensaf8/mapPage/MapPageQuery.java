@@ -16,19 +16,21 @@ public class MapPageQuery {
     boolean check01;
     boolean check02;
     boolean check03;
+    boolean checkBook;
     String tendTitle;
     String date01;
     String date02;
     public MapPageQuery() {
 
     }
-    public MapPageQuery(boolean check01,boolean check02,String tendTitle,boolean check03,String date01,String date02){
+    public MapPageQuery(boolean check01,boolean check02,String tendTitle,boolean check03,String date01,String date02,boolean checkBook){
         this.check01 = check01;
         this.check02 = check02;
         this.tendTitle = tendTitle;
         this.check03 = check03;
         this.date01 = date01;
         this.date02 = date02;
+        this.checkBook = checkBook;
     }
     public Cursor singleTapOnConsIndFirst(String consID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -162,6 +164,13 @@ public class MapPageQuery {
                             + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + Tend.TABLE +"."+ Tend.KEY_Ind2ID;
                     //if(tendTitle != null){
                       //  stmt01 = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " BETWEEN " + state01 +" and  " + state02 + ") and " + Tend.TABLE + "." +Tend.KEY_Title + " LIKE '" + tendTitle + "'";
+                    //}
+                }
+                if(checkBook){
+                    stmt02 = " INNER JOIN " + BookMark.TABLE
+                            + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + BookMark.TABLE +"."+ BookMark.KEY_IndID;
+                    //if(tendTitle != null){
+                    //  stmt01 = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " BETWEEN " + state01 +" and  " + state02 + ") and " + Tend.TABLE + "." +Tend.KEY_Title + " LIKE '" + tendTitle + "'";
                     //}
                 }
         String showQuery = " SELECT "

@@ -180,7 +180,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }////End of onCreate
     public void showOnMap(){
         MapPageQuery mapPageQuery = new MapPageQuery(drawerFragmentMap.isCheck01,drawerFragmentMap.isCheck02,"",
-                drawerFragmentMap.isCheck03,drawerFragmentMap.getDateFilter01(),drawerFragmentMap.getDateFilter02());
+                drawerFragmentMap.isCheck03,drawerFragmentMap.getDateFilter01(),drawerFragmentMap.getDateFilter02(),drawerFragmentMap.isCheckBook);
         showCursor = mapPageQuery.showConsIndiWhereFilter02(state01,state02);
         int C = showCursor.getCount();
         int D = showCursor.getColumnCount();
@@ -537,6 +537,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 }
                 drawerFragmentMap.setCheckBox01(false);
                 drawerFragmentMap.setCheckBox02(false);
+                drawerFragmentMap.setCheckBox03(false);
+                drawerFragmentMap.setCheckBoxBook(false);
                 showOnMap();
                 hideKeyboard();
             }
@@ -935,15 +937,17 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         IndividualRepo individualRepo = new IndividualRepo();
                         Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
                         Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
+                        BookMarkRepo bookMarkRepo = new BookMarkRepo();
                         GPointRepo gPointRepo = new GPointRepo();
                         MapPageQuery mapPageQuery = new MapPageQuery();
-                        boolean gpr = false,cpr,igr,ir;
+                        boolean gpr = false,cpr,igr,ir,bm;
                         if (mapPageQuery.getGeopID(ID_CONS_SELECTED)!="!solo"){
                             gpr = gPointRepo.deleteIDGeop(mapPageQuery.getGeopID(ID_CONS_SELECTED)) ;
                         }
                         cpr = cons_phaseRepo.deleteIndiID(ID_CONS_SELECTED);
                         igr = indi_geopRepo.deleteIndiID(ID_CONS_SELECTED);
                         ir = individualRepo.deleteIndiID(ID_CONS_SELECTED);
+                        bm = bookMarkRepo.delete_indID_BookMark(ID_CONS_SELECTED);
 
                         if (!gpr){
                             test = test + " gPoint ";
@@ -961,8 +965,12 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                             test = test + " Individual ";
                         }
 
+                        if(!bm){
+                            test = test + " bookMark ";
+                        }
 
-                        if (gpr && cpr && igr && ir){
+
+                        if (gpr && cpr && igr && ir && bm){
                             Toast.makeText(getBaseContext(), "Successfully All Deleted!!!" , Toast.LENGTH_SHORT).show();
                         }else {
                             Toast.makeText(getBaseContext(), test , Toast.LENGTH_LONG).show();
