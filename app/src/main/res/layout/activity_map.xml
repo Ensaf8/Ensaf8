@@ -78,21 +78,34 @@
                             android:layout_margin="10dp"
                             android:text=">>" />
                     </LinearLayout>
-
-                    <EditText
-                        android:id="@+id/bottom_sheet_name"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:textStyle="bold"
-                        android:textAlignment="center"
-                        android:textSize="25sp"
-                        android:ems="10"
-                        android:inputType="textPersonName"
-                        android:layout_weight="6"
-                        android:hint="Name"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/bottom_sheet_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginRight="55dp"
+                            android:textStyle="bold"
+                            android:textAlignment="center"
+                            android:textSize="25sp"
+                            android:ems="10"
+                            android:inputType="textPersonName"
+                            android:layout_weight="6"
+                            android:hint="Name"
+                            android:layout_marginTop="10dp"/>
+
+                        <CheckBox
+                            android:id="@+id/checkBoxBookmark"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@drawable/selector_book_mark"
+                            android:scaleX="2.5"
+                            android:scaleY="2.5" />
+                    </LinearLayout>
+
+
 
 
 
