@@ -157,6 +157,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         drawerFragmentMap.setCheckBox01(false);
         drawerFragmentMap.setCheckBox02(false);
         drawerFragmentMap.setCheckBox03(false);
+        drawerFragmentMap.setCheckBoxBook(false);
         drawerFragmentMap.setDateFilter01("2020-6-21");
         drawerFragmentMap.setDateFilter02("2020-7-25");
         if (mPermissionsGranted){

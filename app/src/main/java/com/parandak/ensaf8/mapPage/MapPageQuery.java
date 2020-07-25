@@ -142,9 +142,16 @@ public class MapPageQuery {
         String stmt01 = "";
         String stmt02 = "";
                 if(check01 && !check03){
-                    stmt01 = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " BETWEEN " + state01 +" and  " + state02;
+                    stmt01 = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
+                            " BETWEEN " + state01 +" and  " + state02;
                 }else if(check03 && !check01){
-                    stmt01 = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate + " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "'";
+                    stmt01 = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
+                            " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "'";
+                }else if (check03 && check01){
+                    stmt01 = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
+                            " BETWEEN " + state01 +" and  " + state02 +" ) and (" +
+                            CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
+                            " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "')";
                 }
                 if(check02){
                     stmt02 = " INNER JOIN " + Tend.TABLE
