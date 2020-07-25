@@ -142,7 +142,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     String state01 = "2";
     String state02 = "6";
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         hideKeyboard();
         checkExternalStorageState();
@@ -157,8 +157,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         drawerFragmentMap.setCheckBox01(false);
         drawerFragmentMap.setCheckBox02(false);
         drawerFragmentMap.setCheckBox03(false);
-        drawerFragmentMap.setDateFilter01("2020-04-20");
-        drawerFragmentMap.setDateFilter02("2020-07-24");
+        drawerFragmentMap.setDateFilter01("2020-6-21");
+        drawerFragmentMap.setDateFilter02("2020-7-24");
         if (mPermissionsGranted){
             initMap(savedInstanceState);
             viewPager();
@@ -172,7 +172,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         }
     }////End of onCreate
     public void showOnMap(){
-        MapPageQuery mapPageQuery = new MapPageQuery(drawerFragmentMap.isCheck01,drawerFragmentMap.isCheck02,"");
+        MapPageQuery mapPageQuery = new MapPageQuery(drawerFragmentMap.isCheck01,drawerFragmentMap.isCheck02,"",
+                drawerFragmentMap.isCheck03,drawerFragmentMap.getDateFilter01(),drawerFragmentMap.getDateFilter02());
         showCursor = mapPageQuery.showConsIndiWhereFilter02(state01,state02);
         int C = showCursor.getCount();
         int D = showCursor.getColumnCount();

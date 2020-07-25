@@ -340,12 +340,12 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         final PersianCalendarAli persianCalendarAli = new PersianCalendarAli();
         gregorian[0] = persianCalendarAli.getGregorianCalendar(year,correct,dayOfMonth);
         String month = String.valueOf(gregorian[0].get(Calendar.MONTH)+1);
-        if ((gregorian[0].get(Calendar.MONTH)+1)<10)
-            month = "0"+(gregorian[0].get(Calendar.MONTH)+1);
+        //if ((gregorian[0].get(Calendar.MONTH)+1)<10)
+        //    month = "0"+(gregorian[0].get(Calendar.MONTH)+1);
 
         String day = String.valueOf(gregorian[0].get(Calendar.DAY_OF_MONTH));
-        if ((gregorian[0].get(Calendar.DAY_OF_MONTH))<10)
-            day = "0"+(gregorian[0].get(Calendar.DAY_OF_MONTH));
+        //if ((gregorian[0].get(Calendar.DAY_OF_MONTH))<10)
+        //    day = "0"+(gregorian[0].get(Calendar.DAY_OF_MONTH));
         finalResult = gregorian[0].get(Calendar.YEAR)+"-"+month+"-"+day;
         finalResult_fa =  year + "/" + correct + "/" + dayOfMonth;
 
