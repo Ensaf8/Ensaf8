@@ -228,6 +228,10 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isCheck02 = isChecked;
+                checkBoxBook.setChecked(false);
+                if (isChecked)
+                    checkBox02.setChecked(true);
+                Toast.makeText(mcontext,"checkBox02 isChecked : " +  isChecked, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -241,6 +245,9 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isCheckBook = isChecked;
+                checkBox02.setChecked(false);
+                if (isChecked)
+                    checkBoxBook.setChecked(true);
                 Toast.makeText(mcontext,"BOOK MARK isChecked : " +  isChecked, Toast.LENGTH_LONG).show();
             }
         });
