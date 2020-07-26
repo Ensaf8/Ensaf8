@@ -47,15 +47,18 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             public void run() {
                 int itemId = item.getItemId();
                 if (itemId == R.id.navigation_home) {
+                    if (getContentViewId()!=R.layout.activity_home)
                     BaseActivity.this.startActivity(new Intent(BaseActivity.this, HomePageActivity.class));
                 } else if (itemId == R.id.navigation_map) {
+                    if (getContentViewId()!=R.layout.activity_map)
                     BaseActivity.this.startActivity(new Intent(BaseActivity.this, MapActivity.class));
                 } else if (itemId == R.id.navigation_search) {
+                    if (getContentViewId()!=R.layout.activity_search_page)
                     BaseActivity.this.startActivity(new Intent(BaseActivity.this, SearchPageActivity.class));
                 }
-                BaseActivity.this.finish();
+                //BaseActivity.this.finish();
             }
-        }, 300);
+        }, 0);
         return true;
     }
 
