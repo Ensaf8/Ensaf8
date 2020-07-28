@@ -102,20 +102,28 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }
     Context context = this;
     Activity activity = this;
+
     Double lat,lon;
     int inisatatus , status = 0;
     String statusdate;
     ///////MapView
-    private static final String LOG_TAG = MapActivity.class.getSimpleName();
+
     private static final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     private boolean mPermissionsGranted;
     private List<String> mMissingPermissions;
+
+
+
     String INSTANCE_LATITUDE_MAIN_MAP = "latitudeMainMap";
     String INSTANCE_LONGITUDE_MAIN_MAP = "longitudeMainMap";
     String INSTANCE_ZOOM_LEVEL_MAIN_MAP = "zoomLevelMainMap";
     double DEFAULT_LATITUDE = 29.65257;
     double DEFAULT_LONGITUDE = 52.48157;
     double DEFAULT_ZOOM_LEVEL_MAIN_MAP = 14.5;
+
+
+
+
     MapView map;
     DrawerLayout drawerLayoutMap;
     FragmentDrawer_map drawerFragmentMap;
@@ -248,6 +256,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             mController.setZoom(DEFAULT_ZOOM_LEVEL_MAIN_MAP);
             GeoPoint startPoint = new GeoPoint(DEFAULT_LATITUDE, DEFAULT_LONGITUDE);
             mController.setCenter(startPoint);
+            //mController.
         }
     }
     public void osmInternal(){
@@ -725,13 +734,10 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onResume() {
         super.onResume();
-        //Toast.makeText(this,"onResume " , Toast.LENGTH_LONG).show();
-        //customerAdapter.notifyDataSetChanged();
-        /*if(mPermissionsGranted){
+        if(mPermissionsGranted){
             bottomRVAdapter.notifyDataSetChanged();
             mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
-        }*/
-
+        }
         hideKeyboard();
         if(map != null) {
             //this will refresh the osmdroid configuration on resuming.
@@ -740,10 +746,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             //Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
             map.onResume(); //needed for compass, my location overlays, v6.0.0 and up
         }
-        /*else {
-            boarding();
-        }*/
-
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onPause() {
@@ -799,11 +801,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
         String state = Environment.getExternalStorageState();
         if (!state.equals(Environment.MEDIA_MOUNTED)) {
-            Log.e(LOG_TAG, "Error: Unable to mount External Storage. Current state: " + state);
-
             // move MainActivity to back
             moveTaskToBack(true);
-
             // shutting down app
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(1);
