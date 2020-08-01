@@ -501,9 +501,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                             Toast.makeText(getBaseContext(), "CONS with ID : "+ ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
                         }
                         drawerFragmentMap.setCheckBox01(false);
-                        drawerFragmentMap.setCheckBox02(false);
-                        drawerFragmentMap.setCheckBox03(false);
-                        drawerFragmentMap.setCheckBoxBook(false);
                     }else {
                         Toast.makeText(getBaseContext(), "CONS Name with ID : "+ ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
                     }
