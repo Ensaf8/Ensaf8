@@ -85,6 +85,7 @@
                             android:id="@+id/bottom_sheet_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:maxLength="36"
                             android:layout_marginLeft="25dp"
                             android:layout_marginRight="55dp"
                             android:textStyle="bold"
