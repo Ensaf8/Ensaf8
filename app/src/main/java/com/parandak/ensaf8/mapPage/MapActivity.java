@@ -100,6 +100,11 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     public int getNavigationMenuItemId() {
         return R.id.navigation_map;
     }
+    @Override
+    public int getItemIdBefore() {
+        return itemIdBefore;
+    }
+    int itemIdBefore;
     Context context = this;
     Activity activity = this;
 
@@ -158,6 +163,9 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        itemIdBefore = intent.getIntExtra("itemIdBefore",R.id.navigation_home);
+        //Toast.makeText(getApplicationContext(),"itemIdBefore = " + itemIdBefore, Toast.LENGTH_LONG).show();
         hideKeyboard();
         checkExternalStorageState();
         checkAndroid6 ();

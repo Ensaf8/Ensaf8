@@ -82,6 +82,7 @@ import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getPersian_
 
 public class HomePageActivity extends BaseActivity implements FragmentDrawer.
         FragmentDrawerListener {
+    int itemIdBefore;
     @Override
     public int getContentViewId() {
         return R.layout.activity_home;
@@ -91,6 +92,12 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
     public int getNavigationMenuItemId() {
         return R.id.navigation_home;
     }
+
+    @Override
+    public int getItemIdBefore() {
+        return itemIdBefore;
+    }
+
     public static String ID_CONNECT_Indi1;
     String mimeType = "text/xml";
     ProgressDialog progressDialog;
@@ -128,6 +135,10 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_home);
+        Intent intent = getIntent();
+        itemIdBefore = intent.getIntExtra("itemIdBefore",R.id.navigation_home);
+        //Toast.makeText(getApplicationContext(),"itemIdBefore = " + itemIdBefore, Toast.LENGTH_LONG).show();
+
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);

@@ -3,6 +3,7 @@ package com.parandak.ensaf8.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.homePage.HomePageActivity;
+import com.parandak.ensaf8.homePage.HomePageQuery;
 import com.parandak.ensaf8.mapPage.MapActivity;
 import com.parandak.ensaf8.searchPage.SearchPageActivity;
 
@@ -45,16 +47,69 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         navigationView.postDelayed(new Runnable() {
             @Override
             public void run() {
+                Toast.makeText(getApplicationContext(),"itemIdBefore = " + getItemIdBefore() + "itemid = " + getNavigationMenuItemId(), Toast.LENGTH_LONG
+                ).show();
                 int itemId = item.getItemId();
                 if (itemId == R.id.navigation_home) {
-                    if (getContentViewId()!=R.layout.activity_home)
-                    BaseActivity.this.startActivity(new Intent(BaseActivity.this, HomePageActivity.class));
+                    if (getNavigationMenuItemId()!=R.id.navigation_home){
+                        if (getItemIdBefore() == R.id.navigation_home){
+
+                            /*if (getContentViewId()==R.layout.activity_map){
+                                Toast.makeText(getApplicationContext(),"finishing map" , Toast.LENGTH_LONG).show();
+                                MapActivity mapActivity = new MapActivity();
+                                mapActivity.finish();
+                            }else if(getContentViewId()==R.layout.activity_search_page){
+                                Toast.makeText(getApplicationContext(),"finishing search" , Toast.LENGTH_LONG).show();
+                                SearchPageActivity searchPageActivity = new SearchPageActivity();
+                                searchPageActivity.finish();
+                            }*/
+                            finish();
+                        }else {
+                            Intent intentHome = new Intent(BaseActivity.this, HomePageActivity.class);
+                            intentHome.putExtra("itemIdBefore",getNavigationMenuItemId());
+                            BaseActivity.this.startActivity(intentHome);
+                        }
+                    }
                 } else if (itemId == R.id.navigation_map) {
-                    if (getContentViewId()!=R.layout.activity_map)
-                    BaseActivity.this.startActivity(new Intent(BaseActivity.this, MapActivity.class));
+                    if (getNavigationMenuItemId()!=R.id.navigation_map){
+                        if (getItemIdBefore() == R.id.navigation_map){
+
+                            /*if (getContentViewId()==R.layout.activity_home){
+                                HomePageActivity homePageActivity = new HomePageActivity();
+                                homePageActivity.finish();
+                                Toast.makeText(getApplicationContext(),"finishing home" , Toast.LENGTH_LONG).show();
+                            }else if(getContentViewId()==R.layout.activity_search_page){
+                                Toast.makeText(getApplicationContext(),"finishing search" , Toast.LENGTH_LONG).show();
+                                SearchPageActivity searchPageActivity = new SearchPageActivity();
+                                searchPageActivity.finish();
+                            }*/
+                            finish();
+                        }else {
+                            Intent intentMap = new Intent(BaseActivity.this, MapActivity.class);
+                            intentMap.putExtra("itemIdBefore",getNavigationMenuItemId());
+                            BaseActivity.this.startActivity(intentMap);
+                        }
+                    }
                 } else if (itemId == R.id.navigation_search) {
-                    if (getContentViewId()!=R.layout.activity_search_page)
-                    BaseActivity.this.startActivity(new Intent(BaseActivity.this, SearchPageActivity.class));
+                    if (getNavigationMenuItemId()!=R.id.navigation_search){
+                        if (getItemIdBefore() == R.id.navigation_search){
+
+                            /*if (getContentViewId()==R.layout.activity_home){
+                                Toast.makeText(getApplicationContext(),"finishing home" , Toast.LENGTH_LONG).show();
+                                HomePageActivity homePageActivity = new HomePageActivity();
+                                homePageActivity.finish();
+                            }else if(getContentViewId()==R.layout.activity_map){
+                                Toast.makeText(getApplicationContext(),"finishing map" , Toast.LENGTH_LONG).show();
+                                MapActivity mapActivity = new MapActivity();
+                                mapActivity.finish();
+                            }*/
+                            finish();
+                        }else {
+                            Intent intentSearch = new Intent(BaseActivity.this, SearchPageActivity.class);
+                            intentSearch.putExtra("itemIdBefore",getNavigationMenuItemId());
+                            BaseActivity.this.startActivity(intentSearch);
+                        }
+                    }
                 }
                 //BaseActivity.this.finish();
             }
@@ -80,4 +135,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     public abstract int getContentViewId();
 
     public abstract int getNavigationMenuItemId();
+
+    public abstract int getItemIdBefore();
 }

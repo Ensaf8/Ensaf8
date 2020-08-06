@@ -44,6 +44,11 @@ public class SearchPageActivity extends BaseActivity {
     public int getNavigationMenuItemId() {
         return R.id.navigation_search;
     }
+    @Override
+    public int getItemIdBefore() {
+        return itemIdBefore;
+    }
+    int itemIdBefore;
     Context context = this;
     private FloatingActionButton fab;
     EditText editText_customer_name,editText_customer_phone,editText_customer_position;
@@ -65,6 +70,8 @@ public class SearchPageActivity extends BaseActivity {
 
         Intent intent = getIntent();
         CONS_ID = intent.getStringExtra("ID");
+        itemIdBefore = intent.getIntExtra("itemIdBefore",R.id.navigation_home);
+        //Toast.makeText(getApplicationContext(),"itemIdBefore = " + itemIdBefore, Toast.LENGTH_LONG).show();
         String txtSet = "Construction ID : " + CONS_ID;
 
         recycleView();
