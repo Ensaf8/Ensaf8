@@ -47,8 +47,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         navigationView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(),"itemIdBefore = " + getItemIdBefore() + "itemid = " + getNavigationMenuItemId(), Toast.LENGTH_LONG
-                ).show();
                 int itemId = item.getItemId();
                 if (itemId == R.id.navigation_home) {
                     if (getNavigationMenuItemId()!=R.id.navigation_home){
