@@ -137,9 +137,6 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
         //setContentView(R.layout.activity_home);
         Intent intent = getIntent();
         itemIdBefore = intent.getIntExtra("itemIdBefore",R.id.navigation_home);
-        //Toast.makeText(getApplicationContext(),"itemIdBefore = " + itemIdBefore, Toast.LENGTH_LONG).show();
-
-
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 

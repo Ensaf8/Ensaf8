@@ -165,7 +165,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         itemIdBefore = intent.getIntExtra("itemIdBefore",R.id.navigation_home);
-        //Toast.makeText(getApplicationContext(),"itemIdBefore = " + itemIdBefore, Toast.LENGTH_LONG).show();
         hideKeyboard();
         checkExternalStorageState();
         checkAndroid6 ();

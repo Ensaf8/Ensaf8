@@ -71,7 +71,6 @@ public class SearchPageActivity extends BaseActivity {
         Intent intent = getIntent();
         CONS_ID = intent.getStringExtra("ID");
         itemIdBefore = intent.getIntExtra("itemIdBefore",R.id.navigation_home);
-        //Toast.makeText(getApplicationContext(),"itemIdBefore = " + itemIdBefore, Toast.LENGTH_LONG).show();
         String txtSet = "Construction ID : " + CONS_ID;
 
         recycleView();

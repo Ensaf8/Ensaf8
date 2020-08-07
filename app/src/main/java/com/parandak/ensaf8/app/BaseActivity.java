@@ -53,16 +53,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 if (itemId == R.id.navigation_home) {
                     if (getNavigationMenuItemId()!=R.id.navigation_home){
                         if (getItemIdBefore() == R.id.navigation_home){
-
-                            /*if (getContentViewId()==R.layout.activity_map){
-                                Toast.makeText(getApplicationContext(),"finishing map" , Toast.LENGTH_LONG).show();
-                                MapActivity mapActivity = new MapActivity();
-                                mapActivity.finish();
-                            }else if(getContentViewId()==R.layout.activity_search_page){
-                                Toast.makeText(getApplicationContext(),"finishing search" , Toast.LENGTH_LONG).show();
-                                SearchPageActivity searchPageActivity = new SearchPageActivity();
-                                searchPageActivity.finish();
-                            }*/
                             finish();
                         }else {
                             Intent intentHome = new Intent(BaseActivity.this, HomePageActivity.class);
@@ -73,16 +63,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 } else if (itemId == R.id.navigation_map) {
                     if (getNavigationMenuItemId()!=R.id.navigation_map){
                         if (getItemIdBefore() == R.id.navigation_map){
-
-                            /*if (getContentViewId()==R.layout.activity_home){
-                                HomePageActivity homePageActivity = new HomePageActivity();
-                                homePageActivity.finish();
-                                Toast.makeText(getApplicationContext(),"finishing home" , Toast.LENGTH_LONG).show();
-                            }else if(getContentViewId()==R.layout.activity_search_page){
-                                Toast.makeText(getApplicationContext(),"finishing search" , Toast.LENGTH_LONG).show();
-                                SearchPageActivity searchPageActivity = new SearchPageActivity();
-                                searchPageActivity.finish();
-                            }*/
                             finish();
                         }else {
                             Intent intentMap = new Intent(BaseActivity.this, MapActivity.class);
@@ -93,16 +73,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 } else if (itemId == R.id.navigation_search) {
                     if (getNavigationMenuItemId()!=R.id.navigation_search){
                         if (getItemIdBefore() == R.id.navigation_search){
-
-                            /*if (getContentViewId()==R.layout.activity_home){
-                                Toast.makeText(getApplicationContext(),"finishing home" , Toast.LENGTH_LONG).show();
-                                HomePageActivity homePageActivity = new HomePageActivity();
-                                homePageActivity.finish();
-                            }else if(getContentViewId()==R.layout.activity_map){
-                                Toast.makeText(getApplicationContext(),"finishing map" , Toast.LENGTH_LONG).show();
-                                MapActivity mapActivity = new MapActivity();
-                                mapActivity.finish();
-                            }*/
                             finish();
                         }else {
                             Intent intentSearch = new Intent(BaseActivity.this, SearchPageActivity.class);
