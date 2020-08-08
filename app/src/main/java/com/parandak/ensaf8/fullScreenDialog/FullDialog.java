@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.parandak.ensaf8.R;
+import com.parandak.ensaf8.dataBase.model_Indivi.PhoneNum;
+import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.PhoneNumRepo;
 import com.parandak.ensaf8.dateAndReminder.AddReminderDialouge;
 import com.parandak.ensaf8.tendHistoryDialog.HistoryTend;
 import com.parandak.ensaf8.tendHistoryDialog.TendHistoryDialog;
@@ -45,7 +48,7 @@ public class FullDialog extends DialogFragment {
     private CoopFirstPartAdapter coopFirstPartAdapter;
     String CUS_ID;
     TextView full_txt_name;
-    Button full_btn_addTend,full_btn_history;
+    Button full_btn_addTend,full_btn_history,full_btn_call;
     Cursor cursor;
 
     private Toolbar toolbar;
@@ -85,6 +88,7 @@ public class FullDialog extends DialogFragment {
         initCusProfile(view);
         initBtnReminder(view);
         initBtnHistory(view);
+        initBtnCall(view);
         coopFirstPartRV(view);
         fillCoopFistList();
 
@@ -124,6 +128,25 @@ public class FullDialog extends DialogFragment {
             public void onClick(View v) {
                 TendHistoryDialog  tendHistoryDialog = new TendHistoryDialog(mcontext,mactivity,CUS_ID);
                 tendHistoryDialog.showDialogHistory();
+            }
+        });
+    }
+    private void initBtnCall(View view){
+        full_btn_call = view.findViewById(R.id.full_btn_call);
+        full_btn_call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FullDialogQuery fullDiaCallQuery = new FullDialogQuery();
+                Cursor cursor = fullDiaCallQuery.getIndiPhone(CUS_ID);
+                if (cursor.moveToFirst()){
+                    if (cursor.getCount()==1){
+                        Toast.makeText(getContext(),"calling :  " + cursor.getString(1) , Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getContext(),"calling !!!"  , Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(getContext(),"NO number"  , Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -179,10 +202,29 @@ public class FullDialog extends DialogFragment {
                         builderInner.show();
                         break;
                     case R.id.action_add_phone:
-                        Toast.makeText(getContext(),"adding phone number", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(),"adding phone number", Toast.LENGTH_SHORT).show();
+                        LayoutInflater layoutInflater = LayoutInflater.from(mcontext);
+                        View viewAddPhone = layoutInflater.inflate(R.layout.add_phone_num,null);
+                        final EditText edi_add_phone = viewAddPhone.findViewById(R.id.edi_add_phone);
+                        AlertDialog.Builder builderAddPhone = new AlertDialog.Builder(getContext());
+                        builderAddPhone.setMessage("ADDPhoneNumber" );
+                        builderAddPhone.setView(viewAddPhone);
+                        builderAddPhone.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                PhoneNum phoneNum = new PhoneNum();
+                                phoneNum.setIndiID(CUS_ID);
+                                phoneNum.setNum(edi_add_phone.getText().toString());
+                                PhoneNumRepo phoneNumRepo = new PhoneNumRepo();
+                                if (phoneNumRepo.insert(phoneNum)>=1){
+                                    Toast.makeText(getContext(),"the number is : " +phoneNum.getNum() + " is add to : "
+                                            + phoneNum.getIndiID() , Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                        builderAddPhone.show();
                         break;
                 }
-                Toast.makeText(getContext(),"test", Toast.LENGTH_SHORT).show();
                 //FullDialog.this.dismiss();
                 return true;
             }

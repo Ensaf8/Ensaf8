@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.parandak.ensaf8.dataBase.DatabaseManager;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Coop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
+import com.parandak.ensaf8.dataBase.model_Indivi.PhoneNum;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 
 public class FullDialogQuery {
@@ -39,6 +40,16 @@ public class FullDialogQuery {
             id = cursor.getString(0);
         }
         return id;
+    }
+    public Cursor getIndiPhone(String CUS_ID){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String getIndiCooperate = " SELECT "
+                + PhoneNum.TABLE + "." + PhoneNum.KEY_ID_Phone + " , "
+                + PhoneNum.TABLE + "." + PhoneNum.KEY_Num
+                + " FROM " + PhoneNum.TABLE
+                + " WHERE " + PhoneNum.TABLE + "." + PhoneNum.KEY_IndiID + " = " + CUS_ID;
+        Cursor cursor = db.rawQuery(getIndiCooperate, null);
+        return cursor;
     }
 
 
