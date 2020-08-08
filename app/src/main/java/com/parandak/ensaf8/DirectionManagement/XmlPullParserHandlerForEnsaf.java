@@ -89,7 +89,7 @@ public class XmlPullParserHandlerForEnsaf {
                         }else if (tagname.equalsIgnoreCase(Individual.TABLE)){
                             // create a new instance of PhoneNumber
                             this.individual = new Individual();
-                        }else if (tagname.equalsIgnoreCase(PhoneNum.TABLEnew)){
+                        }else if (tagname.equalsIgnoreCase(PhoneNum.TABLE)){
                             // create a new instance of Points
                             phoneNum = new PhoneNum();
                         }else if (tagname.equalsIgnoreCase(Tend.TABLE)){
@@ -178,7 +178,7 @@ public class XmlPullParserHandlerForEnsaf {
                         }else if (tagname.equalsIgnoreCase(Individual.KEY_IsCons)) {
                             this.individual.setIsCons(text);
 
-                        }else if (tagname.equalsIgnoreCase(PhoneNum.TABLEnew)) {
+                        }else if (tagname.equalsIgnoreCase(PhoneNum.TABLE)) {
                             // insert phoneNum
                             phoneNumRepo.insert(phoneNum);
                         }else if (tagname.equalsIgnoreCase(PhoneNum.KEY_ID_Phone)) {

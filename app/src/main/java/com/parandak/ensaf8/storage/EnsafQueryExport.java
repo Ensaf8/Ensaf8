@@ -45,7 +45,7 @@ public class EnsafQueryExport {
                 + Individual.TABLE;
         String selectQueryPhoneNum = "SELECT *"
                 + " FROM "
-                + PhoneNum.TABLEnew;
+                + PhoneNum.TABLE;
         String selectQueryTend = "SELECT *"
                 + " FROM "
                 + Tend.TABLE;
@@ -132,11 +132,11 @@ public class EnsafQueryExport {
         if (QueryPhoneNum.moveToFirst()) {
              do{
                 XMLall0000.append(
-                        "   \n <"+PhoneNum.TABLEnew+">  \n" +
+                        "   \n <"+PhoneNum.TABLE +">  \n" +
                                 "        <"+PhoneNum.KEY_ID_Phone+">" + QueryPhoneNum.getString(0) + "<"+PhoneNum.KEY_ID_Phone+">  \n" +
                                 "        <"+PhoneNum.KEY_IndiID+">" + QueryPhoneNum.getString(1) + "<"+PhoneNum.KEY_IndiID+">  \n" +
                                 "        <"+PhoneNum.KEY_Num+">" + QueryPhoneNum.getString(2) + "<"+PhoneNum.KEY_Num+">  \n" +
-                                "    </" + PhoneNum.TABLEnew + ">  \n");
+                                "    </" + PhoneNum.TABLE + ">  \n");
             }while (QueryPhoneNum.moveToNext());
         }
 

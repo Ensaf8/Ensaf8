@@ -1,8 +1,7 @@
 package com.parandak.ensaf8.dataBase.model_Indivi;
 
 public class PhoneNum {
-    public static final String TABLEnew = "PhoneNum";
-
+    public static final String TABLE = "PhoneNum";
     public static final String KEY_ID_Phone = "ID_Phone";
     public static final String KEY_IndiID = "indiID";
     public static final String KEY_Num = "num";
