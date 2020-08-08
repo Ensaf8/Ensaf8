@@ -2,16 +2,26 @@ package com.parandak.ensaf8.dataBase.model_Indivi;
 
 public class PhoneNum {
     public static final String TABLE = "PhoneNumRepo";
+    public static final String TABLEnew = "PhoneNum";
 
     public static final String KEY_ID_Phone = "ID_Phone";
+    public static final String KEY_IndiID = "indiID";
     public static final String KEY_CustomerID = "customerID";
     public static final String KEY_Num = "num";
 
 
     private String ID_Phone;
+    private String indiID;
     private String customerID ;
     private String num ;
 
+    public String getIndiID() {
+        return indiID;
+    }
+
+    public void setIndiID(String indiID) {
+        this.indiID = indiID;
+    }
 
     public String getID_Phone() {
         return ID_Phone;

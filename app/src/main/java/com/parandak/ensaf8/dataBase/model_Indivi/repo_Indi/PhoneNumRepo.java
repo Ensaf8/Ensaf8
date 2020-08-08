@@ -24,6 +24,15 @@ public class PhoneNumRepo {
                 +");";
 
     }
+    public static String createNewTable(){
+        return "CREATE TABLE IF NOT EXISTS "+ PhoneNum.TABLEnew+" ("
+                + PhoneNum.KEY_ID_Phone+" INTEGER "+" , "
+                + PhoneNum.KEY_IndiID+" INTEGER "+" , "
+                + PhoneNum.KEY_Num+" TEXT "+" , "
+                + " PRIMARY KEY(" + PhoneNum.KEY_ID_Phone + ")"
+                +");";
+
+    }
     public int insert (PhoneNum phoneNum){
         int phoneNumId;
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();

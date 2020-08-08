@@ -21,7 +21,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.TendRepo;
 
 public class DBHelper_CRM extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION =26;
+    private static final int DATABASE_VERSION =28;
     // Database Name
     private static final String DATABASE_NAME = "ensaf8.db";
     private static final String TAG = DBHelper_CRM.class.getSimpleName();
@@ -40,6 +40,7 @@ public class DBHelper_CRM extends SQLiteOpenHelper {
         db.execSQL(Indi_GeopRepo.createTable());
         db.execSQL(IndividualRepo.createTable());
         db.execSQL(PhoneNumRepo.createTable());
+        db.execSQL(PhoneNumRepo.createNewTable());
         db.execSQL(TendRepo.createTable());
         db.execSQL(BookMarkRepo.createTable());
         //db.execSQL(Cons_Phase_IntRepo.createTable() );
