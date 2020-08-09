@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@color/colorPrimary"
+            android:background="@color/full_dialog_background"
             android:layout_gravity="center_horizontal">
 
 
@@ -45,46 +45,46 @@
                 android:id="@+id/full_txt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:textSize="25sp"
                 android:textAlignment="center"
                 android:textStyle="bold"
                 android:textColor="@color/d1Gray"
                 android:text="مهندس مومنی" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/full_btn_history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textAlignment="center"
+                android:text="History"/>
+            <include
+                layout="@layout/content_rv_full"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="10dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/full_btn_call"
                     android:layout_width="match_parent"
-                    android:layout_margin="10dp"
-                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorPrimaryDark"
+                    android:textColor="@color/colorAccent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
                     android:textAlignment="center"
                     android:text="CALL!"/>
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/full_btn_addTend"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorPrimaryDark"
                     android:textAlignment="center"
                     android:text="ADD TEND"/>
             </LinearLayout>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/full_btn_history"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="History"/>
-            <include
-                layout="@layout/content_rv_full"
-                android:layout_marginTop="45dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
         </LinearLayout>
 
     </FrameLayout>

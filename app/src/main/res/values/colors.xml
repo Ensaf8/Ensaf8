@@ -8,6 +8,8 @@
     <color name="colorAccent">#E5675D</color>
     <color name="graydiable">#ededed</color>
 
+    <color name="full_dialog_background">#3F3F3F</color>
+
     <color name="fab">#666666</color>
     <color name="darkGray">#666666</color>
 

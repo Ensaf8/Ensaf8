@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/full_dialog_background"
     android:orientation="vertical">
 
 
@@ -16,6 +17,8 @@
             android:id="@+id/txt_tasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/buttonTasks_marginEnd"
+            android:textColor="@color/d1Gray"
             android:textSize="@dimen/txt_tasks_textSize"
             android:textStyle="bold"
             android:gravity="center"
@@ -25,8 +28,9 @@
             android:id="@+id/buttonTasks"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="6"
-            android:layout_marginEnd="@dimen/buttonTasks_marginEnd"
+            android:layout_weight="4"
+            android:layout_margin="@dimen/buttonTasks_marginEnd"
+            android:background="@color/colorPrimaryDark"
             app:srcCompat="@drawable/ic_buttontask"
             tools:ignore="VectorDrawableCompat" />
 

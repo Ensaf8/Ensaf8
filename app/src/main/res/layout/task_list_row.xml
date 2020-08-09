@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="5dp"
-        card_view:cardCornerRadius="2dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        card_view:cardCornerRadius="7dp"
         card_view:contentPadding="10dp">
 
         <RelativeLayout
@@ -37,6 +38,7 @@
                 android:id="@+id/CusActReTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/d1Gray"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
@@ -67,9 +69,10 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
+                app:buttonTint="@color/d1Gray"
                 android:layout_marginStart="23dp"
                 android:layout_marginLeft="23dp"
-                android:layout_marginTop="43dp"
+                android:layout_marginTop="40dp"
                 android:scaleX="2"
                 android:scaleY="2" />
 
@@ -77,18 +80,23 @@
                 android:id="@+id/CusActReMain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/d1Gray"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="82dp"
                 android:layout_marginEnd="39dp"
                 android:layout_marginRight="39dp"
-                android:text="تماس گرفتم گفت که حتما می فرستم" />
+                android:text="تماس گرفتم گفت که حتما می فرستم"
+                android:maxLength="20"
+                android:ellipsize="marquee"
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/txt_tasks_customer_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/d1Gray"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"

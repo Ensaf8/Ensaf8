@@ -5,6 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/full_dialog_background"
     android:orientation="vertical"
     tools:context=".searchPage.SearchPageActivity">
 <androidx.coordinatorlayout.widget.CoordinatorLayout

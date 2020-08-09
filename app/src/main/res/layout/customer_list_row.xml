@@ -9,8 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="5dp"
-        card_view:cardBackgroundColor="@color/darkGray"
-        card_view:cardCornerRadius="2dp"
+        card_view:cardBackgroundColor="@color/colorPrimary"
+        card_view:cardCornerRadius="7dp"
         card_view:contentPadding="10dp">
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:textColor="@color/d1Gray"
-        android:textSize="16dp"
+        android:textSize="18dp"
         android:textStyle="bold"
          />
 

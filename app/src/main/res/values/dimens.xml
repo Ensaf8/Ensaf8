@@ -20,7 +20,7 @@
     <dimen name="img_logo_height">40dp</dimen>
     <dimen name="txt_tasks_textSize">30sp</dimen>
     <dimen name="buttonTasks_marginEnd">12dp</dimen>
-    <dimen name="content_recyclerview_marginTop">45dp</dimen>
+    <dimen name="content_recyclerview_marginTop">65dp</dimen>
     <dimen name="fab_margin_right">20dp</dimen>
     <dimen name="fab_margin_down">65dp</dimen>
     <dimen name="map_margin_down">45dp</dimen>
