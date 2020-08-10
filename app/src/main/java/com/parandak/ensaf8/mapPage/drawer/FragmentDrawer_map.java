@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,14 +44,16 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     public int SeekProgress02 = 7;
     SeekBar seekBar01;
     SeekBar seekBar02;
-    CheckBox checkBox01,checkBox02,checkBox03,checkBoxBook;
+    CheckBox checkBox01,checkBox02,checkBox03,checkBox04,checkBoxBook;
     EditText ediFilterTend;
     Button btnDateFilter01,btnDateFilter02;
     String DateFilter01,DateFilter02;
     boolean btnDateFilter01_Isclick;
+    RatingBar ratingBarFilter;
     public boolean isCheck01  = false;
     public boolean isCheck02  = false;
     public boolean isCheck03  = false;
+    public boolean isCheck04  = false;
     public boolean isCheckBook  = false;
     String fa_date01 = "1399-4-1",fa_date02 = "1399-5-4" ;
     int [] seekProgress = new int[]{SeekProgress01,SeekProgress02};
@@ -91,6 +94,14 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         DateFilter02 = date02;
     }
 
+    public void setRating04(float r){
+        ratingBarFilter.setRating(r);
+    }
+
+    public Float getRating(){
+        return ratingBarFilter.getRating();
+    }
+
     public String getDateFilter01(){
         return  DateFilter01;
     }
@@ -114,6 +125,11 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         checkBox03.setChecked(isCheck03);
     }
 
+    public void setCheckBox04(Boolean isCheck04){
+        this.isCheck04 = isCheck04;
+        checkBox04.setChecked(isCheck04);
+    }
+
     public void setCheckBoxBook(Boolean isCheckBook){
         this.isCheckBook = isCheckBook;
         checkBoxBook.setChecked(isCheckBook);
@@ -135,6 +151,15 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         checkBox02.setChecked(isCheck02);
         checkBox03 = view.findViewById(R.id.checkBoxFilter03);
         checkBox03.setChecked(isCheck03);
+        checkBox04 = view.findViewById(R.id.checkBoxFilter04);
+        checkBox04.setChecked(isCheck04);
+        ratingBarFilter = view.findViewById(R.id.ratingFilter);
+        ratingBarFilter.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                checkBox04.setChecked(true);
+            }
+        });
         checkBoxBook = view.findViewById(R.id.checkBoxBookmark);
         checkBoxBook.setChecked(isCheckBook);
         ediFilterTend = view.findViewById(R.id.ediTendFilter);
@@ -243,6 +268,13 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isCheck03 = isChecked;
+            }
+        });
+        checkBox04.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isCheck04 =isChecked;
+                Toast.makeText(mcontext,"stars isChecked : " +  isChecked, Toast.LENGTH_LONG).show();
             }
         });
         checkBoxBook.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
