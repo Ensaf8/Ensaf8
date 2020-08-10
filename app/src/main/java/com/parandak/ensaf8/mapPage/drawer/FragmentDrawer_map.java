@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +43,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     private Activity mactivity;
     public int SeekProgress01 = 2;
     public int SeekProgress02 = 7;
+    RelativeLayout map_drawer_container;
     SeekBar seekBar01;
     SeekBar seekBar02;
     CheckBox checkBox01,checkBox02,checkBox03,checkBox04,checkBoxBook;
@@ -153,6 +155,15 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         checkBox03.setChecked(isCheck03);
         checkBox04 = view.findViewById(R.id.checkBoxFilter04);
         checkBox04.setChecked(isCheck04);
+        map_drawer_container = view.findViewById(R.id.map_drawer_container);
+        map_drawer_container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mcontext,"container is clicked : " , Toast.LENGTH_LONG).show();
+                ratingBarFilter.setRating(0);
+                checkBox04.setChecked(false);
+            }
+        });
         ratingBarFilter = view.findViewById(R.id.ratingFilter);
         ratingBarFilter.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -273,7 +284,13 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         checkBox04.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isCheck04 =isChecked;
+                if (isChecked && ratingBarFilter.getRating()== 0f){
+                    checkBox04.setChecked(false);
+                    isCheck04 = false;
+                }else {
+                    isCheck04 =isChecked;
+                }
+
                 Toast.makeText(mcontext,"stars isChecked : " +  isChecked, Toast.LENGTH_LONG).show();
             }
         });
