@@ -38,6 +38,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -140,6 +141,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     Drawable marker_home,historyBlack,historyGrey;
     /////BottomSheet
     private BottomSheetBehavior mBottomSheetBehaviour;
+    RatingBar ratingBottom;
     Button button_edit,bottom_sheet_status_data,button_add_customer,bottom_sheet_delete_cons,bottom_sheet_add_reminder;
     CheckBox checkBoxBookmark;
     ImageButton bottom_tend_history;
@@ -171,6 +173,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         osmInternal();
         bottomRecyclerView();
         bottomSheet();
+        ratingBottom();
         mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
         locationButton();
         initDrawer();
@@ -330,6 +333,15 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 String Cus_Id = customer.getId();
                 Toast.makeText(getApplicationContext(),customer.getId()+" "+ customer.getName() + " " + customer.getPosition(), Toast.LENGTH_SHORT).show();
                 FullDialog.display(getSupportFragmentManager(),Cus_Id);
+            }
+        });
+    }
+    private void ratingBottom(){
+        ratingBottom = (RatingBar)findViewById(R.id.ratingBottom);
+        ratingBottom.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                Toast.makeText(getBaseContext(),"rating Bottom is : " + rating ,Toast.LENGTH_LONG).show();
             }
         });
     }
