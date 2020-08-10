@@ -154,6 +154,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
                 datePickerDialog.setThemeDark(true);
                 datePickerDialog.show(mactivity.getFragmentManager(), "Datepickerdialog");
                 btnDateFilter01_Isclick =true;
+                checkBox03.setChecked(true);
             }
         });
         btnDateFilter02.setOnClickListener(new View.OnClickListener() {
@@ -169,6 +170,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
                 datePickerDialog.setThemeDark(true);
                 datePickerDialog.show(mactivity.getFragmentManager(), "Datepickerdialog");
                 btnDateFilter01_Isclick =false;
+                checkBox03.setChecked(true);
             }
         });
         seekBar01.setProgress(SeekProgress01);
@@ -182,6 +184,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
                 seekBar.setThumb(mcontext.getResources().getDrawable(consStateList.get(SeekProgress01).getDrawable()));
                 titleFilterSeek = consStateList.get(SeekProgress01).getState()+" تا " +consStateList.get(SeekProgress02).getState();
                 txtFilterSeek.setText(titleFilterSeek);
+                checkBox01.setChecked(true);
             }
 
             @Override
@@ -204,6 +207,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
                 seekBar.setThumb(mcontext.getResources().getDrawable(consStateList.get(SeekProgress02).getDrawable()));
                 titleFilterSeek = consStateList.get(SeekProgress01).getState()+" تا " +consStateList.get(SeekProgress02).getState();
                 txtFilterSeek.setText(titleFilterSeek);
+                checkBox01.setChecked(true);
             }
 
             @Override
