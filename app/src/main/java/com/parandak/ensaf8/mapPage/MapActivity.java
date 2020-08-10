@@ -51,11 +51,13 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
+import com.parandak.ensaf8.dataBase.model_Indivi.Rating;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Cons_PhaseRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.GPointRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Indi_GeopRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.IndividualRepo;
+import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.RatingRepo;
 import com.parandak.ensaf8.dateAndReminder.AddReminderDialouge;
 import com.parandak.ensaf8.fullScreenDialog.FullDialog;
 import com.parandak.ensaf8.mapPage.drawer.FragmentDrawer_map;
@@ -143,15 +145,16 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     /////BottomSheet
     LinearLayout bottom_container;
     private BottomSheetBehavior mBottomSheetBehaviour;
-    RatingBar ratingBottom;
+
     Button button_edit,bottom_sheet_status_data,button_add_customer,bottom_sheet_delete_cons,bottom_sheet_add_reminder;
     CheckBox checkBoxBookmark;
+    RatingBar ratingBottom;
     ImageButton bottom_tend_history;
     EditText bottom_sheet_name;
     boolean BOTTOM_SHEET_IS_HIDDEN = true;
     boolean isSingle = true;
     String ID_CONS_SELECTED;
-    boolean isConsBooked,isConsBookChanged = false;
+    boolean isConsBooked,isConsBookChanged = false,isRatingBottomChange = false;
     BottomRVAdapter bottomRVAdapter;
     List<Customer> customerList =new ArrayList<>();
     RecyclerView recyclerView;
@@ -352,6 +355,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 Toast.makeText(getBaseContext(),"rating Bottom is : " + rating ,Toast.LENGTH_LONG).show();
+                isRatingBottomChange = true;
             }
         });
     }
@@ -545,6 +549,22 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                                 Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isNOT BookMarked ", Toast.LENGTH_SHORT).show();;
                         }
                     }
+                    if (isRatingBottomChange){
+                        Rating rating = new Rating();
+                        rating.setIndID(ID_CONS_SELECTED);
+                        RatingRepo ratingRepo = new RatingRepo();
+                        if(ratingBottom.getRating()==0){
+                            if (ratingRepo.delete_indID_Rating(ID_CONS_SELECTED)){
+                                Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isNOT Star ", Toast.LENGTH_SHORT).show();;
+                            }
+                        }else {
+                            rating.setRate(String.valueOf(ratingBottom.getRating()));
+                            if(ratingRepo.insert(rating)>0){
+                                Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isStar : " + rating.getRate(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                    }
 
                 }else {
                     Individual individual = new Individual();
@@ -626,6 +646,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         historyList.clear();
                         isConsBookChanged = false;
                         checkBoxBookmark.setChecked(false);
+                        ratingBottom.setRating(0);
                         break;
                     }
                     case BottomSheetBehavior.STATE_HALF_EXPANDED: {
@@ -1045,6 +1066,12 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 checkBoxBookmark.setChecked(true);
             }else {
                 checkBoxBookmark.setChecked(false);
+            }
+
+            if (cursor.getString(7)!=null){
+                ratingBottom.setRating(cursor.getFloat(7));
+            }else {
+                ratingBottom.setRating(0);
             }
 
         }

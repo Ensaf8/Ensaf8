@@ -10,6 +10,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.CreateViews;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Coop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
+import com.parandak.ensaf8.dataBase.model_Indivi.Rating;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 
 public class MapPageQuery {
@@ -41,13 +42,16 @@ public class MapPageQuery {
                 + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lon + " , "
                 + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " , "
                 + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate + " , "
-                + BookMark.TABLE + "." + BookMark.KEY_ID_BookMark
+                + BookMark.TABLE + "." + BookMark.KEY_ID_BookMark + " , "
+                + Rating.TABLE + "." + Rating.KEY_Rate
                 + " FROM "
                 + CreateViews.Construction.VIEW
                 + " INNER JOIN " + CreateViews.LastUpConsInd.VIEW
                 + " ON " +  CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_ID_cons
                 + " LEFT JOIN " + BookMark.TABLE
                 + " ON " +  CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + BookMark.TABLE + "." + BookMark.KEY_IndID
+                + " LEFT JOIN " + Rating.TABLE
+                + " ON " +  CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + Rating.TABLE + "." + Rating.KEY_IndID
                 + " WHERE " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = ' " + consID + " ';";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
