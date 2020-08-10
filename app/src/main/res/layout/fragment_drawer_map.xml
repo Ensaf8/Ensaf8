@@ -62,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="190dp"
+        android:layout_marginTop="148dp"
         android:gravity="bottom"
         android:text="TendFilter"
         android:textAlignment="center"
@@ -72,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtFilterSeek"
-        android:layout_marginTop="165dp"
+        android:layout_marginTop="135dp"
         android:orientation="horizontal">
 
 
@@ -90,21 +90,23 @@
             android:layout_weight="6" />
 
     </LinearLayout>
+
     <TextView
         android:id="@+id/txtFilterDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="315dp"
+        android:layout_marginTop="271dp"
         android:gravity="bottom"
         android:text="1399-4-1 تا 1399-5-4 "
         android:textAlignment="center"
         android:textSize="15sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtFilterSeek"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="250dp"
         android:orientation="horizontal">
 
 
@@ -141,6 +143,28 @@
             android:layout_weight="6" />
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtFilterSeek"
+        android:layout_marginTop="350dp"
+        android:orientation="horizontal">
+        <RatingBar
+            android:id="@+id/ratingFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="40dp"
+            android:stepSize="1"
+            android:saveEnabled="true"
+            android:numStars="3"/>
+
+        <CheckBox
+            android:id="@+id/checkBoxFilter04"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
 
     <ImageButton
         android:id="@+id/imgFilter"
@@ -159,7 +183,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="152dp"
-        android:layout_marginTop="453dp"
+        android:layout_marginTop="500dp"
         android:button="@drawable/selector_book_mark"
         android:scaleX="2.5"
         android:scaleY="2.5" />
