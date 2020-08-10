@@ -53,6 +53,7 @@
                 app:layout_behavior="@string/bottom_sheet_behavior"
                 tools:ignore="MissingConstraints">
                 <LinearLayout
+                    android:id="@+id/bottom_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">

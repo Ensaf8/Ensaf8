@@ -38,6 +38,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -140,6 +141,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     Cursor showCursor;
     Drawable marker_home,historyBlack,historyGrey;
     /////BottomSheet
+    LinearLayout bottom_container;
     private BottomSheetBehavior mBottomSheetBehaviour;
     RatingBar ratingBottom;
     Button button_edit,bottom_sheet_status_data,button_add_customer,bottom_sheet_delete_cons,bottom_sheet_add_reminder;
@@ -337,6 +339,14 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         });
     }
     private void ratingBottom(){
+        bottom_container = (LinearLayout)findViewById(R.id.bottom_container);
+        bottom_container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getBaseContext(),"container is clicked !!! "  ,Toast.LENGTH_LONG).show();
+                ratingBottom.setRating(0);
+            }
+        });
         ratingBottom = (RatingBar)findViewById(R.id.ratingBottom);
         ratingBottom.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
