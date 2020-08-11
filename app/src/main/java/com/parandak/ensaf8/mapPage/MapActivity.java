@@ -29,8 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -153,10 +151,13 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     RatingBar ratingBottom;
     ImageButton bottom_tend_history;
     EditText bottom_sheet_name;
+    String init_bottom_sheet_name;
     boolean BOTTOM_SHEET_IS_HIDDEN = true;
     boolean isSingle = true;
     String ID_CONS_SELECTED;
-    boolean isConsBooked,isConsBookChanged = false,isRatingBottomChange = false;
+    boolean initConsBooked = false,isConsBookChanged = false,isRatingBottomChange = false;
+    float initRating = 0;
+
     boolean isEdiNameChange = false;
     BottomRVAdapter bottomRVAdapter;
     List<Customer> customerList =new ArrayList<>();
@@ -434,7 +435,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 status = viewPager2.getCurrentItem();
-                ///Toast.makeText(getApplicationContext(),"Step ! "+a, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -457,27 +457,11 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         button_add_customer = (Button) findViewById(R.id.button_add_customer);
         bottom_tend_history = (ImageButton) findViewById(R.id.bottom_tend_history);
 
-        bottom_sheet_name.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                isEdiNameChange = true;
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
         checkBoxBookmark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isConsBooked = isChecked;
                 isConsBookChanged = true;
             }
         });
@@ -586,6 +570,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         checkBoxBookmark.setChecked(false);
                         ratingBottom.setRating(0);
                         isRatingBottomChange = false;
+                        initConsBooked = false;
+                        initRating = 0;
                         break;
                     }
                     case BottomSheetBehavior.STATE_HALF_EXPANDED: {
@@ -616,52 +602,66 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         hideKeyboard();
     }
     private void editSelectedCons(){
-        Individual individual = new Individual();
-        individual.setID_Indi(ID_CONS_SELECTED);
-        individual.setIsCons("1");
-        individual.setIndiName(bottom_sheet_name.getText().toString());
-        IndividualRepo individualRepo = new IndividualRepo();
-        if (individualRepo.update(individual) && inisatatus != status){
+        if (!init_bottom_sheet_name.equals(bottom_sheet_name.getText().toString())) {
+            Individual individual = new Individual();
+            individual.setID_Indi(ID_CONS_SELECTED);
+            individual.setIsCons("1");
+            individual.setIndiName(bottom_sheet_name.getText().toString());
+            IndividualRepo individualRepo = new IndividualRepo();
+            if (individualRepo.update(individual)) {
+                Toast.makeText(getBaseContext(), "CONS Name with ID : " + ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (inisatatus != status){
             Cons_Phase cons_phase = new Cons_Phase();
             cons_phase.setIndID(ID_CONS_SELECTED);
             cons_phase.setPhase(String.valueOf(status));
             cons_phase.setPhaseDate(statusdate);
             Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
-            int i = cons_phaseRepo.insert(cons_phase);
-            if (i>0){
-                Toast.makeText(getBaseContext(), "CONS with ID : "+ ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
+            if (cons_phaseRepo.insert(cons_phase)>0){
+                Toast.makeText(getBaseContext(), "CONS_phase with ID : "+ ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
             }
             drawerFragmentMap.setCheckBox01(false);
-        }else {
-            Toast.makeText(getBaseContext(), "CONS Name with ID : "+ ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
         }
         if(isConsBookChanged){
             BookMark bookMark = new BookMark();
             bookMark.setIndID(ID_CONS_SELECTED);
             BookMarkRepo bookMarkRepo = new BookMarkRepo();
-            if(isConsBooked){
-                if(bookMarkRepo.insert(bookMark)>0)
-                    Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isBookMarked ", Toast.LENGTH_SHORT).show();
+            if(initConsBooked){
+                if (!checkBoxBookmark.isChecked()){
+                    if(bookMarkRepo.delete_indID_BookMark(ID_CONS_SELECTED))
+                        Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isNOT BookMarked ", Toast.LENGTH_SHORT).show();
+                }
             }else{
-                if(bookMarkRepo.delete_indID_BookMark(ID_CONS_SELECTED))
-                    Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isNOT BookMarked ", Toast.LENGTH_SHORT).show();;
+                if(checkBoxBookmark.isChecked()){
+                    if(bookMarkRepo.insert(bookMark)>0)
+                        Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isBookMarked ", Toast.LENGTH_SHORT).show();
+                }
             }
         }
         if (isRatingBottomChange){
             Rating rating = new Rating();
             rating.setIndID(ID_CONS_SELECTED);
             RatingRepo ratingRepo = new RatingRepo();
-            if(ratingBottom.getRating()==0){
-                if (ratingRepo.delete_indID_Rating(ID_CONS_SELECTED)){
-                    Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isNOT Star ", Toast.LENGTH_SHORT).show();;
+            if (initRating!=0){
+                if (ratingBottom.getRating()==0){
+                    if (ratingRepo.delete_indID_Rating(ID_CONS_SELECTED)){
+                        Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " delete Star ", Toast.LENGTH_SHORT).show();
+                    }
+                }else if (initRating != ratingBottom.getRating()){
+                    rating.setRate(String.valueOf(ratingBottom.getRating()));
+                    if(ratingRepo.update_indID_Rating(rating)){
+                        Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " update Star ", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }else {
-                rating.setRate(String.valueOf(ratingBottom.getRating()));
-                if(ratingRepo.insert(rating)>0){
-                    Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isStar : " + rating.getRate(), Toast.LENGTH_SHORT).show();
+                if(ratingBottom.getRating()!=0){
+                    rating.setRate(String.valueOf(ratingBottom.getRating()));
+                    if(ratingRepo.insert(rating)>0){
+                        Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " insert Star : " + rating.getRate(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
-
         }
     }
     private void inseringNewCons(){
@@ -1078,6 +1078,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         if (cursor.moveToFirst()) {
 
             bottom_sheet_name.setText(cursor.getString(1));
+            init_bottom_sheet_name = cursor.getString(1);
             //edi_bottom_sheet_status.setText(cursor.getString(4));
             viewPager2.setCurrentItem(cursor.getInt(4));
             inisatatus =cursor.getInt(4);
@@ -1092,14 +1093,18 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
             if(cursor.getString(6)!=null){
                 checkBoxBookmark.setChecked(true);
+                initConsBooked = true;
             }else {
                 checkBoxBookmark.setChecked(false);
+                initConsBooked = false;
             }
 
             if (cursor.getString(7)!=null){
                 ratingBottom.setRating(cursor.getFloat(7));
+                initRating = cursor.getFloat(7);
             }else {
                 ratingBottom.setRating(0);
+                initRating = 0;
             }
 
         }

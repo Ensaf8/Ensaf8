@@ -46,4 +46,10 @@ public class RatingRepo {
         DatabaseManager.getInstance().closeDatabase();
         return b;
     }
+     public boolean update_indID_Rating(Rating rating){
+         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+         ContentValues values = new ContentValues();
+         values.put(Rating.KEY_Rate,rating.getRate());
+         return db.update(Rating.TABLE,values,Rating.KEY_IndID + "=?",new String[]{String.valueOf(rating.getIndID())}) > 0;
+     }
 }
