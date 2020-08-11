@@ -17,14 +17,16 @@ public class MapPageQuery {
     boolean check01;
     boolean check02;
     boolean check03;
+    boolean check04;
     boolean checkBook;
     String tendTitle;
     String date01;
     String date02;
+    String rate;
     public MapPageQuery() {
 
     }
-    public MapPageQuery(boolean check01,boolean check02,String tendTitle,boolean check03,String date01,String date02,boolean checkBook){
+    public MapPageQuery(boolean check01,boolean check02,String tendTitle,boolean check03,String date01,String date02,boolean checkBook,String rate,boolean check04){
         this.check01 = check01;
         this.check02 = check02;
         this.tendTitle = tendTitle;
@@ -32,6 +34,8 @@ public class MapPageQuery {
         this.date01 = date01;
         this.date02 = date02;
         this.checkBook = checkBook;
+        this.check04 = check04;
+        this.rate = rate;
     }
     public Cursor singleTapOnConsIndFirst(String consID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -151,17 +155,35 @@ public class MapPageQuery {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String stmt01 = "";
         String stmt02 = "";
+        String stmt03 = "";
                 if(check01 && !check03){
-                    stmt01 = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
-                            " BETWEEN " + state01 +" and  " + state02;
+                    if(check04){
+                        stmt01 = " WHERE " + "(" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
+                                " BETWEEN " + state01 +" and  " + state02 + ") and (" + Rating.TABLE + "." + Rating.KEY_Rate + "=" + rate + ")";
+                    }else{
+                        stmt01 = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
+                                " BETWEEN " + state01 +" and  " + state02;
+                    }
                 }else if(check03 && !check01){
-                    stmt01 = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
-                            " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "'";
+                    if (check04){
+                        stmt01 = " WHERE " + "(" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
+                                " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "'";
+                    }else {
+                        stmt01 = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
+                                " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "'" + ") and (" + Rating.TABLE + "." + Rating.KEY_Rate + "=" + rate + ")";
+                    }
                 }else if (check03 && check01){
-                    stmt01 = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
-                            " BETWEEN " + state01 +" and  " + state02 +" ) and (" +
-                            CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
-                            " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "')";
+                    if (check04){
+                        stmt01 = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
+                                " BETWEEN " + state01 +" and  " + state02 +" ) and (" +
+                                CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
+                                " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "')and (" + Rating.TABLE + "." + Rating.KEY_Rate + "=" + rate + ")";
+                    }else {
+                        stmt01 = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
+                                " BETWEEN " + state01 +" and  " + state02 +" ) and (" +
+                                CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
+                                " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "')";
+                    }
                 }
                 if(check02){
                     stmt02 = " INNER JOIN " + Tend.TABLE
@@ -177,6 +199,10 @@ public class MapPageQuery {
                     //  stmt01 = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " BETWEEN " + state01 +" and  " + state02 + ") and " + Tend.TABLE + "." +Tend.KEY_Title + " LIKE '" + tendTitle + "'";
                     //}
                 }
+                if(check04){
+                    stmt03 = " INNER JOIN " + Rating.TABLE
+                            + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + Rating.TABLE +"."+ Rating.KEY_IndID;
+                }
         String showQuery = " SELECT "
                 + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + ","
                 + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_consName + ","
@@ -188,6 +214,7 @@ public class MapPageQuery {
                 + " INNER JOIN " + CreateViews.LastUpConsInd.VIEW
                 + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_ID_cons
                 + stmt02
+                + stmt03
                 + stmt01
                 + " GROUP BY " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons
                 + " ORDER BY " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lat + "," + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lon + " ASC ";

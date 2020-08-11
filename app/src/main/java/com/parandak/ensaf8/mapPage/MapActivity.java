@@ -203,7 +203,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }////End of onCreate
     public void showOnMap(){
         MapPageQuery mapPageQuery = new MapPageQuery(drawerFragmentMap.isCheck01,drawerFragmentMap.isCheck02,"",
-                drawerFragmentMap.isCheck03,drawerFragmentMap.getDateFilter01(),drawerFragmentMap.getDateFilter02(),drawerFragmentMap.isCheckBook);
+                drawerFragmentMap.isCheck03,drawerFragmentMap.getDateFilter01(),drawerFragmentMap.getDateFilter02(),
+                drawerFragmentMap.isCheckBook,String.valueOf(drawerFragmentMap.getRating()),drawerFragmentMap.isCheck04);
         showCursor = mapPageQuery.showConsIndiWhereFilter02(state01,state02);
         int C = showCursor.getCount();
         int D = showCursor.getColumnCount();
