@@ -184,6 +184,8 @@ public class MapPageQuery {
                                 CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
                                 " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "')";
                     }
+                }else if(check04){
+                    stmt01 = " WHERE " + Rating.TABLE + "." + Rating.KEY_Rate + "=" + rate ;
                 }
                 if(check02){
                     stmt02 = " INNER JOIN " + Tend.TABLE
