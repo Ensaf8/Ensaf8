@@ -29,6 +29,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -155,6 +157,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     boolean isSingle = true;
     String ID_CONS_SELECTED;
     boolean isConsBooked,isConsBookChanged = false,isRatingBottomChange = false;
+    boolean isEdiNameChange = false;
     BottomRVAdapter bottomRVAdapter;
     List<Customer> customerList =new ArrayList<>();
     RecyclerView recyclerView;
@@ -178,17 +181,10 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         osmInternal();
         bottomRecyclerView();
         bottomSheet();
-        ratingBottom();
         mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
         locationButton();
         initDrawer();
         filterButton();
-        drawerFragmentMap.setCheckBox01(false);
-        drawerFragmentMap.setCheckBox02(false);
-        drawerFragmentMap.setCheckBox03(false);
-        drawerFragmentMap.setCheckBoxBook(false);
-        drawerFragmentMap.setDateFilter01("2020-6-21");
-        drawerFragmentMap.setDateFilter02("2020-7-25");
         if (mPermissionsGranted){
             initMap(savedInstanceState);
             viewPager();
@@ -206,9 +202,9 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 drawerFragmentMap.isCheck03,drawerFragmentMap.getDateFilter01(),drawerFragmentMap.getDateFilter02(),
                 drawerFragmentMap.isCheckBook,String.valueOf(drawerFragmentMap.getRating()),drawerFragmentMap.isCheck04);
         showCursor = mapPageQuery.showConsIndiWhereFilter02(state01,state02);
-        int C = showCursor.getCount();
-        int D = showCursor.getColumnCount();
-        Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
+        //int C = showCursor.getCount();
+        //int D = showCursor.getColumnCount();
+        //Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
         drawerLayoutMap.closeDrawer(GravityCompat.START);
         showAllWaypoints(showCursor);
     }
@@ -232,6 +228,12 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         drawerFragmentMap.setUp(R.id.fragment_navigation_drawer_map,drawerLayoutMap);
         drawerFragmentMap.setProgressOn01(Integer.valueOf(state01));
         drawerFragmentMap.setProgressOn02(Integer.valueOf(state02));
+        drawerFragmentMap.setCheckBox01(false);
+        drawerFragmentMap.setCheckBox02(false);
+        drawerFragmentMap.setCheckBox03(false);
+        drawerFragmentMap.setCheckBoxBook(false);
+        drawerFragmentMap.setDateFilter01("2020-6-21");
+        drawerFragmentMap.setDateFilter02("2020-7-25");
 
     }
     public void initMap(Bundle savedInstanceState){
@@ -342,24 +344,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             }
         });
     }
-    private void ratingBottom(){
-        bottom_container = (LinearLayout)findViewById(R.id.bottom_container);
-        bottom_container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(getBaseContext(),"container is clicked !!! "  ,Toast.LENGTH_LONG).show();
-                ratingBottom.setRating(0);
-            }
-        });
-        ratingBottom = (RatingBar)findViewById(R.id.ratingBottom);
-        ratingBottom.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Toast.makeText(getBaseContext(),"rating Bottom is : " + rating ,Toast.LENGTH_LONG).show();
-                isRatingBottomChange = true;
-            }
-        });
-    }
     private void initDrawable (){
         marker_home = map.getContext().getResources().getDrawable(R.drawable.home30);
         historyBlack = map.getContext().getResources().getDrawable(R.drawable.ic_history_24dp);
@@ -462,13 +446,34 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }
     private void bottomSheet(){
         button_edit = (Button)findViewById(R.id.button_edit);
+        checkBoxBookmark = (CheckBox) findViewById(R.id.checkBoxBookmark);
         bottom_sheet_name = (EditText)findViewById(R.id.bottom_sheet_name);
+        bottom_container = (LinearLayout)findViewById(R.id.bottom_container);
+
+
         bottom_sheet_status_data = (Button)findViewById(R.id.btn_date);
         bottom_sheet_delete_cons = (Button) findViewById(R.id.bottom_sheet_delete_cons);
         bottom_sheet_add_reminder = (Button) findViewById(R.id.bottom_sheet_add_reminder);
         button_add_customer = (Button) findViewById(R.id.button_add_customer);
         bottom_tend_history = (ImageButton) findViewById(R.id.bottom_tend_history);
-        checkBoxBookmark = (CheckBox) findViewById(R.id.checkBoxBookmark);
+
+        bottom_sheet_name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                isEdiNameChange = true;
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         checkBoxBookmark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -517,90 +522,22 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         button_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
-                if(isSingle){
-                    Individual individual = new Individual();
-                    individual.setID_Indi(ID_CONS_SELECTED);
-                    individual.setIsCons("1");
-                    individual.setIndiName(bottom_sheet_name.getText().toString());
-                    IndividualRepo individualRepo = new IndividualRepo();
-                    if (individualRepo.update(individual) && inisatatus != status){
-                        Cons_Phase cons_phase = new Cons_Phase();
-                        cons_phase.setIndID(ID_CONS_SELECTED);
-                        cons_phase.setPhase(String.valueOf(status));
-                        cons_phase.setPhaseDate(statusdate);
-                        Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
-                        int i = cons_phaseRepo.insert(cons_phase);
-                        if (i>0){
-                            Toast.makeText(getBaseContext(), "CONS with ID : "+ ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
-                        }
-                        drawerFragmentMap.setCheckBox01(false);
-                    }else {
-                        Toast.makeText(getBaseContext(), "CONS Name with ID : "+ ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
-                    }
-                    if(isConsBookChanged){
-                        BookMark bookMark = new BookMark();
-                        bookMark.setIndID(ID_CONS_SELECTED);
-                        BookMarkRepo bookMarkRepo = new BookMarkRepo();
-                        if(isConsBooked){
-                            if(bookMarkRepo.insert(bookMark)>0)
-                                Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isBookMarked ", Toast.LENGTH_SHORT).show();
-                        }else{
-                            if(bookMarkRepo.delete_indID_BookMark(ID_CONS_SELECTED))
-                                Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isNOT BookMarked ", Toast.LENGTH_SHORT).show();;
-                        }
-                    }
-                    if (isRatingBottomChange){
-                        Rating rating = new Rating();
-                        rating.setIndID(ID_CONS_SELECTED);
-                        RatingRepo ratingRepo = new RatingRepo();
-                        if(ratingBottom.getRating()==0){
-                            if (ratingRepo.delete_indID_Rating(ID_CONS_SELECTED)){
-                                Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isNOT Star ", Toast.LENGTH_SHORT).show();;
-                            }
-                        }else {
-                            rating.setRate(String.valueOf(ratingBottom.getRating()));
-                            if(ratingRepo.insert(rating)>0){
-                                Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isStar : " + rating.getRate(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                    }
-
-                }else {
-                    Individual individual = new Individual();
-                    IndividualRepo individualRepo = new IndividualRepo();
-                    individual.setIndiName(bottom_sheet_name.getText().toString());
-                    individual.setIsCons("1");
-                    individualRepo.insert(individual);
-                    GPoint gPoint = new GPoint();
-                    gPoint.setLon(String.valueOf(lon));
-                    gPoint.setLat(String.valueOf(lat));
-                    gPoint.setIsSolo("1");
-                    GPointRepo gPointRepo = new GPointRepo();
-                    gPointRepo.insert(gPoint);
-                    Indi_Geop indi_geop = new Indi_Geop();
-                    indi_geop.setIndiID(individualRepo.lastIndividual());
-                    indi_geop.setGeopID(gPointRepo.lastGPoint());
-                    Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
-                    indi_geopRepo.insert(indi_geop);
-                    Cons_Phase cons_phase = new Cons_Phase();
-                    cons_phase.setIndID(individualRepo.lastIndividual());
-                    cons_phase.setPhase(String.valueOf(status));
-                    cons_phase.setPhaseDate(statusdate);
-                    Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
-                    int i = cons_phaseRepo.insert(cons_phase);
-                    if (i>0){
-                        Toast.makeText(getBaseContext(), "New Cons ID : " + individualRepo.lastIndividual() + " in " + lat + " & " + lon , Toast.LENGTH_SHORT).show();
-                    }
-                    drawerFragmentMap.setCheckBox01(false);
-                    drawerFragmentMap.setCheckBox02(false);
-                    drawerFragmentMap.setCheckBox03(false);
-                    drawerFragmentMap.setCheckBoxBook(false);
-
-                }
-                showOnMap();
-                hideKeyboard();
+                bottomSheetEdiButton();
+            }
+        });
+        bottom_container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getBaseContext(),"container is clicked !!! "  ,Toast.LENGTH_LONG).show();
+                ratingBottom.setRating(0);
+            }
+        });
+        ratingBottom = (RatingBar)findViewById(R.id.ratingBottom);
+        ratingBottom.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                Toast.makeText(getBaseContext(),"rating Bottom is : " + rating ,Toast.LENGTH_LONG).show();
+                isRatingBottomChange = true;
             }
         });
         View nestedScrollView = (View) findViewById(R.id.nestedScrollView);
@@ -648,6 +585,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         isConsBookChanged = false;
                         checkBoxBookmark.setChecked(false);
                         ratingBottom.setRating(0);
+                        isRatingBottomChange = false;
                         break;
                     }
                     case BottomSheetBehavior.STATE_HALF_EXPANDED: {
@@ -666,6 +604,95 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
             }
         });
+    }
+    private void bottomSheetEdiButton(){
+        mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
+        if(isSingle){
+            editSelectedCons();
+        }else {
+            inseringNewCons();
+        }
+        showOnMap();
+        hideKeyboard();
+    }
+    private void editSelectedCons(){
+        Individual individual = new Individual();
+        individual.setID_Indi(ID_CONS_SELECTED);
+        individual.setIsCons("1");
+        individual.setIndiName(bottom_sheet_name.getText().toString());
+        IndividualRepo individualRepo = new IndividualRepo();
+        if (individualRepo.update(individual) && inisatatus != status){
+            Cons_Phase cons_phase = new Cons_Phase();
+            cons_phase.setIndID(ID_CONS_SELECTED);
+            cons_phase.setPhase(String.valueOf(status));
+            cons_phase.setPhaseDate(statusdate);
+            Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
+            int i = cons_phaseRepo.insert(cons_phase);
+            if (i>0){
+                Toast.makeText(getBaseContext(), "CONS with ID : "+ ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
+            }
+            drawerFragmentMap.setCheckBox01(false);
+        }else {
+            Toast.makeText(getBaseContext(), "CONS Name with ID : "+ ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
+        }
+        if(isConsBookChanged){
+            BookMark bookMark = new BookMark();
+            bookMark.setIndID(ID_CONS_SELECTED);
+            BookMarkRepo bookMarkRepo = new BookMarkRepo();
+            if(isConsBooked){
+                if(bookMarkRepo.insert(bookMark)>0)
+                    Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isBookMarked ", Toast.LENGTH_SHORT).show();
+            }else{
+                if(bookMarkRepo.delete_indID_BookMark(ID_CONS_SELECTED))
+                    Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isNOT BookMarked ", Toast.LENGTH_SHORT).show();;
+            }
+        }
+        if (isRatingBottomChange){
+            Rating rating = new Rating();
+            rating.setIndID(ID_CONS_SELECTED);
+            RatingRepo ratingRepo = new RatingRepo();
+            if(ratingBottom.getRating()==0){
+                if (ratingRepo.delete_indID_Rating(ID_CONS_SELECTED)){
+                    Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isNOT Star ", Toast.LENGTH_SHORT).show();;
+                }
+            }else {
+                rating.setRate(String.valueOf(ratingBottom.getRating()));
+                if(ratingRepo.insert(rating)>0){
+                    Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isStar : " + rating.getRate(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }
+    }
+    private void inseringNewCons(){
+        Individual individual = new Individual();
+        IndividualRepo individualRepo = new IndividualRepo();
+        individual.setIndiName(bottom_sheet_name.getText().toString());
+        individual.setIsCons("1");
+        individualRepo.insert(individual);
+        GPoint gPoint = new GPoint();
+        gPoint.setLon(String.valueOf(lon));
+        gPoint.setLat(String.valueOf(lat));
+        gPoint.setIsSolo("1");
+        GPointRepo gPointRepo = new GPointRepo();
+        gPointRepo.insert(gPoint);
+        Indi_Geop indi_geop = new Indi_Geop();
+        indi_geop.setIndiID(individualRepo.lastIndividual());
+        indi_geop.setGeopID(gPointRepo.lastGPoint());
+        Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
+        indi_geopRepo.insert(indi_geop);
+        Cons_Phase cons_phase = new Cons_Phase();
+        cons_phase.setIndID(individualRepo.lastIndividual());
+        cons_phase.setPhase(String.valueOf(status));
+        cons_phase.setPhaseDate(statusdate);
+        Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
+        if (cons_phaseRepo.insert(cons_phase)>0){
+            Toast.makeText(getBaseContext(), "New Cons ID : " + individualRepo.lastIndividual() + " in " + lat + " & " + lon , Toast.LENGTH_SHORT).show();
+        }
+        drawerFragmentMap.setCheckBox01(false);
+        drawerFragmentMap.setCheckBox02(false);
+        drawerFragmentMap.setCheckBox03(false);
+        drawerFragmentMap.setCheckBoxBook(false);
     }
     public void showDialog(Activity activity){
         dialog = new Dialog(activity);
