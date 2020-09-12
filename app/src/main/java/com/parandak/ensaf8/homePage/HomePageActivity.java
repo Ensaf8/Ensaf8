@@ -38,6 +38,7 @@ import com.parandak.ensaf8.DirectionManagement.XmlPullParserHandlerForEnsaf;
 import com.parandak.ensaf8.DirectionManagement.wpt;
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.app.BaseActivity;
+import com.parandak.ensaf8.broadCast.ConnectivityReceiver;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.CusAccount;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
@@ -81,7 +82,7 @@ import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getPersianY
 import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getPersian_dwj;
 
 public class HomePageActivity extends BaseActivity implements FragmentDrawer.
-        FragmentDrawerListener {
+        FragmentDrawerListener,ConnectivityReceiver.ConnectivityReceiverListener {
     int itemIdBefore;
     @Override
     public int getContentViewId() {
@@ -112,6 +113,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
     EditText ediUserName,ediPassWord;
     TextView txtForPassword;
     TextView txtProfileName;
+    TextView txtNetStatus;
     private Toolbar mToolbar;
     private TabLayout tabLayout;
 
@@ -140,11 +142,13 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
+        txtNetStatus = findViewById(R.id.txtNetStatus);
         initCollapsingToolbar();
         initDrawerFragment();
         initViewPager();
         //imageLogo();
         accountManage();
+        checkConnection();
 
         Date c = Calendar.getInstance().getTime();
 
@@ -155,6 +159,12 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
         sessionManaging();
 
     }///end of on create
+
+    private void checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        txtNetStatus.setText("Net Status : " + isConnected);
+        Toast.makeText(getApplicationContext(), "Net Status : " + isConnected, Toast.LENGTH_SHORT).show();
+    }
     private void sessionManaging() {
         txtProfileName = (TextView)findViewById(R.id.txtProfileName);
         sessionManager = new SessionManager(getApplicationContext());
@@ -363,6 +373,13 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
         drawerFragment.setUp(R.id.fragment_navigation_drawer,
                 drawerLayout, mToolbar);
     }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        txtNetStatus.setText("Net Status is Change : " + isConnected);
+        Toast.makeText(getApplicationContext(), "Net Status is Change : " + isConnected, Toast.LENGTH_SHORT).show();
+    }
+
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -420,9 +437,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
-                Intent intent = new Intent(this, MapActivity.class);
-                context.startActivity(intent);
-
+                checkConnection();
                 break;
             case 1:
                 Intent intent1 = new Intent(this, SearchPageActivity.class);

@@ -17,7 +17,7 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 
-    <string name="nav_item_map">MapPage</string>
+    <string name="nav_item_map">CheckNet</string>
     <string name="nav_item_search">SearchPage</string>
     <string name="nav_item_insertIndivi">InsertIndividual</string>
     <string name="nav_item_export">Export</string>
