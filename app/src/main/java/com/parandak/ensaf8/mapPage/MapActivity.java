@@ -976,7 +976,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         isSingle = true;
         /////////
         Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String formattedDate = df.format(c);
         statusdate = formattedDate;
 
