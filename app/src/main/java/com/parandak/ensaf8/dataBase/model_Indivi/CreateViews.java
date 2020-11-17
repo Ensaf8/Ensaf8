@@ -22,12 +22,12 @@ public class CreateViews {
         Construction(){
 
         }
-        public static final String VIEW = "construction ";
+        public static final String VIEW = "construction";
 
-        public static final String KEY_ID_cons = "consID ";
-        public static final String KEY_consName = "consName ";
-        public static final String KEY_lat = "lat ";
-        public static final String KEY_lon = "lon ";
+        public static final String KEY_ID_cons = "consID";
+        public static final String KEY_consName = "consName";
+        public static final String KEY_lat = "lat";
+        public static final String KEY_lon = "lon";
 
 
     }

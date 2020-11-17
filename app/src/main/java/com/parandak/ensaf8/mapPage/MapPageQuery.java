@@ -170,7 +170,7 @@ public class MapPageQuery {
                                 " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "'";
                     }else {
                         stmt01 = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
-                                " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "'" + ") and (" + Rating.TABLE + "." + Rating.KEY_Rate + "=" + rate + ")";
+                                " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "'";
                     }
                 }else if (check03 && check01){
                     if (check04){
