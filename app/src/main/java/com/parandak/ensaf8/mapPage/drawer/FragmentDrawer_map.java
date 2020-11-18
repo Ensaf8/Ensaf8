@@ -3,6 +3,7 @@ package com.parandak.ensaf8.mapPage.drawer;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     public boolean isCheck03  = false;
     public boolean isCheck04  = false;
     public boolean isCheckBook  = false;
-    String fa_date01 = "1399-4-1",fa_date02 = "1399-5-4" ;
+    String fa_date01 = "1399-07-01",fa_date02 = "1399-08-27" ;
     int [] seekProgress = new int[]{SeekProgress01,SeekProgress02};
     List<ConsState> consStateList = new ArrayList<>();
     private ActionBarDrawerToggle mDrawerToggle;
@@ -413,16 +414,21 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         final Calendar[] gregorian = new Calendar[1];
         final PersianCalendarAli persianCalendarAli = new PersianCalendarAli();
         gregorian[0] = persianCalendarAli.getGregorianCalendar(year,correct,dayOfMonth);
-        String month = String.valueOf(gregorian[0].get(Calendar.MONTH)+1);
+        int gregorianMonth = gregorian[0].get(Calendar.MONTH)+1;
+        String month = String.valueOf(gregorianMonth);
+        if (gregorianMonth<10){
+            month = "0" + month;
+        }
         //if ((gregorian[0].get(Calendar.MONTH)+1)<10)
         //    month = "0"+(gregorian[0].get(Calendar.MONTH)+1);
 
         String day = String.valueOf(gregorian[0].get(Calendar.DAY_OF_MONTH));
-        //if ((gregorian[0].get(Calendar.DAY_OF_MONTH))<10)
-        //    day = "0"+(gregorian[0].get(Calendar.DAY_OF_MONTH));
+        if ((gregorian[0].get(Calendar.DAY_OF_MONTH))<10){
+            day = "0" + day;
+        }
         finalResult = gregorian[0].get(Calendar.YEAR)+"-"+month+"-"+day;
         finalResult_fa =  year + "/" + correct + "/" + dayOfMonth;
-
+        Log.d("ensaf::::::::", TAG + "> onDateSet > day : " + day + " month : " + month + " year : " + gregorian[0].get(Calendar.YEAR));
         if(btnDateFilter01_Isclick){
             btnDateFilter01.setText(finalResult_fa);
             DateFilter01 = finalResult;

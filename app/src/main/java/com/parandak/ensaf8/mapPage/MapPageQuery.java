@@ -2,6 +2,7 @@ package com.parandak.ensaf8.mapPage;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.parandak.ensaf8.dataBase.DatabaseManager;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
@@ -14,6 +15,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Rating;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 
 public class MapPageQuery {
+    private final String TAG = this.getClass().getSimpleName();
     boolean check01;
     boolean check02;
     boolean check03;
@@ -27,6 +29,9 @@ public class MapPageQuery {
 
     }
     public MapPageQuery(boolean check01,boolean check02,String tendTitle,boolean check03,String date01,String date02,boolean checkBook,String rate,boolean check04){
+        Log.d("ensaf::::::::", TAG + "> MapPageQuery> " );
+        Log.d("ensaf::::::::", TAG + "> check01 : " + check01 + " check02 : " + check02 + " tendTitle : " + tendTitle + " check03 : " + check03 );
+        Log.d("ensaf::::::::", TAG + "> date01 : " + date01 + " date02 : " + date02 + " checkBook : " + checkBook + " rate : " + rate + " check04 : " + check04 );
         this.check01 = check01;
         this.check02 = check02;
         this.tendTitle = tendTitle;
