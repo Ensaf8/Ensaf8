@@ -96,6 +96,8 @@ import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getPersianD
 import static com.parandak.ensaf8.homePage.HomePageActivity.isConnected;
 
 public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnItemGestureListener<OverlayItem> {
+    private final String TAG = this.getClass().getSimpleName();
+
     @Override
     public int getContentViewId() {
         return R.layout.activity_map;
@@ -173,6 +175,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     String state02 = "6";
     @Override
     protected void onCreate(Bundle savedInstanceState){
+        Log.d("ensaf::::::::", TAG + "> onCreate ");
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         itemIdBefore = intent.getIntExtra("itemIdBefore",R.id.navigation_home);
