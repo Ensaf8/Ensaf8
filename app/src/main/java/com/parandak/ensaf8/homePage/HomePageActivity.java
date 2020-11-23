@@ -38,6 +38,7 @@ import com.parandak.ensaf8.DirectionManagement.XmlPullParserHandlerForEnsaf;
 import com.parandak.ensaf8.DirectionManagement.wpt;
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.app.BaseActivity;
+import com.parandak.ensaf8.bookMarkPage.BookMarkPage;
 import com.parandak.ensaf8.broadCast.ConnectivityReceiver;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.CusAccount;
@@ -440,6 +441,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                 checkConnection();
                 break;
             case 1:
+                BookMarkPage.display(getSupportFragmentManager());
                 Toast.makeText(getApplicationContext(), "BookMarks. . .", Toast.LENGTH_SHORT).show();
                 break;
             case 2:
