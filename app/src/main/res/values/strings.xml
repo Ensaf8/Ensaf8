@@ -18,7 +18,7 @@
     <string name="drawer_close">Close</string>
 
     <string name="nav_item_map">CheckNet</string>
-    <string name="nav_item_search">SearchPage</string>
+    <string name="nav_item_bookMark">BookMarks</string>
     <string name="nav_item_insertIndivi">InsertIndividual</string>
     <string name="nav_item_export">Export</string>
     <string name="nav_item_import">Import</string>
@@ -30,7 +30,7 @@
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_map</item>
-        <item>@string/nav_item_search</item>
+        <item>@string/nav_item_bookMark</item>
         <item>@string/nav_item_insertIndivi</item>
         <item>@string/nav_item_export</item>
         <item>@string/nav_item_import</item>

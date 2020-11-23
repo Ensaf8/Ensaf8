@@ -440,8 +440,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                 checkConnection();
                 break;
             case 1:
-                Intent intent1 = new Intent(this, SearchPageActivity.class);
-                context.startActivity(intent1);
+                Toast.makeText(getApplicationContext(), "BookMarks. . .", Toast.LENGTH_SHORT).show();
                 break;
             case 2:
                 AlertDialog.Builder builderInner02 = new AlertDialog.Builder(context);
