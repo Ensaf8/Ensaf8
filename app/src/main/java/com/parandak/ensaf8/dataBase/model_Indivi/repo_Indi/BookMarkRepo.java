@@ -29,10 +29,22 @@ public class BookMarkRepo {
                 + BookMark.KET_B_TYPE_ID+" INTEGER DEFAULT 1 "+" , "
                 + " CONSTRAINT " + BookMark.CONSTRAINT_BOOK_MARK_TYPE + " FOREIGN KEY (" + BookMark.KET_B_TYPE_ID + ")"
                 + " REFERENCES " + BookMarkType.TABLE + "(" + BookMarkType.KEY_ID + ")"
-                + " ON DELETE CASCADE "
+                + " ON DELETE CASCADE ,"
                 + " PRIMARY KEY(" + BookMark.KEY_ID_BookMark + ")"
                 +");";
 
+    }
+
+    public static String transactionBookMarkType(){
+        return "BEGIN TRANSACTION; "
+                + BookMarkTypeRepo.createTable()
+                + "INSERT INTO BookMarkType(title) VALUES(\"پی گیری\");"
+                + "ALTER TABLE " + BookMark.TABLE + " RENAME TO _BookMark_old;"
+                + BookMarkRepo.createTableFK()
+                + "INSERT INTO " + BookMark.TABLE + "(" + BookMark.KEY_ID_BookMark + "," + BookMark.KEY_IndID + ")"
+                + "SELECT * FROM _BookMark_old;"
+                + "DROP TABLE IF EXISTS _BookMark_old;"
+                + "COMMIT;";
     }
 
 

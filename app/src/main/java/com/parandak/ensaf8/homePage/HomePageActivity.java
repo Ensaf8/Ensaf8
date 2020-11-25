@@ -25,6 +25,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,6 +48,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Coop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
+import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Cons_PhaseRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.CusAccountRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.GPointRepo;
@@ -84,6 +86,7 @@ import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getPersian_
 
 public class HomePageActivity extends BaseActivity implements FragmentDrawer.
         FragmentDrawerListener,ConnectivityReceiver.ConnectivityReceiverListener {
+    private final String TAG = this.getClass().getSimpleName();
     int itemIdBefore;
     @Override
     public int getContentViewId() {
@@ -443,6 +446,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
             case 1:
                 BookMarkPage.display(getSupportFragmentManager());
                 Toast.makeText(getApplicationContext(), "BookMarks. . .", Toast.LENGTH_SHORT).show();
+                Log.d("ensaf::::::::", TAG + "> transaction : " + BookMarkRepo.transactionBookMarkType());
                 break;
             case 2:
                 AlertDialog.Builder builderInner02 = new AlertDialog.Builder(context);
