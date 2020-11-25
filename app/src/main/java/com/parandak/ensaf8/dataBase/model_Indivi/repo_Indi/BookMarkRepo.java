@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.parandak.ensaf8.dataBase.DatabaseManager;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
+import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 
 public class BookMarkRepo {
     BookMark bookMark;
@@ -20,6 +21,21 @@ public class BookMarkRepo {
                 +");";
 
     }
+
+    public static String createTableFK(){
+        return "CREATE TABLE IF NOT EXISTS "+ BookMark.TABLE+" ("
+                + BookMark.KEY_ID_BookMark+" INTEGER "+" , "
+                + BookMark.KEY_IndID+" INTEGER "+" , "
+                + BookMark.KET_B_TYPE_ID+" INTEGER DEFAULT 1 "+" , "
+                + " CONSTRAINT " + BookMark.CONSTRAINT_BOOK_MARK_TYPE + " FOREIGN KEY (" + BookMark.KET_B_TYPE_ID + ")"
+                + " REFERENCES " + BookMarkType.TABLE + "(" + BookMarkType.KEY_ID + ")"
+                + " ON DELETE CASCADE "
+                + " PRIMARY KEY(" + BookMark.KEY_ID_BookMark + ")"
+                +");";
+
+    }
+
+
 
     public int insert (BookMark bookMark){
         int bookMarkID;
