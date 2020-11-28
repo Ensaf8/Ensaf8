@@ -123,8 +123,8 @@ public class BookMarkPage extends DialogFragment {
         btn_add_folder_bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mcontext,"adding bookMarkFolder!!!", Toast.LENGTH_SHORT).show();
-                //addBookMarkFolderDialog();
+                //Toast.makeText(mcontext,"adding bookMarkFolder!!!", Toast.LENGTH_SHORT).show();
+                addBookMarkFolderDialog();
             }
         });
     }
