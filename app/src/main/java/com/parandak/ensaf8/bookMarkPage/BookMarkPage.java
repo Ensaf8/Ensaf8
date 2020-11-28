@@ -20,10 +20,18 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.parandak.ensaf8.R;
+import com.parandak.ensaf8.bookMarkPage.rv.BookMarkFolderAdapter;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkTypeRepo;
+import com.parandak.ensaf8.fullScreenDialog.MyDividerItemDecoration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookMarkPage extends DialogFragment {
 
@@ -32,6 +40,9 @@ public class BookMarkPage extends DialogFragment {
     private Activity mactivity;
 
     private Toolbar toolbar;
+    RecyclerView recyclerView;
+    BookMarkFolderAdapter bookMarkFolderAdapter;
+    List<String> rvList = new ArrayList<>();
 
     public static BookMarkPage display(FragmentManager fragmentManager){
         BookMarkPage bookMarkPage = new BookMarkPage();
@@ -127,21 +138,49 @@ public class BookMarkPage extends DialogFragment {
         });
         btnAddBookMarkFolder(view);
         initBookMarkType(view);
+        bookMarkFolder(view);
 
+    }
+    void bookMarkFolder(View view){
+        recyclerView = view.findViewById(R.id.rv_bookmarkPage);
+        recyclerView.setHasFixedSize(true);
+        bookMarkFolderAdapter = new BookMarkFolderAdapter(rvList);
+        //recyclerView.setHasFixedSize(true);
+
+        // vertical RecyclerView
+        // keep coop_full_list_row_row.xml width to `match_parent`
+        //RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+
+        // horizontal RecyclerView
+        // keep coop_full_list_row.xml.xml width to `wrap_content`
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mcontext, RecyclerView.VERTICAL, false);
+
+        recyclerView.setLayoutManager(mLayoutManager);
+
+        // adding inbuilt divider line
+        //recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
+        // adding custom divider line with padding 16dp
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(mcontext, LinearLayoutManager.HORIZONTAL, 16));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        recyclerView.setAdapter(bookMarkFolderAdapter);
+        bookMarkFolderAdapter.setOnItemClickListener(new BookMarkFolderAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Toast.makeText(mcontext, "Item clicked !!!! " + rvList.get(position), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     private void initBookMarkType(View view){
         Log.d("ensaf::::::::", TAG + "> initBookMarkType");
         BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
         Cursor cursorBMtype = bookMarkPageQuery.getBookMarkType();
+        rvList.clear();
         if (cursorBMtype.moveToFirst()){
-            TextView txtBookMarkPage = view.findViewById(R.id.txtBookMarkPage);
-            int i = 0;
-            StringBuilder titleBookMarkPage = new StringBuilder();
             do{
-                i++;
-                titleBookMarkPage = titleBookMarkPage.append(cursorBMtype.getString(1));
+                rvList.add(cursorBMtype.getString(1));
             }while (cursorBMtype.moveToNext());
-            txtBookMarkPage.setText(titleBookMarkPage.append(" " + i));
         }else {
             Log.d("ensaf::::::::", TAG + "> initBookMarkType " + "Not Move To First!");
             BookMarkTypeRepo bookMarkTypeRepo = new BookMarkTypeRepo();
@@ -192,7 +231,9 @@ public class BookMarkPage extends DialogFragment {
                 bookMarkType.setTitle(edi_add_book_folder.getText().toString());
                 int i = bookMarkTypeRepo.insert(bookMarkType);
                 if (i>0){
+
                     initBookMarkType(view);
+                    bookMarkFolderAdapter.notifyDataSetChanged();
                     Toast.makeText(getContext(),"add FOLDER : " + edi_add_book_folder.getText().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
