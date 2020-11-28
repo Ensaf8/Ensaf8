@@ -11,6 +11,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.CreateViews;
 import com.parandak.ensaf8.dataBase.model_Indivi.PhoneNum;
 import com.parandak.ensaf8.dataBase.model_Indivi.Rating;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkRepo;
+import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkTypeRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Cons_PhaseRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.CusAccountRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.GPointRepo;
@@ -24,7 +25,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.TendRepo;
 
 public class DBHelper_CRM extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION =30;
+    private static final int DATABASE_VERSION =31;
     // Database Name
     private static final String DATABASE_NAME = "ensaf8.db";
     private static final String TAG = DBHelper_CRM.class.getSimpleName();
@@ -46,6 +47,7 @@ public class DBHelper_CRM extends SQLiteOpenHelper {
         db.execSQL(TendRepo.createTable());
         db.execSQL(BookMarkRepo.createTable());
         db.execSQL(RatingRepo.createTable());
+        db.execSQL(BookMarkTypeRepo.createTable());
         //db.execSQL(Cons_Phase_IntRepo.createTable() );
         //db.execSQL("DROP TABLE IF EXISTS Cons_Phase" );
         db.execSQL(CreateViews.createConstruction());
