@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -19,6 +22,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.parandak.ensaf8.R;
+import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
+import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkTypeRepo;
 
 public class BookMarkPage extends DialogFragment {
 
@@ -54,6 +59,7 @@ public class BookMarkPage extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("ensaf::::::::", TAG + "> onCreateView");
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.book_mark_page, container, false);
         toolbar = view.findViewById(R.id.toolbar);
@@ -78,6 +84,7 @@ public class BookMarkPage extends DialogFragment {
     }
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        Log.d("ensaf::::::::", TAG + "> onViewCreated");
         super.onViewCreated(view, savedInstanceState);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,12 +125,38 @@ public class BookMarkPage extends DialogFragment {
                 return true;
             }
         });
+        btnAddBookMarkFolder(view);
+        initBookMarkType(view);
+
+    }
+    private void initBookMarkType(View view){
+        Log.d("ensaf::::::::", TAG + "> initBookMarkType");
+        BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
+        Cursor cursorBMtype = bookMarkPageQuery.getBookMarkType();
+        if (cursorBMtype.moveToFirst()){
+            TextView txtBookMarkPage = view.findViewById(R.id.txtBookMarkPage);
+            int i = 0;
+            StringBuilder titleBookMarkPage = new StringBuilder();
+            do{
+                i++;
+                titleBookMarkPage = titleBookMarkPage.append(cursorBMtype.getString(1));
+            }while (cursorBMtype.moveToNext());
+            txtBookMarkPage.setText(titleBookMarkPage.append(" " + i));
+        }else {
+            Log.d("ensaf::::::::", TAG + "> initBookMarkType " + "Not Move To First!");
+            BookMarkTypeRepo bookMarkTypeRepo = new BookMarkTypeRepo();
+            BookMarkType bookMarkType = new BookMarkType();
+            bookMarkType.setTitle("پرزنت");
+            bookMarkTypeRepo.insert(bookMarkType);
+        }
+    }
+    private void btnAddBookMarkFolder(final View view){
         Button btn_add_folder_bookmark = view.findViewById(R.id.btn_add_folder_bookmark);
         btn_add_folder_bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(mcontext,"adding bookMarkFolder!!!", Toast.LENGTH_SHORT).show();
-                addBookMarkFolderDialog();
+                addBookMarkFolderDialog(view);
             }
         });
     }
@@ -143,7 +176,7 @@ public class BookMarkPage extends DialogFragment {
         });
         builderAddPhone.show();
     }
-    private void addBookMarkFolderDialog(){
+    private void addBookMarkFolderDialog(final View view){
         LayoutInflater layoutInflater = LayoutInflater.from(mcontext);
         View viewAddBookFolder = layoutInflater.inflate(R.layout.add_book_folder,null);
         final EditText edi_add_book_folder = viewAddBookFolder.findViewById(R.id.edi_add_book_folder);
@@ -154,7 +187,14 @@ public class BookMarkPage extends DialogFragment {
         builderAddBookmarkFolder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getContext(),"add FOLDER : " + edi_add_book_folder.getText().toString(), Toast.LENGTH_SHORT).show();
+                BookMarkTypeRepo bookMarkTypeRepo = new BookMarkTypeRepo();
+                BookMarkType bookMarkType = new BookMarkType();
+                bookMarkType.setTitle(edi_add_book_folder.getText().toString());
+                int i = bookMarkTypeRepo.insert(bookMarkType);
+                if (i>0){
+                    initBookMarkType(view);
+                    Toast.makeText(getContext(),"add FOLDER : " + edi_add_book_folder.getText().toString(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         builderAddBookmarkFolder.show();
