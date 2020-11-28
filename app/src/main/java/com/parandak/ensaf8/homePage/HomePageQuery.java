@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.parandak.ensaf8.dataBase.DatabaseManager;
+import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.CusAccount;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
@@ -13,6 +14,15 @@ public class HomePageQuery {
 
     public HomePageQuery() {
 
+    }
+    public Cursor getBookMark(){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = " SELECT *"
+                + " FROM " + BookMark.TABLE;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //cursor.close();
+        //DatabaseManager.getInstance().closeDatabase();
+        return cursor;
     }
 
     public Cursor getTask(String IndID1, String date01, String date02){

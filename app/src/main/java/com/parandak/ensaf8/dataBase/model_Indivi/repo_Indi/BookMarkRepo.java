@@ -23,7 +23,7 @@ public class BookMarkRepo {
     }
 
     public static String createTableFK(){
-        return "CREATE TABLE IF NOT EXISTS "+ BookMark.TABLE+" ("
+        return "CREATE TABLE "+ BookMark.TABLE+" ("
                 + BookMark.KEY_ID_BookMark+" INTEGER "+" , "
                 + BookMark.KEY_IndID+" INTEGER "+" , "
                 + BookMark.KET_B_TYPE_ID+" INTEGER DEFAULT 1 "+" , "
@@ -37,7 +37,7 @@ public class BookMarkRepo {
 
     public static String transactionBookMarkType(){
         return "BEGIN TRANSACTION; "
-                + BookMarkTypeRepo.createTable()
+                //+ BookMarkTypeRepo.createTable()
                 + "INSERT INTO BookMarkType(title) VALUES(\"پی گیری\");"
                 + "ALTER TABLE " + BookMark.TABLE + " RENAME TO _BookMark_old;"
                 + BookMarkRepo.createTableFK()
