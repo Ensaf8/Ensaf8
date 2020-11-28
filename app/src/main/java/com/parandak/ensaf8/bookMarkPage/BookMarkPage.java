@@ -57,7 +57,6 @@ public class BookMarkPage extends DialogFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.book_mark_page, container, false);
         toolbar = view.findViewById(R.id.toolbar);
-
         return view;
     }
 
@@ -150,7 +149,8 @@ public class BookMarkPage extends DialogFragment {
         final EditText edi_add_book_folder = viewAddBookFolder.findViewById(R.id.edi_add_book_folder);
         AlertDialog.Builder builderAddBookmarkFolder = new AlertDialog.Builder(mcontext);
         builderAddBookmarkFolder.setMessage("ADDBookMarkFolder" );
-        builderAddBookmarkFolder.setView(edi_add_book_folder);
+
+        builderAddBookmarkFolder.setView(viewAddBookFolder);
         builderAddBookmarkFolder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
