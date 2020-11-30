@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.parandak.ensaf8.dataBase.DatabaseManager;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
+import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
 
 public class BookMarkRepo {
     BookMark bookMark;
@@ -30,6 +31,9 @@ public class BookMarkRepo {
                 + " CONSTRAINT " + BookMark.CONSTRAINT_BOOK_MARK_TYPE + " FOREIGN KEY (" + BookMark.KET_B_TYPE_ID + ")"
                 + " REFERENCES " + BookMarkType.TABLE + "(" + BookMarkType.KEY_ID + ")"
                 + " ON DELETE CASCADE ,"
+                + " CONSTRAINT " + BookMark.CONSTRAINT_INDIVIDUAL + " FOREIGN KEY (" + BookMark.KEY_IndID + ")"
+                + " REFERENCES " + Individual.TABLE + "(" + Individual.KEY_ID_Indi + ")"
+                + " ON DELETE CASCADE ,"
                 + " PRIMARY KEY(" + BookMark.KEY_ID_BookMark + ")"
                 +");";
 
@@ -37,8 +41,6 @@ public class BookMarkRepo {
 
     public static String transactionBookMarkType(){
         return "BEGIN TRANSACTION; "
-                //+ BookMarkTypeRepo.createTable()
-                + "INSERT INTO BookMarkType(title) VALUES(\"پی گیری\");"
                 + "ALTER TABLE " + BookMark.TABLE + " RENAME TO _BookMark_old;"
                 + BookMarkRepo.createTableFK()
                 + "INSERT INTO " + BookMark.TABLE + "(" + BookMark.KEY_ID_BookMark + "," + BookMark.KEY_IndID + ")"
