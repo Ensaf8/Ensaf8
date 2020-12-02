@@ -6,10 +6,7 @@ import android.util.Log;
 
 import com.parandak.ensaf8.app.App;
 
-import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.CreateViews;
-import com.parandak.ensaf8.dataBase.model_Indivi.PhoneNum;
-import com.parandak.ensaf8.dataBase.model_Indivi.Rating;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkTypeRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Cons_PhaseRepo;
@@ -36,6 +33,7 @@ public class DBHelper_CRM extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.d("ensaf::::::::", TAG + "> onUpgrade : " + DATABASE_VERSION);
         //Individual tables will create here
         db.execSQL(Cons_PhaseRepo.createTable());
         db.execSQL(CusAccountRepo.createTable());
@@ -48,6 +46,8 @@ public class DBHelper_CRM extends SQLiteOpenHelper {
         db.execSQL(BookMarkRepo.createTable());
         db.execSQL(RatingRepo.createTable());
         db.execSQL(BookMarkTypeRepo.createTable());
+        db.execSQL(BookMarkTypeRepo.initTable());
+        Log.d("ensaf::::::::", TAG + "> initTable : " + BookMarkTypeRepo.initTable());
         //db.execSQL(Cons_Phase_IntRepo.createTable() );
         //db.execSQL("DROP TABLE IF EXISTS Cons_Phase" );
         db.execSQL(CreateViews.createConstruction());
@@ -58,7 +58,7 @@ public class DBHelper_CRM extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d(TAG, String.format("SQLiteDatabase.onUpgrade(%d -> %d)", oldVersion, newVersion));
-
+        Log.d("ensaf::::::::", TAG + "> onUpgrade : " + String.format("SQLiteDatabase.onUpgrade(%d -> %d)", oldVersion, newVersion));
         //db.execSQL("DROP TABLE IF EXISTS " + Cons_Phase.TABLE);
         //db.execSQL("DROP TABLE IF EXISTS " + CusAccount.TABLE);
         //db.execSQL("DROP TABLE IF EXISTS " + GPoint.TABLE);
@@ -68,11 +68,7 @@ public class DBHelper_CRM extends SQLiteOpenHelper {
         //db.execSQL("DROP TABLE IF EXISTS " + PhoneNum.TABLE);
         //db.execSQL("DROP TABLE IF EXISTS " + Tend.TABLE);
         //db.execSQL("DROP TABLE IF EXISTS " + Cons_Phase.TABLEint);
-
-
         onCreate(db);
 
     }
-
-
 }

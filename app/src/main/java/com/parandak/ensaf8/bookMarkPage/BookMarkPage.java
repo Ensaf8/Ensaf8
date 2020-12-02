@@ -181,12 +181,6 @@ public class BookMarkPage extends DialogFragment {
             do{
                 rvList.add(cursorBMtype.getString(1));
             }while (cursorBMtype.moveToNext());
-        }else {
-            Log.d("ensaf::::::::", TAG + "> initBookMarkType " + "Not Move To First!");
-            BookMarkTypeRepo bookMarkTypeRepo = new BookMarkTypeRepo();
-            BookMarkType bookMarkType = new BookMarkType();
-            bookMarkType.setTitle("پرزنت");
-            bookMarkTypeRepo.insert(bookMarkType);
         }
     }
     private void btnAddBookMarkFolder(final View view){

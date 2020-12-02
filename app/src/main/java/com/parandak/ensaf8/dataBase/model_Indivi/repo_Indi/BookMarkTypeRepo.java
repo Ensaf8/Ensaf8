@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.parandak.ensaf8.dataBase.DatabaseManager;
+import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 
 public class BookMarkTypeRepo {
@@ -19,6 +20,9 @@ public class BookMarkTypeRepo {
                 + " PRIMARY KEY(" + BookMarkType.KEY_ID + ")"
                 +");";
 
+    }
+    public static String initTable(){
+        return "INSERT INTO " + BookMarkType.TABLE + "(id,title) VALUES(1,\"defalt\");" ;
     }
 
     public int insert (BookMarkType bookMarkType){
