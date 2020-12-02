@@ -24,7 +24,7 @@ public class BookMarkRepo {
     }
 
     public static String createTableFK(){
-        return "CREATE TABLE "+ BookMark.TABLE+" ("
+        return "CREATE TABLE IF NOT EXISTS "+ BookMark.TABLE+" ("
                 + BookMark.KEY_ID_BookMark+" INTEGER "+" , "
                 + BookMark.KEY_IndID+" INTEGER "+" , "
                 + BookMark.KET_B_TYPE_ID+" INTEGER DEFAULT 1 "+" , "
@@ -39,16 +39,26 @@ public class BookMarkRepo {
 
     }
 
-    public static String transactionBookMarkType(){
-        return "BEGIN TRANSACTION; "
-                + "ALTER TABLE " + BookMark.TABLE + " RENAME TO _BookMark_old;"
+    public static String updateBookMark(){
+        return "ALTER TABLE " + BookMark.TABLE + " RENAME TO _BookMark_old;"
                 + BookMarkRepo.createTableFK()
                 + "INSERT INTO " + BookMark.TABLE + "(" + BookMark.KEY_ID_BookMark + "," + BookMark.KEY_IndID + ")"
                 + "SELECT * FROM _BookMark_old;"
-                + "DROP TABLE IF EXISTS _BookMark_old;"
-                + "COMMIT;";
+                + "DROP TABLE IF EXISTS _BookMark_old;";
     }
 
+    public static String alterTable(){
+        return "ALTER TABLE " + BookMark.TABLE + " RENAME TO _BookMark_old;";
+    }
+
+    public static String insertToBookMarkNew(){
+        return "INSERT INTO " + BookMark.TABLE + "(" + BookMark.KEY_ID_BookMark + "," + BookMark.KEY_IndID + ")"
+                + "SELECT * FROM _BookMark_old;";
+    }
+
+    public static String dropOldTable(){
+        return "DROP TABLE IF EXISTS _BookMark_old;";
+    }
 
 
     public int insert (BookMark bookMark){

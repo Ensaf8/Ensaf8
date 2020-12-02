@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.parandak.ensaf8.app.App;
 
+import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.CreateViews;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkTypeRepo;
@@ -22,7 +23,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.TendRepo;
 
 public class DBHelper_CRM extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION =31;
+    private static final int DATABASE_VERSION =32;
     // Database Name
     private static final String DATABASE_NAME = "ensaf8.db";
     private static final String TAG = DBHelper_CRM.class.getSimpleName();
@@ -46,13 +47,16 @@ public class DBHelper_CRM extends SQLiteOpenHelper {
         db.execSQL(BookMarkRepo.createTable());
         db.execSQL(RatingRepo.createTable());
         db.execSQL(BookMarkTypeRepo.createTable());
-        db.execSQL(BookMarkTypeRepo.initTable());
+        //db.execSQL(BookMarkRepo.updateBookMark());
+        db.execSQL(BookMarkRepo.alterTable());
+        db.execSQL(BookMarkRepo.createTableFK());
+        db.execSQL(BookMarkRepo.insertToBookMarkNew());
+        db.execSQL(BookMarkRepo.dropOldTable());
         Log.d("ensaf::::::::", TAG + "> initTable : " + BookMarkTypeRepo.initTable());
         //db.execSQL(Cons_Phase_IntRepo.createTable() );
         //db.execSQL("DROP TABLE IF EXISTS Cons_Phase" );
         db.execSQL(CreateViews.createConstruction());
         db.execSQL(CreateViews.createLastUpConsInd());
-
     }
 
     @Override

@@ -62,8 +62,6 @@ import com.parandak.ensaf8.homePage.drawer.FragmentDrawer;
 import com.parandak.ensaf8.homePage.sessionManager.AlertDialogManager;
 import com.parandak.ensaf8.homePage.sessionManager.ConnectSQLite;
 import com.parandak.ensaf8.homePage.sessionManager.SessionManager;
-import com.parandak.ensaf8.mapPage.MapActivity;
-import com.parandak.ensaf8.searchPage.SearchPageActivity;
 import com.parandak.ensaf8.storage.EnsafQueryExport;
 
 import java.io.FileNotFoundException;
@@ -448,7 +446,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                 HomePageQuery homePageQuery = new HomePageQuery();
                 Cursor cursor = homePageQuery.getBookMark();
                 Toast.makeText(getApplicationContext(), "BookMarks : " + cursor.getCount(), Toast.LENGTH_SHORT).show();
-                Log.d("ensaf::::::::", TAG + "> transaction : " + BookMarkRepo.transactionBookMarkType());
+                Log.d("ensaf::::::::", TAG + "> transaction : " + BookMarkRepo.updateBookMark());
                 break;
             case 2:
                 AlertDialog.Builder builderInner02 = new AlertDialog.Builder(context);
