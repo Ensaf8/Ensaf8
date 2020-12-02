@@ -51,7 +51,7 @@ public class MapPageQuery {
                 + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lon + " , "
                 + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " , "
                 + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate + " , "
-                + BookMark.TABLE + "." + BookMark.KEY_ID_BookMark + " , "
+                + BookMark.TABLE + "." + BookMark.KEY_B_TYPE_ID + " , "
                 + Rating.TABLE + "." + Rating.KEY_Rate
                 + " FROM "
                 + CreateViews.Construction.VIEW
