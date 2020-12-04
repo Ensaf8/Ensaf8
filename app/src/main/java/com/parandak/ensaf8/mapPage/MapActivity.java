@@ -33,6 +33,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -474,12 +475,19 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         checkBoxBookmark.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
-                AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
+                final BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
+                final AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
                 View rowList = getLayoutInflater().inflate(R.layout.bookmark_listview, null);
                 ListView listView = rowList.findViewById(R.id.listView);
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, bookMarkPageQuery.getBookMarkFolderList());
+                builderInner.setCancelable(true);
                 listView.setAdapter(adapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Toast.makeText(getBaseContext(), "BOOKMARK : " + bookMarkPageQuery.getBookMarkFolderList().get(position) , Toast.LENGTH_SHORT).show();
+                    }
+                });
                 adapter.notifyDataSetChanged();
                 builderInner.setView(rowList);
                 builderInner.setTitle("BOOKMARKS FOLDERS");
