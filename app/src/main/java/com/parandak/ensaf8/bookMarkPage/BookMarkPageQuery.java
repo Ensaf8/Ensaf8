@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.parandak.ensaf8.dataBase.DatabaseManager;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 
+import java.util.ArrayList;
+
 public class BookMarkPageQuery {
     public Cursor getBookMarkType(){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -17,5 +19,16 @@ public class BookMarkPageQuery {
         //cursor.close();
         //DatabaseManager.getInstance().closeDatabase();
         return cursor;
+    }
+    public ArrayList<String> getBookMarkFolderList(){
+        ArrayList<String> bookMarkFolderList = new ArrayList<>();
+        Cursor cursor  = getBookMarkType();
+        if (cursor.moveToFirst()){
+            bookMarkFolderList.clear();
+            do{
+                bookMarkFolderList.add(cursor.getString(1));
+            }while (cursor.moveToNext());
+        }
+        return bookMarkFolderList;
     }
 }

@@ -33,12 +33,14 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -46,6 +48,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.app.BaseActivity;
+import com.parandak.ensaf8.bookMarkPage.BookMarkPageQuery;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
@@ -471,8 +474,14 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         checkBoxBookmark.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(getBaseContext(), "BOOKMARK LONG . . . . ." , Toast.LENGTH_LONG).show();
+                BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
                 AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
+                View rowList = getLayoutInflater().inflate(R.layout.bookmark_listview, null);
+                ListView listView = rowList.findViewById(R.id.listView);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, bookMarkPageQuery.getBookMarkFolderList());
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                builderInner.setView(rowList);
                 builderInner.setTitle("BOOKMARKS FOLDERS");
                 builderInner.show();
                 return false;
