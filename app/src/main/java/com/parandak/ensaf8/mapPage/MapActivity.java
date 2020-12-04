@@ -468,6 +468,16 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 isConsBookChanged = true;
             }
         });
+        checkBoxBookmark.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getBaseContext(), "BOOKMARK LONG . . . . ." , Toast.LENGTH_LONG).show();
+                AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
+                builderInner.setTitle("BOOKMARKS FOLDERS");
+                builderInner.show();
+                return false;
+            }
+        });
         bottom_tend_history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
