@@ -137,7 +137,7 @@ public class BookMarkPage extends DialogFragment {
             }
         });
         btnAddBookMarkFolder(view);
-        initBookMarkType(view);
+        initBookMarkType();
         bookMarkFolder(view);
 
     }
@@ -169,12 +169,11 @@ public class BookMarkPage extends DialogFragment {
             @Override
             public void onItemClick(int position) {
                 Toast.makeText(mcontext, "Item clicked !!!! " + rvList.get(position), Toast.LENGTH_SHORT).show();
-                BookmarkDialog bookmarkDialog = new BookmarkDialog(mcontext);
-                bookmarkDialog.showDialogueADD(rvList.get(position));
+                showDialogueEDITE(rvList.get(position));
             }
         });
     }
-    private void initBookMarkType(View view){
+    private void initBookMarkType(){
         Log.d("ensaf::::::::", TAG + "> initBookMarkType");
         BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
         Cursor cursorBMtype = bookMarkPageQuery.getBookMarkType();
@@ -190,8 +189,7 @@ public class BookMarkPage extends DialogFragment {
         btn_add_folder_bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(mcontext,"adding bookMarkFolder!!!", Toast.LENGTH_SHORT).show();
-                addBookMarkFolderDialog(view);
+                addBookMarkFolderDialog();
             }
         });
     }
@@ -211,13 +209,12 @@ public class BookMarkPage extends DialogFragment {
         });
         builderAddPhone.show();
     }
-    private void addBookMarkFolderDialog(final View view){
+    private void addBookMarkFolderDialog(){
         LayoutInflater layoutInflater = LayoutInflater.from(mcontext);
         View viewAddBookFolder = layoutInflater.inflate(R.layout.add_book_folder,null);
         final EditText edi_add_book_folder = viewAddBookFolder.findViewById(R.id.edi_add_book_folder);
         AlertDialog.Builder builderAddBookmarkFolder = new AlertDialog.Builder(mcontext);
         builderAddBookmarkFolder.setMessage("ADDBookMarkFolder" );
-
         builderAddBookmarkFolder.setView(viewAddBookFolder);
         builderAddBookmarkFolder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
             @Override
@@ -228,12 +225,34 @@ public class BookMarkPage extends DialogFragment {
                 int i = bookMarkTypeRepo.insert(bookMarkType);
                 if (i>0){
 
-                    initBookMarkType(view);
+                    initBookMarkType();
                     bookMarkFolderAdapter.notifyDataSetChanged();
                     Toast.makeText(getContext(),"add FOLDER : " + edi_add_book_folder.getText().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
         builderAddBookmarkFolder.show();
+    }
+    public void showDialogueEDITE(String title){
+        LayoutInflater layoutInflater = LayoutInflater.from(mcontext);
+        View dialogueView = layoutInflater.inflate(R.layout.bookmark_dialog,null);
+        final EditText ediBookmarkDialog = dialogueView.findViewById(R.id.ediBookmarkDialog);
+        AlertDialog alertDialog = new AlertDialog.Builder(mcontext)
+                .setPositiveButton("Edit",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(mcontext,"UPDATE TO : " + ediBookmarkDialog.getText().toString() , Toast.LENGTH_SHORT).show();
+                            }
+                        }).setNegativeButton("DELETE",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(mcontext,"DELETE BOOKMARK"  , Toast.LENGTH_SHORT).show();
+                            }
+                        }).create();
+        alertDialog.setView(dialogueView);
+        alertDialog.setTitle(title);
+        alertDialog.show();
     }
 }
