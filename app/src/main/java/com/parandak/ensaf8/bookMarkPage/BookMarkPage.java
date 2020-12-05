@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -38,6 +37,7 @@ public class BookMarkPage extends DialogFragment {
     public static final String TAG = "full_dialog";
     private Context mcontext;
     private Activity mactivity;
+    BookMarkPage bookMarkPage = this;
 
     private Toolbar toolbar;
     RecyclerView recyclerView;
@@ -169,6 +169,8 @@ public class BookMarkPage extends DialogFragment {
             @Override
             public void onItemClick(int position) {
                 Toast.makeText(mcontext, "Item clicked !!!! " + rvList.get(position), Toast.LENGTH_SHORT).show();
+                BookmarkDialog bookmarkDialog = new BookmarkDialog(mcontext);
+                bookmarkDialog.showDialogueADD(rvList.get(position));
             }
         });
     }
