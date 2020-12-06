@@ -220,22 +220,52 @@ public class BookMarkPage extends DialogFragment {
         });
         builderAddBookmarkFolder.show();
     }
-    public void showDialogueEDITE(String id,String title){
+    public void showDialogueEDITE(final String id,final String title){
         LayoutInflater layoutInflater = LayoutInflater.from(mcontext);
         View dialogueView = layoutInflater.inflate(R.layout.bookmark_dialog,null);
         final EditText ediBookmarkDialog = dialogueView.findViewById(R.id.ediBookmarkDialog);
+        ediBookmarkDialog.setText(title);
         AlertDialog alertDialog = new AlertDialog.Builder(mcontext)
                 .setPositiveButton("Edit",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(mcontext,"UPDATE TO : " + ediBookmarkDialog.getText().toString() , Toast.LENGTH_SHORT).show();
+                                BookMarkTypeRepo bookMarkTypeRepo = new BookMarkTypeRepo();
+                                BookMarkType bookMarkType = new BookMarkType();
+                                bookMarkType.setId(id);
+                                bookMarkType.setTitle(ediBookmarkDialog.getText().toString());
+                                if (bookMarkTypeRepo.update(bookMarkType)){
+                                    initBookMarkType();
+                                    bookMarkFolderAdapter.notifyDataSetChanged();
+                                    Toast.makeText(mcontext,"UPDATE TO : " + ediBookmarkDialog.getText().toString() , Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }).setNegativeButton("DELETE",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(mcontext,"DELETE BOOKMARK"  , Toast.LENGTH_SHORT).show();
+                                AlertDialog.Builder builderInner = new AlertDialog.Builder(mcontext);
+                                builderInner.setMessage("DELETE Folder : " + title);
+                                builderInner.setTitle("Are you Sure?");
+                                builderInner.setPositiveButton("YES",new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        BookMarkTypeRepo bookMarkTypeRepo = new BookMarkTypeRepo();
+                                        if (bookMarkTypeRepo.delete_ID_BookMarkType(id)){
+                                            initBookMarkType();
+                                            bookMarkFolderAdapter.notifyDataSetChanged();
+                                            Toast.makeText(mcontext,"BOOKMARK DELETEed !"  , Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                                builderInner.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                builderInner.show();
+
                             }
                         }).create();
         alertDialog.setView(dialogueView);

@@ -36,6 +36,14 @@ public class BookMarkTypeRepo {
         return bookMarkTypeID;
     }
 
+    public boolean update(BookMarkType bookMarkType){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        ContentValues values = new ContentValues();
+        values.put(BookMarkType.KEY_ID,bookMarkType.getId());
+        values.put(BookMarkType.KEY_TITLE,bookMarkType.getTitle());
+        return db.update(BookMarkType.TABLE,values,BookMarkType.KEY_ID + "=?",new String[]{String.valueOf(bookMarkType.getId())}) > 0;
+    }
+
     public void delete(){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         db.delete(BookMarkType.TABLE,null,null);
