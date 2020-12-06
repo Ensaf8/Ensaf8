@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.parandak.ensaf8.R;
+import com.parandak.ensaf8.bookMarkPage.rv.BookMarkFolder;
 import com.parandak.ensaf8.bookMarkPage.rv.BookMarkFolderAdapter;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkTypeRepo;
@@ -42,7 +43,8 @@ public class BookMarkPage extends DialogFragment {
     private Toolbar toolbar;
     RecyclerView recyclerView;
     BookMarkFolderAdapter bookMarkFolderAdapter;
-    List<String> rvList = new ArrayList<>();
+
+    List<BookMarkFolder> bookMarkFolderList = new ArrayList<>();
 
     public static BookMarkPage display(FragmentManager fragmentManager){
         BookMarkPage bookMarkPage = new BookMarkPage();
@@ -144,32 +146,17 @@ public class BookMarkPage extends DialogFragment {
     void bookMarkFolder(View view){
         recyclerView = view.findViewById(R.id.rv_bookmarkPage);
         recyclerView.setHasFixedSize(true);
-        bookMarkFolderAdapter = new BookMarkFolderAdapter(rvList);
-        //recyclerView.setHasFixedSize(true);
-
-        // vertical RecyclerView
-        // keep coop_full_list_row_row.xml width to `match_parent`
-        //RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-
-        // horizontal RecyclerView
-        // keep coop_full_list_row.xml.xml width to `wrap_content`
+        bookMarkFolderAdapter = new BookMarkFolderAdapter(bookMarkFolderList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mcontext, RecyclerView.VERTICAL, false);
-
         recyclerView.setLayoutManager(mLayoutManager);
-
-        // adding inbuilt divider line
-        //recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-        // adding custom divider line with padding 16dp
         recyclerView.addItemDecoration(new MyDividerItemDecoration(mcontext, LinearLayoutManager.HORIZONTAL, 16));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         recyclerView.setAdapter(bookMarkFolderAdapter);
         bookMarkFolderAdapter.setOnItemClickListener(new BookMarkFolderAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(mcontext, "Item clicked !!!! " + rvList.get(position), Toast.LENGTH_SHORT).show();
-                showDialogueEDITE(rvList.get(position));
+                Toast.makeText(mcontext, "Item clicked !!!! " + bookMarkFolderList.get(position).getId(), Toast.LENGTH_SHORT).show();
+                showDialogueEDITE(bookMarkFolderList.get(position).getId() ,bookMarkFolderList.get(position).getTitle());
             }
         });
     }
@@ -177,10 +164,10 @@ public class BookMarkPage extends DialogFragment {
         Log.d("ensaf::::::::", TAG + "> initBookMarkType");
         BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
         Cursor cursorBMtype = bookMarkPageQuery.getBookMarkType();
-        rvList.clear();
+        bookMarkFolderList.clear();
         if (cursorBMtype.moveToFirst()){
             do{
-                rvList.add(cursorBMtype.getString(1));
+                bookMarkFolderList.add(new BookMarkFolder(cursorBMtype.getString(0),cursorBMtype.getString(1)));
             }while (cursorBMtype.moveToNext());
         }
     }
@@ -233,7 +220,7 @@ public class BookMarkPage extends DialogFragment {
         });
         builderAddBookmarkFolder.show();
     }
-    public void showDialogueEDITE(String title){
+    public void showDialogueEDITE(String id,String title){
         LayoutInflater layoutInflater = LayoutInflater.from(mcontext);
         View dialogueView = layoutInflater.inflate(R.layout.bookmark_dialog,null);
         final EditText ediBookmarkDialog = dialogueView.findViewById(R.id.ediBookmarkDialog);
@@ -252,7 +239,7 @@ public class BookMarkPage extends DialogFragment {
                             }
                         }).create();
         alertDialog.setView(dialogueView);
-        alertDialog.setTitle(title);
+        alertDialog.setTitle(id + " : " + title);
         alertDialog.show();
     }
 }

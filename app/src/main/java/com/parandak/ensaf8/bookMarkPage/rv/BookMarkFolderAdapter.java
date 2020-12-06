@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookMarkFolderAdapter extends RecyclerView.Adapter<BookMarkFolderAdapter.MyViewHolder> {
-    private List<String> title_folder_list = new ArrayList<>();
+
+    List<BookMarkFolder> bookMarkFolderList = new ArrayList<>();
     private OnItemClickListener mListener;
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -45,8 +46,8 @@ public class BookMarkFolderAdapter extends RecyclerView.Adapter<BookMarkFolderAd
         }
     }
 
-    public BookMarkFolderAdapter(List<String> title_folder_list){
-        this.title_folder_list = title_folder_list;
+    public BookMarkFolderAdapter(List<BookMarkFolder> bookMarkFolderList){
+        this.bookMarkFolderList = bookMarkFolderList;
     }
 
     @NonNull
@@ -59,12 +60,12 @@ public class BookMarkFolderAdapter extends RecyclerView.Adapter<BookMarkFolderAd
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.txt_book_mark_folder.setText(title_folder_list.get(position));
+        holder.txt_book_mark_folder.setText(bookMarkFolderList.get(position).getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return title_folder_list.size();
+        return bookMarkFolderList.size();
     }
 
 
