@@ -81,14 +81,15 @@
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
                         <EditText
                             android:id="@+id/bottom_sheet_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxLength="36"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="55dp"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginEnd="15dp"
                             android:textStyle="bold"
                             android:textAlignment="center"
                             android:textSize="20sp"
@@ -97,6 +98,15 @@
                             android:layout_weight="6"
                             android:hint="Name"
                             android:layout_marginTop="10dp"/>
+                        <TextView
+                            android:id="@+id/txt_bottom_book_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="28dp"
+                            android:layout_marginTop="15dp"
+                            android:textStyle="bold"
+                            android:text="پیش فرض"
+                            android:layout_weight="14"/>
 
                         <CheckBox
                             android:id="@+id/checkBoxBookmark"

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.parandak.ensaf8.dataBase.DatabaseManager;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
+import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.CreateViews;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Coop;
@@ -245,6 +246,20 @@ public class MapPageQuery {
             }
         }else{
             return "!solo";
+        }
+    }
+    public String getBookmarkTypeTitle(String BookTypeID){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = " SELECT "
+                + BookMarkType.KEY_TITLE
+                + " FROM "
+                + BookMarkType.TABLE
+                + " WHERE " + BookMarkType.KEY_ID + " = " + BookTypeID;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()&&cursor.getCount()==1){
+            return cursor.getString(0);
+        }else {
+            return "error";
         }
     }
 }

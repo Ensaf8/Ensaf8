@@ -43,6 +43,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -154,6 +155,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
     Button button_edit,bottom_sheet_status_data,button_add_customer,bottom_sheet_delete_cons,bottom_sheet_add_reminder;
     CheckBox checkBoxBookmark;
+    TextView txt_bottom_book_type;
     RatingBar ratingBottom;
     ImageButton bottom_tend_history;
     EditText bottom_sheet_name;
@@ -454,6 +456,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     private void bottomSheet(){
         button_edit = (Button)findViewById(R.id.button_edit);
         checkBoxBookmark = (CheckBox) findViewById(R.id.checkBoxBookmark);
+        txt_bottom_book_type = (TextView) findViewById(R.id.txt_bottom_book_type);
         bottom_sheet_name = (EditText)findViewById(R.id.bottom_sheet_name);
         bottom_container = (LinearLayout)findViewById(R.id.bottom_container);
 
@@ -598,6 +601,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         historyList.clear();
                         isConsBookChanged = false;
                         checkBoxBookmark.setChecked(false);
+                        txt_bottom_book_type.setText("پیش فرض");
                         ratingBottom.setRating(0);
                         isRatingBottomChange = false;
                         initConsBooked = false;
@@ -1123,9 +1127,14 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
             if(cursor.getString(6)!=null){
                 checkBoxBookmark.setChecked(true);
+                txt_bottom_book_type.setText(mapPageQuery.getBookmarkTypeTitle(cursor.getString(6)));
+                txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
                 initConsBooked = true;
             }else {
                 checkBoxBookmark.setChecked(false);
+                txt_bottom_book_type.setEnabled(false);
+                txt_bottom_book_type.setText("* * *");
+                txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.darkGray));
                 initConsBooked = false;
             }
 
