@@ -47,7 +47,7 @@ public class DBHelper_CRM extends SQLiteOpenHelper {
         db.execSQL(BookMarkRepo.createTable());
         db.execSQL(RatingRepo.createTable());
         db.execSQL(BookMarkTypeRepo.createTable());
-        //db.execSQL(BookMarkRepo.updateBookMark());
+        //db.execSQL(BookMarkRepo.updateBookMarkTable());
         db.execSQL(BookMarkRepo.alterTable());
         db.execSQL(BookMarkRepo.createTableFK());
         db.execSQL(BookMarkRepo.insertToBookMarkNew());

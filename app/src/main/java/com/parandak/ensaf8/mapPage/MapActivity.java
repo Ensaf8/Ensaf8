@@ -683,9 +683,10 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             }
             drawerFragmentMap.setCheckBox01(false);
         }
-        if(isConsBookChanged){
+        /*if(isConsBookChanged){
             BookMark bookMark = new BookMark();
             bookMark.setIndID(ID_CONS_SELECTED);
+            bookMark.setB_type_id(bookedTypeID);
             BookMarkRepo bookMarkRepo = new BookMarkRepo();
             if(initConsBooked){
                 if (!checkBoxBookmark.isChecked()){
@@ -693,9 +694,26 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isNOT BookMarked ", Toast.LENGTH_SHORT).show();
                 }
             }else{
-                if(checkBoxBookmark.isChecked()){
+                if(checkBoxBookmark.isChecked()&&!bookedTypeID.equals("0")){
                     if(bookMarkRepo.insert(bookMark)>0)
                         Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isBookMarked ", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }*/
+        if (!initBookedTypeID.equals(bookedTypeID)){
+            BookMark bookMark = new BookMark();
+            bookMark.setIndID(ID_CONS_SELECTED);
+            bookMark.setB_type_id(bookedTypeID);
+            BookMarkRepo bookMarkRepo = new BookMarkRepo();
+            if (initBookedTypeID.equals("0")){
+                if(bookMarkRepo.insert(bookMark)>0)
+                    Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isBookMarked ", Toast.LENGTH_SHORT).show();
+            }else if (bookedTypeID.equals("0")){
+                if(bookMarkRepo.delete_indID_BookMark(ID_CONS_SELECTED))
+                    Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isNOT BookMarked ", Toast.LENGTH_SHORT).show();
+            }else{
+                if (bookMarkRepo.updateTypeByIndiID(bookMark)){
+                    Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + "'s BookMark isUpdated ", Toast.LENGTH_SHORT).show();
                 }
             }
         }

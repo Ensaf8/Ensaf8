@@ -39,7 +39,7 @@ public class BookMarkRepo {
 
     }
 
-    public static String updateBookMark(){
+    public static String updateBookMarkTable(){
         return "ALTER TABLE " + BookMark.TABLE + " RENAME TO _BookMark_old;"
                 + BookMarkRepo.createTableFK()
                 + "INSERT INTO " + BookMark.TABLE + "(" + BookMark.KEY_ID_BookMark + "," + BookMark.KEY_IndID + ")"
@@ -66,9 +66,18 @@ public class BookMarkRepo {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
         values.put(BookMark.KEY_IndID,bookMark.getIndID());
+        values.put(BookMark.KEY_B_TYPE_ID,bookMark.getB_type_id());
         bookMarkID = (int) db.insert(BookMark.TABLE,null,values);
         DatabaseManager.getInstance().closeDatabase();
         return bookMarkID;
+    }
+
+    public boolean updateTypeByIndiID(BookMark bookMark){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        ContentValues values = new ContentValues();
+        //values.put(Individual.KEY_ID_Indi,individual.getID_Indi());
+        values.put(BookMark.KEY_B_TYPE_ID,bookMark.getB_type_id());
+        return db.update(BookMark.TABLE,values,BookMark.KEY_IndID + "=?",new String[]{String.valueOf(bookMark.getIndID())}) > 0;
     }
 
     public void delete(){
