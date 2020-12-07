@@ -164,6 +164,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     boolean isSingle = true;
     String ID_CONS_SELECTED;
     boolean initConsBooked = false,isConsBookChanged = false,isRatingBottomChange = false;
+    String initBookedTypeID,bookedTypeID = "0";
     float initRating = 0;
 
     boolean isEdiNameChange = false;
@@ -473,6 +474,21 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isConsBookChanged = true;
+                if (!isChecked){
+                    txt_bottom_book_type.setEnabled(false);
+                    txt_bottom_book_type.setText("* * *");
+                    txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.darkGray));
+                    bookedTypeID = "0";
+                }else {
+                    if (bookedTypeID.equals("0")){
+                        bookedTypeID = "1";
+                    }
+                    MapPageQuery mapPageQuery = new MapPageQuery();
+                    txt_bottom_book_type.setEnabled(true);
+                    txt_bottom_book_type.setText(mapPageQuery.getBookmarkTypeTitle(bookedTypeID));
+                    txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
+                    checkBoxBookmark.setChecked(true);
+                }
             }
         });
         checkBoxBookmark.setOnLongClickListener(new View.OnLongClickListener() {
@@ -480,21 +496,30 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             public boolean onLongClick(View v) {
                 final BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
                 final AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
+
                 View rowList = getLayoutInflater().inflate(R.layout.bookmark_listview, null);
                 ListView listView = rowList.findViewById(R.id.listView);
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, bookMarkPageQuery.getBookMarkFolderList());
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, bookMarkPageQuery.getBookMarkFolderListString());
                 builderInner.setCancelable(true);
                 listView.setAdapter(adapter);
+                builderInner.setView(rowList);
+                builderInner.setTitle("BOOKMARKS FOLDERS");
+                final Dialog dialog = builderInner.create();
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(getBaseContext(), "BOOKMARK : " + bookMarkPageQuery.getBookMarkFolderList().get(position) , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), "BOOKMARK : " + bookMarkPageQuery.getBookMarkFoldeList().get(position).getId() , Toast.LENGTH_SHORT).show();
+                        bookedTypeID = bookMarkPageQuery.getBookMarkFoldeList().get(position).getId();
+                        MapPageQuery mapPageQuery = new MapPageQuery();
+                        txt_bottom_book_type.setEnabled(true);
+                        txt_bottom_book_type.setText(mapPageQuery.getBookmarkTypeTitle(bookedTypeID));
+                        txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
+                        checkBoxBookmark.setChecked(true);
+                        dialog.dismiss();
                     }
                 });
                 adapter.notifyDataSetChanged();
-                builderInner.setView(rowList);
-                builderInner.setTitle("BOOKMARKS FOLDERS");
-                builderInner.show();
+                dialog.show();
                 return false;
             }
         });
@@ -604,6 +629,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         txt_bottom_book_type.setText("پیش فرض");
                         ratingBottom.setRating(0);
                         isRatingBottomChange = false;
+                        bookedTypeID = "0";
                         initConsBooked = false;
                         initRating = 0;
                         break;
@@ -1130,12 +1156,14 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 txt_bottom_book_type.setText(mapPageQuery.getBookmarkTypeTitle(cursor.getString(6)));
                 txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
                 initConsBooked = true;
+                initBookedTypeID = cursor.getString(6);
             }else {
                 checkBoxBookmark.setChecked(false);
                 txt_bottom_book_type.setEnabled(false);
                 txt_bottom_book_type.setText("* * *");
                 txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.darkGray));
                 initConsBooked = false;
+                initBookedTypeID = "0";
             }
 
             if (cursor.getString(7)!=null){

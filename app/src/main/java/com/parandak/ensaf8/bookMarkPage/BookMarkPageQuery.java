@@ -3,6 +3,7 @@ package com.parandak.ensaf8.bookMarkPage;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.parandak.ensaf8.bookMarkPage.rv.BookMarkFolder;
 import com.parandak.ensaf8.dataBase.DatabaseManager;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 
@@ -20,7 +21,7 @@ public class BookMarkPageQuery {
         //DatabaseManager.getInstance().closeDatabase();
         return cursor;
     }
-    public ArrayList<String> getBookMarkFolderList(){
+    public ArrayList<String> getBookMarkFolderListString(){
         ArrayList<String> bookMarkFolderList = new ArrayList<>();
         Cursor cursor  = getBookMarkType();
         if (cursor.moveToFirst()){
@@ -31,4 +32,16 @@ public class BookMarkPageQuery {
         }
         return bookMarkFolderList;
     }
+    public ArrayList<BookMarkFolder> getBookMarkFoldeList(){
+        ArrayList<BookMarkFolder> bookMarkFoldeList = new ArrayList<>();
+        Cursor cursor  = getBookMarkType();
+        if (cursor.moveToFirst()){
+            bookMarkFoldeList.clear();
+            do{
+                bookMarkFoldeList.add(new BookMarkFolder(cursor.getString(0),cursor.getString(1)));
+            }while (cursor.moveToNext());
+        }
+        return bookMarkFoldeList;
+    }
+
 }
