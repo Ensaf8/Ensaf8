@@ -163,7 +163,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     boolean BOTTOM_SHEET_IS_HIDDEN = true;
     boolean isSingle = true;
     String ID_CONS_SELECTED;
-    boolean initConsBooked = false,isConsBookChanged = false,isRatingBottomChange = false;
+    boolean isRatingBottomChange = false;
     String initBookedTypeID,bookedTypeID = "0";
     float initRating = 0;
 
@@ -473,7 +473,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         checkBoxBookmark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isConsBookChanged = true;
+
                 if (!isChecked){
                     txt_bottom_book_type.setEnabled(false);
                     txt_bottom_book_type.setText("* * *");
@@ -624,13 +624,11 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         //customerAdapter.notifyDataSetChanged();
                         bottomRVAdapter.notifyDataSetChanged();
                         historyList.clear();
-                        isConsBookChanged = false;
                         checkBoxBookmark.setChecked(false);
                         txt_bottom_book_type.setText("پیش فرض");
                         ratingBottom.setRating(0);
                         isRatingBottomChange = false;
                         bookedTypeID = "0";
-                        initConsBooked = false;
                         initRating = 0;
                         break;
                     }
@@ -683,23 +681,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             }
             drawerFragmentMap.setCheckBox01(false);
         }
-        /*if(isConsBookChanged){
-            BookMark bookMark = new BookMark();
-            bookMark.setIndID(ID_CONS_SELECTED);
-            bookMark.setB_type_id(bookedTypeID);
-            BookMarkRepo bookMarkRepo = new BookMarkRepo();
-            if(initConsBooked){
-                if (!checkBoxBookmark.isChecked()){
-                    if(bookMarkRepo.delete_indID_BookMark(ID_CONS_SELECTED))
-                        Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isNOT BookMarked ", Toast.LENGTH_SHORT).show();
-                }
-            }else{
-                if(checkBoxBookmark.isChecked()&&!bookedTypeID.equals("0")){
-                    if(bookMarkRepo.insert(bookMark)>0)
-                        Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isBookMarked ", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }*/
         if (!initBookedTypeID.equals(bookedTypeID)){
             BookMark bookMark = new BookMark();
             bookMark.setIndID(ID_CONS_SELECTED);
@@ -1173,16 +1154,16 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 checkBoxBookmark.setChecked(true);
                 txt_bottom_book_type.setText(mapPageQuery.getBookmarkTypeTitle(cursor.getString(6)));
                 txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
-                initConsBooked = true;
                 initBookedTypeID = cursor.getString(6);
             }else {
                 checkBoxBookmark.setChecked(false);
                 txt_bottom_book_type.setEnabled(false);
                 txt_bottom_book_type.setText("* * *");
                 txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.darkGray));
-                initConsBooked = false;
                 initBookedTypeID = "0";
             }
+
+            bookedTypeID = initBookedTypeID;
 
             if (cursor.getString(7)!=null){
                 ratingBottom.setRating(cursor.getFloat(7));
