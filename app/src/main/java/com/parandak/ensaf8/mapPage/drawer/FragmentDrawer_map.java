@@ -38,7 +38,7 @@ import java.util.List;
 
 public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnDateSetListener {
     private static String TAG = FragmentDrawer_map.class.getSimpleName();
-    TextView txtFilterSeek,txtFilterDate;
+    TextView txtFilterSeek,txtFilterDate;//TODO solve all warnings
     String titleFilterSeek;
     private Context mcontext;
     private Activity mactivity;
@@ -74,7 +74,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {///TODO simplify and organize all code
         super.onCreate(savedInstanceState);
 
         // drawer labels
@@ -142,7 +142,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflating view layout
-        View view = inflater.inflate(R.layout.fragment_drawer_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_drawer_map, container, false);//TODO redesign view
         imgFilter = view.findViewById(R.id.imgFilter);
         txtFilterSeek = view.findViewById(R.id.txtFilterSeek);
         txtFilterDate = view.findViewById(R.id.txtFilterDate);

@@ -17,7 +17,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 
 public class MapPageQuery {
     private final String TAG = this.getClass().getSimpleName();
-    boolean check01;
+    boolean check01;//TODO solve all warnings
     boolean check02;
     boolean check03;
     boolean check04;
@@ -111,7 +111,7 @@ public class MapPageQuery {
         //cursor.close();
         //DatabaseManager.getInstance().closeDatabase();
         return cursor;
-    }
+    }//TODO clear useless codes.
     public Cursor consPhase(String indiID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = " SELECT "
@@ -229,7 +229,7 @@ public class MapPageQuery {
 
         Cursor cursor = db.rawQuery(showQuery, null);
         return cursor;
-    }
+    }//TODO use string builders for queries
     public String getGeopID(String IndiID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = " SELECT "

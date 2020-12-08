@@ -208,7 +208,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             showOnboarding();
         }
     }////End of onCreate
-    public void showOnMap(){
+    public void showOnMap(){//TODO someImpro for MAP Query
         MapPageQuery mapPageQuery = new MapPageQuery(drawerFragmentMap.isCheck01,drawerFragmentMap.isCheck02,"",
                 drawerFragmentMap.isCheck03,drawerFragmentMap.getDateFilter01(),drawerFragmentMap.getDateFilter02(),
                 drawerFragmentMap.isCheckBook,String.valueOf(drawerFragmentMap.getRating()),drawerFragmentMap.isCheck04);
@@ -230,9 +230,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         });
     }
     public void initDrawer(){
-        //drawerFragmentMap = new FragmentDrawer_map(consStateList);
         drawerLayoutMap = (DrawerLayout)findViewById(R.id.drawer_map);
-
         drawerFragmentMap = (FragmentDrawer_map)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer_map);
         assert drawerFragmentMap != null;
@@ -258,14 +256,11 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         //note, the load method also sets the HTTP User Agent to your application's package name, abusing osm's tile servers will get you banned based on this string
 
         //inflate and create the map
-
         map = (MapView) findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
-
         mController = map.getController();
-
         this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(this),map);
         map.getOverlays().add(this.mLocationOverlay);
         mLocationOverlay.enableMyLocation();
@@ -461,19 +456,15 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bottom_sheet_name = (EditText)findViewById(R.id.bottom_sheet_name);
         bottom_container = (LinearLayout)findViewById(R.id.bottom_container);
 
-
         bottom_sheet_status_data = (Button)findViewById(R.id.btn_date);
         bottom_sheet_delete_cons = (Button) findViewById(R.id.bottom_sheet_delete_cons);
         bottom_sheet_add_reminder = (Button) findViewById(R.id.bottom_sheet_add_reminder);
         button_add_customer = (Button) findViewById(R.id.button_add_customer);
         bottom_tend_history = (ImageButton) findViewById(R.id.bottom_tend_history);
 
-
-
         checkBoxBookmark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 if (!isChecked){
                     txt_bottom_book_type.setEnabled(false);
                     txt_bottom_book_type.setText("* * *");
@@ -582,15 +573,79 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 isRatingBottomChange = true;
             }
         });
+        bottom_sheet_delete_cons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
+                builderInner.setMessage("DELETE" + ID_CONS_SELECTED);
+                builderInner.setTitle("Are you Sure?");
+                builderInner.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String test = "nothing";
+                        mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
+                        IndividualRepo individualRepo = new IndividualRepo();
+                        Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
+                        Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
+                        BookMarkRepo bookMarkRepo = new BookMarkRepo();
+                        GPointRepo gPointRepo = new GPointRepo();
+                        MapPageQuery mapPageQuery = new MapPageQuery();
+                        boolean gpr = false,cpr,igr,ir,bm;
+                        if (mapPageQuery.getGeopID(ID_CONS_SELECTED)!="!solo"){
+                            gpr = gPointRepo.deleteIDGeop(mapPageQuery.getGeopID(ID_CONS_SELECTED)) ;
+                        }
+                        cpr = cons_phaseRepo.deleteIndiID(ID_CONS_SELECTED);
+                        igr = indi_geopRepo.deleteIndiID(ID_CONS_SELECTED);
+                        ir = individualRepo.deleteIndiID(ID_CONS_SELECTED);
+                        bm = bookMarkRepo.delete_indID_BookMark(ID_CONS_SELECTED);
+
+                        if (!gpr){
+                            test = test + " gPoint ";
+                        }
+
+                        if (!cpr){
+                            test = test + " ConsPhase ";
+                        }
+
+                        if (!igr){
+                            test = test + " IndiGeop ";
+                        }
+
+                        if (!ir){
+                            test = test + " Individual ";
+                        }
+
+                        if(!bm){
+                            test = test + " bookMark ";
+                        }
+
+
+                        if (gpr && cpr && igr && ir && bm){
+                            Toast.makeText(getBaseContext(), "Successfully All Deleted!!!" , Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(getBaseContext(), test , Toast.LENGTH_LONG).show();
+                        }
+                        showOnMap();
+                    }
+                });
+                builderInner.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builderInner.show();
+
+            }
+        });
         View nestedScrollView = (View) findViewById(R.id.nestedScrollView);
         mBottomSheetBehaviour = BottomSheetBehavior.from(nestedScrollView);
         mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
         mBottomSheetBehaviour.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View view, int newState) {
-
                 String state = "";
-
                 switch (newState) {
                     case BottomSheetBehavior.STATE_DRAGGING: {
                         state = "DRAGGING";
@@ -608,7 +663,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         break;
                     }
                     case BottomSheetBehavior.STATE_COLLAPSED: {
-                        //customerAdapter.notifyDataSetChanged();
                         bottomRVAdapter.notifyDataSetChanged();
                         state = "COLLAPSED";
                         BOTTOM_SHEET_IS_HIDDEN = false;
@@ -642,7 +696,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 }
                 //Toast.makeText(getBaseContext(), "Bottom Sheet State Changed to: " + state, Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onSlide(@NonNull View view, float v) {
 
@@ -790,10 +843,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 if (!BOTTOM_SHEET_IS_HIDDEN){
                     mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
                 }
-
                 return false;
             }
-
             @Override
             public boolean longPressHelper(GeoPoint p) {
                 isSingle = false;
@@ -814,15 +865,13 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(getBaseContext(),mapEventsReceiver);
         map.getOverlays().add(mapEventsOverlay);
     }
-    public void showAllWaypoints (Cursor cursor){
+    public void showAllWaypoints (Cursor cursor){///TODO replace cursor with overLayItemList
         mStartGoalItems.clear();
         map.getOverlays().remove(mOverlay);
-
         if (cursor.getCount()==0) {
             Toast.makeText(getBaseContext(),"No data in query",Toast.LENGTH_LONG).show();
-
+            Log.d("ensaf::::::::", TAG + "> showAllWaypoints > No data in query");
         }else {
-
             while (cursor.moveToNext()) {
                 String ID = cursor.getString(0);
                 String NAME = cursor.getString(1);
@@ -830,18 +879,14 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 Double LAT = cursor.getDouble(2);
                 Double LON = cursor.getDouble(3);
                 int STA = cursor.getInt(4);
-
                 GeoPoint point = new GeoPoint(LAT, LON);
                 OverlayItem Item = new OverlayItem(ID, NAME, DES, point);
-
                 if (STA<=10){
                     Item.setMarker(map.getContext().getResources().getDrawable(consStateList.get(STA).getDrawable()));
                 }else{
                     Item.setMarker(map.getContext().getResources().getDrawable(R.drawable.home30));
                 }
-
                 mStartGoalItems.add(Item);
-
             }/////
         }
         mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(mStartGoalItems,this,this);
@@ -1057,75 +1102,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 historyList.add(history);
             }while (cursorHistory.moveToNext());
         }
-
-
-
-        bottom_sheet_delete_cons.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
-                builderInner.setMessage("DELETE" + ID_CONS_SELECTED);
-                builderInner.setTitle("Are you Sure?");
-                builderInner.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String test = "nothing";
-                        mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
-                        IndividualRepo individualRepo = new IndividualRepo();
-                        Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
-                        Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
-                        BookMarkRepo bookMarkRepo = new BookMarkRepo();
-                        GPointRepo gPointRepo = new GPointRepo();
-                        MapPageQuery mapPageQuery = new MapPageQuery();
-                        boolean gpr = false,cpr,igr,ir,bm;
-                        if (mapPageQuery.getGeopID(ID_CONS_SELECTED)!="!solo"){
-                            gpr = gPointRepo.deleteIDGeop(mapPageQuery.getGeopID(ID_CONS_SELECTED)) ;
-                        }
-                        cpr = cons_phaseRepo.deleteIndiID(ID_CONS_SELECTED);
-                        igr = indi_geopRepo.deleteIndiID(ID_CONS_SELECTED);
-                        ir = individualRepo.deleteIndiID(ID_CONS_SELECTED);
-                        bm = bookMarkRepo.delete_indID_BookMark(ID_CONS_SELECTED);
-
-                        if (!gpr){
-                            test = test + " gPoint ";
-                        }
-
-                        if (!cpr){
-                            test = test + " ConsPhase ";
-                        }
-
-                        if (!igr){
-                            test = test + " IndiGeop ";
-                        }
-
-                        if (!ir){
-                            test = test + " Individual ";
-                        }
-
-                        if(!bm){
-                            test = test + " bookMark ";
-                        }
-
-
-                        if (gpr && cpr && igr && ir && bm){
-                            Toast.makeText(getBaseContext(), "Successfully All Deleted!!!" , Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(getBaseContext(), test , Toast.LENGTH_LONG).show();
-                        }
-                        showOnMap();
-                    }
-                });
-                builderInner.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                builderInner.show();
-
-            }
-        });
         ////////
         //L_or_S = "single";
         mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -1135,13 +1111,10 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         Cursor cursor1 = mapPageQuery.singleTapOnConsIndSecond(ID_CONS_SELECTED);
 
         if (cursor.moveToFirst()) {
-
             bottom_sheet_name.setText(cursor.getString(1));
             init_bottom_sheet_name = cursor.getString(1);
-            //edi_bottom_sheet_status.setText(cursor.getString(4));
             viewPager2.setCurrentItem(cursor.getInt(4));
             inisatatus =cursor.getInt(4);
-
             String [] arrOfFomattedDate = cursor.getString(5).split(" ",2);
             String [] arrOfGreDate = arrOfFomattedDate[0].split("-",3);
             if (cursor.getInt(4)<10){
@@ -1175,32 +1148,18 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
         }
         if (cursor1.moveToFirst()){
-            //Toast.makeText(getBaseContext(), "Second is  : " + cursor1.getCount() + " * " + cursor1.getColumnCount() + " ID : " + ID_CONS_SELECTED , Toast.LENGTH_SHORT).show();
             customerList.clear();
             do {
                 Customer customer = new Customer();
                 String CUS_ID = cursor1.getString(0);
                 customer.setId(CUS_ID);
-                //EnsafQuery ensafQuery1 = new EnsafQuery();
-                //Cursor cu = ensafQuery1.singleTapOnSecondPhone(CUS_ID);
-                //if (cu.getCount()>1){
-                //    if (cu.moveToFirst())
-                //        customer.setFirstPart(cu.getString(0)+", ...");
-                //}else {
-                //    if (cu.moveToFirst())
-                //        customer.setFirstPart(cu.getString(0));
-                //}
                 customer.setName(cursor1.getString(1));
                 customer.setPosition(cursor1.getString(2));
                 customerList.add(customer);
             } while (cursor1.moveToNext());
-            //customerAdapter.notifyDataSetChanged();
             bottomRVAdapter.notifyDataSetChanged();
         }
-
-        //Toast.makeText(getBaseContext(), "Second : " , Toast.LENGTH_SHORT).show();
         mController.animateTo(item.getPoint());
-        //GeoPoint position = new GeoPoint(ins_LATITUDE,ins_LONGITUDE);
         return false;
     }
     @Override
