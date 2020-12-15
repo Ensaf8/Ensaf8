@@ -209,9 +209,9 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         }
     }////End of onCreate
     public void showOnMap(){//TODO someImpro for MAP Query
-        MapPageQuery mapPageQuery = new MapPageQuery(drawerFragmentMap.isCheck01,drawerFragmentMap.isCheck02,"",
-                drawerFragmentMap.isCheck03,drawerFragmentMap.getDateFilter01(),drawerFragmentMap.getDateFilter02(),
-                drawerFragmentMap.isCheckBook,String.valueOf(drawerFragmentMap.getRating()),drawerFragmentMap.isCheck04);
+        MapPageQuery mapPageQuery = new MapPageQuery(drawerFragmentMap.isCheck01(),drawerFragmentMap.isCheck02(),"",
+                drawerFragmentMap.isCheck03(),drawerFragmentMap.getDateFilter01(),drawerFragmentMap.getDateFilter02(),
+                drawerFragmentMap.isCheckBook(),String.valueOf(drawerFragmentMap.getRating()),drawerFragmentMap.isCheck04());
         showCursor = mapPageQuery.showConsIndiWhereFilter02(state01,state02);
         //int C = showCursor.getCount();
         //int D = showCursor.getColumnCount();
@@ -223,8 +223,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         drawerFragmentMap.imgFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                state01 = String.valueOf(drawerFragmentMap.SeekProgress01);
-                state02 = String.valueOf(drawerFragmentMap.SeekProgress02);
+                state01 = String.valueOf(drawerFragmentMap.getSeekProgress01());
+                state02 = String.valueOf(drawerFragmentMap.getSeekProgress02());
                 showOnMap();
             }
         });

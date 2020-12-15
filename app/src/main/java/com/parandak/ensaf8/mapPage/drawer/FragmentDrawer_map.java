@@ -53,11 +53,11 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     String DateFilter01,DateFilter02;
     boolean btnDateFilter01_Isclick;
     RatingBar ratingBarFilter;
-    public boolean isCheck01  = false;
-    public boolean isCheck02  = false;
-    public boolean isCheck03  = false;
-    public boolean isCheck04  = false;
-    public boolean isCheckBook  = false;
+    private boolean isCheck01  = false;
+    private boolean isCheck02  = false;
+    private boolean isCheck03  = false;
+    private boolean isCheck04  = false;
+    private boolean isCheckBook  = false;
     String fa_date01 = "1399-07-01",fa_date02 = "1399-08-27" ;
     int [] seekProgress = new int[]{SeekProgress01,SeekProgress02};
     List<ConsState> consStateList = new ArrayList<>();
@@ -87,6 +87,15 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
 
     public void setProgressOn02(int p){
         seekBar02.setProgress(p);
+    }
+
+
+    public int getSeekProgress01() {
+        return SeekProgress01;
+    }
+
+    public int getSeekProgress02() {
+        return SeekProgress02;
     }
 
     public void setDateFilter01 (String date01){
@@ -136,6 +145,26 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     public void setCheckBoxBook(Boolean isCheckBook){
         this.isCheckBook = isCheckBook;
         checkBoxBook.setChecked(isCheckBook);
+    }
+
+    public boolean isCheck01() {
+        return isCheck01;
+    }
+
+    public boolean isCheck02() {
+        return isCheck02;
+    }
+
+    public boolean isCheck03() {
+        return isCheck03;
+    }
+
+    public boolean isCheck04() {
+        return isCheck04;
+    }
+
+    public boolean isCheckBook() {
+        return isCheckBook;
     }
 
     @Override
