@@ -14,6 +14,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
 import com.parandak.ensaf8.dataBase.model_Indivi.Rating;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
+import com.parandak.ensaf8.mapPage.drawer.FragmentDrawer_map;
 
 public class MapPageQuery {
     private final String TAG = this.getClass().getSimpleName();
@@ -227,10 +228,78 @@ public class MapPageQuery {
                 + whereStmt
                 + " GROUP BY " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons
                 + " ORDER BY " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lat + "," + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lon + " ASC ";
-
-        Cursor cursor = db.rawQuery(showQuery, null);
-        return cursor;
+        return db.rawQuery(showQuery, null);
     }//TODO use string builders for queries
+
+    public Cursor showConsIndiWhereFilter02(FragmentDrawer_map fragmentDrawer_map){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String whereStmt = "";
+        String innerJoinStmt = "";
+        if(fragmentDrawer_map.isCheck01() && !fragmentDrawer_map.isCheck03()){
+            if(fragmentDrawer_map.isCheck04()){
+                whereStmt = " WHERE " + "(" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
+                        " BETWEEN " + fragmentDrawer_map.getSeekProgress01() +" and  " + fragmentDrawer_map.getSeekProgress02() + ") and (" + Rating.TABLE + "." + Rating.KEY_Rate + "=" + rate + ")";
+            }else{
+                whereStmt = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
+                        " BETWEEN " + fragmentDrawer_map.getSeekProgress01() +" and  " + fragmentDrawer_map.getSeekProgress02();
+            }
+        }else if(fragmentDrawer_map.isCheck03() && !fragmentDrawer_map.isCheck01()){
+            if (fragmentDrawer_map.isCheck04()){
+                whereStmt = " WHERE " + "(" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
+                        " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "'";
+            }else {
+                whereStmt = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
+                        " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "'";
+            }
+        }else if (fragmentDrawer_map.isCheck03() && fragmentDrawer_map.isCheck01()){
+            if (fragmentDrawer_map.isCheck04()){
+                whereStmt = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
+                        " BETWEEN " + fragmentDrawer_map.getSeekProgress01() +" and  " + fragmentDrawer_map.getSeekProgress02() +" ) and (" +
+                        CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
+                        " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "')and (" + Rating.TABLE + "." + Rating.KEY_Rate + "=" + rate + ")";
+            }else {
+                whereStmt = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
+                        " BETWEEN " + fragmentDrawer_map.getSeekProgress01() +" and  " + fragmentDrawer_map.getSeekProgress02() +" ) and (" +
+                        CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
+                        " BETWEEN " + "'" + date01 + "'" +" and  " + "'" + date02 + "')";
+            }
+        }else if(fragmentDrawer_map.isCheck04()){
+            whereStmt = " WHERE " + Rating.TABLE + "." + Rating.KEY_Rate + "=" + rate ;
+        }
+        if(fragmentDrawer_map.isCheck02()){
+            innerJoinStmt = " INNER JOIN " + Tend.TABLE
+                    + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + Tend.TABLE +"."+ Tend.KEY_Ind2ID;
+            //if(tendTitle != null){
+            //  stmt01 = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " BETWEEN " + state01 +" and  " + state02 + ") and " + Tend.TABLE + "." +Tend.KEY_Title + " LIKE '" + tendTitle + "'";
+            //}
+        }
+        if(fragmentDrawer_map.isCheckBook()){
+            innerJoinStmt = " INNER JOIN " + BookMark.TABLE
+                    + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + BookMark.TABLE +"."+ BookMark.KEY_IndID;
+            //if(tendTitle != null){
+            //  stmt01 = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " BETWEEN " + state01 +" and  " + state02 + ") and " + Tend.TABLE + "." +Tend.KEY_Title + " LIKE '" + tendTitle + "'";
+            //}
+        }
+        if(fragmentDrawer_map.isCheck04()){
+            innerJoinStmt = innerJoinStmt + " INNER JOIN " + Rating.TABLE
+                    + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + Rating.TABLE +"."+ Rating.KEY_IndID;
+        }
+        String showQuery = " SELECT "
+                + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + ","
+                + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_consName + ","
+                + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lat + ","
+                + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lon + ","
+                + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + ","
+                + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate
+                + " FROM " + CreateViews.Construction.VIEW
+                + " INNER JOIN " + CreateViews.LastUpConsInd.VIEW
+                + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_ID_cons
+                + innerJoinStmt
+                + whereStmt
+                + " GROUP BY " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons
+                + " ORDER BY " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lat + "," + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lon + " ASC ";
+        return db.rawQuery(showQuery, null);
+    }
 
     public String getGeopID(String IndiID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
