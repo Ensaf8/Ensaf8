@@ -208,15 +208,9 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             showOnboarding();
         }
     }////End of onCreate
-    public void showOnMap(){//TODO someImpro for MAP Query
-        MapPageQuery mapPageQuery = new MapPageQuery(drawerFragmentMap.isCheck01(),drawerFragmentMap.isCheck02(),"",
-                drawerFragmentMap.isCheck03(),drawerFragmentMap.getDateFilter01(),drawerFragmentMap.getDateFilter02(),
-                drawerFragmentMap.isCheckBook(),String.valueOf(drawerFragmentMap.getRating()),drawerFragmentMap.isCheck04());
-        //showCursor = mapPageQuery.showConsIndiWhereFilter02(state01,state02);
+    public void showOnMap(){
+        MapPageQuery mapPageQuery = new MapPageQuery();
         showCursor = mapPageQuery.showConsIndiWhereFilter02(drawerFragmentMap);
-        //int C = showCursor.getCount();
-        //int D = showCursor.getColumnCount();
-        //Toast.makeText(context,"showAllRecord =" + C + "  showAllColumn =" + D , Toast.LENGTH_LONG).show();
         drawerLayoutMap.closeDrawer(GravityCompat.START);
         showAllWaypoints(showCursor);
     }
