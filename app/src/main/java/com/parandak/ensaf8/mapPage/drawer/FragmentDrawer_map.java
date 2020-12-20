@@ -185,6 +185,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         checkBox03.setChecked(isCheck03);
         checkBox04 = view.findViewById(R.id.checkBoxFilter04);
         checkBox04.setChecked(isCheck04);
+        initSpinner(view);
         map_drawer_container = view.findViewById(R.id.map_drawer_container);
         map_drawer_container.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -470,6 +471,30 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
             DateFilter02 = finalResult;
         }
 
+    }
+
+    private void initSpinner(View view){
+        List<BookMarkType> bookMarkTypes = new ArrayList<>();
+        BookMarkType bookMarkType = new BookMarkType();
+        bookMarkType.setId("1");
+        bookMarkType.setTitle("Blur");
+        bookMarkTypes.add(bookMarkType);
+        bookMarkType = new BookMarkType();
+        bookMarkType.setId("2");
+        bookMarkType.setTitle("NFS");
+        bookMarkTypes.add(bookMarkType);
+        bookMarkType = new BookMarkType();
+        bookMarkType.setId("3");
+        bookMarkType.setTitle("Burnout");
+        bookMarkTypes.add(bookMarkType);
+        bookMarkType = new BookMarkType();
+        bookMarkType.setId("4");
+        bookMarkType.setTitle("Blur");
+        bookMarkTypes.add(bookMarkType);
+        final MultiSelectionSpinner spinner = (MultiSelectionSpinner) view.findViewById(R.id.spinner);
+        //
+        //spinner.setItems(spinnerValues);
+        spinner.setItems(bookMarkTypes);
     }
 
 }
