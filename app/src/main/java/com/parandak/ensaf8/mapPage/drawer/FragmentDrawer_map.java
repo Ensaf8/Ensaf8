@@ -31,6 +31,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dateAndReminder.AddReminderDialouge;
 import com.parandak.ensaf8.dateAndReminder.PersianCalendarAli;
 import com.parandak.ensaf8.homePage.adapter.NavigationDrawerAdapter;
+import com.parandak.ensaf8.mapPage.MapPageQuery;
 import com.parandak.ensaf8.mapPage.model.ConsState;
 
 import java.util.ArrayList;
@@ -475,27 +476,8 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     }
 
     private void initSpinner(View view){
-        List<BookMarkType> bookMarkTypes = new ArrayList<>();
-        BookMarkType bookMarkType = new BookMarkType();
-        bookMarkType.setId("1");
-        bookMarkType.setTitle("Blur");
-        bookMarkTypes.add(bookMarkType);
-        bookMarkType = new BookMarkType();
-        bookMarkType.setId("2");
-        bookMarkType.setTitle("NFS");
-        bookMarkTypes.add(bookMarkType);
-        bookMarkType = new BookMarkType();
-        bookMarkType.setId("3");
-        bookMarkType.setTitle("Burnout");
-        bookMarkTypes.add(bookMarkType);
-        bookMarkType = new BookMarkType();
-        bookMarkType.setId("4");
-        bookMarkType.setTitle("Blur");
-        bookMarkTypes.add(bookMarkType);
-        final MultiSelectionSpinner spinner = (MultiSelectionSpinner) view.findViewById(R.id.spinner);
-        //
-        //spinner.setItems(spinnerValues);
-        spinner.setItems(bookMarkTypes);
+        MultiSelectionSpinner spinner = (MultiSelectionSpinner) view.findViewById(R.id.spinner);
+        spinner.setItems(new MapPageQuery().getBookMarkTypeList());
     }
 
 }

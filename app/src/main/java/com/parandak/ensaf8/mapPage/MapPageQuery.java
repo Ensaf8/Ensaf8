@@ -16,6 +16,9 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Rating;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 import com.parandak.ensaf8.mapPage.drawer.FragmentDrawer_map;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MapPageQuery {
     private final String TAG = this.getClass().getSimpleName();
     public MapPageQuery() {
@@ -89,7 +92,7 @@ public class MapPageQuery {
         //cursor.close();
         //DatabaseManager.getInstance().closeDatabase();
         return cursor;
-    }//TODO clear useless codes.
+    }//TODO clear useless codes. make decision about MapPageQuery & BookMarkPageQuery
     public Cursor consPhase(String indiID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = " SELECT "
@@ -230,5 +233,28 @@ public class MapPageQuery {
         }else {
             return "error";
         }
+    }
+    public List<BookMarkType> getBookMarkTypeList(){
+        List<BookMarkType> bookMarkTypeList = new ArrayList<>();
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = " SELECT "
+                + BookMarkType.KEY_ID + ","
+                + BookMarkType.KEY_TITLE
+                + " FROM " + BookMarkType.TABLE;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()){
+            bookMarkTypeList.clear();
+            BookMarkType bookMarkType;
+            do{
+                bookMarkType = new BookMarkType();
+                bookMarkType.setId(cursor.getString(0));
+                bookMarkType.setTitle(cursor.getString(1));
+                bookMarkTypeList.add(bookMarkType);
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        DatabaseManager.getInstance().closeDatabase();
+        return bookMarkTypeList;
     }
 }
