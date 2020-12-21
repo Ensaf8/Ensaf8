@@ -179,7 +179,9 @@ public class MapPageQuery {
         }
         if(fragmentDrawer_map.isCheckBook()){
             innerJoinStmt = " INNER JOIN " + BookMark.TABLE
-                    + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + BookMark.TABLE +"."+ BookMark.KEY_IndID;
+                    + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + BookMark.TABLE +"."+ BookMark.KEY_IndID
+                    + " WHERE " + BookMark.TABLE + "." + BookMark.KEY_B_TYPE_ID + " IN "
+                    + fragmentDrawer_map.getSelectedBookTypeID();
         }
         if(fragmentDrawer_map.isCheck04()){
             innerJoinStmt = innerJoinStmt + " INNER JOIN " + Rating.TABLE
