@@ -191,7 +191,6 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
     }
     public String getSelectedItemsAsStringID() {
         StringBuilder sb = new StringBuilder();
-        selectFirstItem();
         boolean foundOne = false;
         sb.append("(");
         for (int i = 0; i < bookMarkTypeList.size(); ++i) {
