@@ -138,54 +138,48 @@ public class MapPageQuery {
         Cursor cursor = db.rawQuery(showQuery, null);
         return cursor;
     }
-    public Cursor showConsIndiWhereFilter02(FragmentDrawer_map fragmentDrawer_map){//TODO Resolve where statement (whereStmt)
+    public Cursor showConsIndiWhereFilter02(FragmentDrawer_map fragmentDrawer_map){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String whereStmt = "";
+        int i = 0;
         String innerJoinStmt = "";
-        if(fragmentDrawer_map.isCheck01() && !fragmentDrawer_map.isCheck03()){
-            if(fragmentDrawer_map.isCheck04()){
-                whereStmt = " WHERE " + "(" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
-                        " BETWEEN " + fragmentDrawer_map.getSeekProgress01() +" and  " + fragmentDrawer_map.getSeekProgress02() + ") and (" + Rating.TABLE + "." + Rating.KEY_Rate + "=" + fragmentDrawer_map.getRating() + ")";
-            }else{
-                whereStmt = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
-                        " BETWEEN " + fragmentDrawer_map.getSeekProgress01() +" and  " + fragmentDrawer_map.getSeekProgress02();
-            }
-        }else if(fragmentDrawer_map.isCheck03() && !fragmentDrawer_map.isCheck01()){
-            if (fragmentDrawer_map.isCheck04()){
-                whereStmt = " WHERE " + "(" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
-                        " BETWEEN " + "'" + fragmentDrawer_map.getDateFilter01() + "'" +" and  " + "'" + fragmentDrawer_map.getDateFilter02() + "'";
-            }else {
-                whereStmt = " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
-                        " BETWEEN " + "'" + fragmentDrawer_map.getDateFilter01() + "'" +" and  " + "'" + fragmentDrawer_map.getDateFilter02() + "'";
-            }
-        }else if (fragmentDrawer_map.isCheck03() && fragmentDrawer_map.isCheck01()){
-            if (fragmentDrawer_map.isCheck04()){
-                whereStmt = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
-                        " BETWEEN " + fragmentDrawer_map.getSeekProgress01() +" and  " + fragmentDrawer_map.getSeekProgress02() +" ) and (" +
-                        CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
-                        " BETWEEN " + "'" + fragmentDrawer_map.getDateFilter01() + "'" +" and  " + "'" + fragmentDrawer_map.getDateFilter02() + "')and (" + Rating.TABLE + "." + Rating.KEY_Rate + "=" + fragmentDrawer_map.getRating() + ")";
-            }else {
-                whereStmt = " WHERE (" + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
-                        " BETWEEN " + fragmentDrawer_map.getSeekProgress01() +" and  " + fragmentDrawer_map.getSeekProgress02() +" ) and (" +
-                        CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
-                        " BETWEEN " + "'" + fragmentDrawer_map.getDateFilter01() + "'" +" and  " + "'" + fragmentDrawer_map.getDateFilter02() + "')";
-            }
-        }else if(fragmentDrawer_map.isCheck04()){
-            whereStmt = " WHERE " + Rating.TABLE + "." + Rating.KEY_Rate + "=" + fragmentDrawer_map.getRating() ;
+        if (fragmentDrawer_map.isCheck01()){
+            i++;
+            whereStmt = whereStmt + " WHERE " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase +
+                    " BETWEEN " + fragmentDrawer_map.getSeekProgress01() +" and  " + fragmentDrawer_map.getSeekProgress02();
         }
-        if(fragmentDrawer_map.isCheck02()){
-            innerJoinStmt = " INNER JOIN " + Tend.TABLE
-                    + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + Tend.TABLE +"."+ Tend.KEY_Ind2ID;
-        }
-        if(fragmentDrawer_map.isCheckBook()){
-            innerJoinStmt = " INNER JOIN " + BookMark.TABLE
-                    + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + BookMark.TABLE +"."+ BookMark.KEY_IndID
-                    + " WHERE " + BookMark.TABLE + "." + BookMark.KEY_B_TYPE_ID + " IN "
-                    + fragmentDrawer_map.getSelectedBookTypeID();
+        //if(fragmentDrawer_map.isCheck02()){//TODO add check02
+            //innerJoinStmt = " INNER JOIN " + Tend.TABLE
+                    //+ " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + Tend.TABLE +"."+ Tend.KEY_Ind2ID;
+        //}
+        if (fragmentDrawer_map.isCheck03()){
+            String a = " WHERE ";
+            if (i>0){
+                a = " AND ";
+            }
+            i++;
+            whereStmt = whereStmt + a + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate +
+                    " BETWEEN " + "'" + fragmentDrawer_map.getDateFilter01() + "'" +" and  " + "'" + fragmentDrawer_map.getDateFilter02() + "'";
         }
         if(fragmentDrawer_map.isCheck04()){
             innerJoinStmt = innerJoinStmt + " INNER JOIN " + Rating.TABLE
                     + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + Rating.TABLE +"."+ Rating.KEY_IndID;
+            String a = " WHERE ";
+            if (i>0){
+                a = " AND ";
+            }
+            i++;
+            whereStmt = whereStmt + a  + Rating.TABLE + "." + Rating.KEY_Rate + "=" + fragmentDrawer_map.getRating() ;
+        }
+        if(fragmentDrawer_map.isCheckBook()){
+            innerJoinStmt = innerJoinStmt + " INNER JOIN " + BookMark.TABLE
+                    + " ON " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + BookMark.TABLE +"."+ BookMark.KEY_IndID;
+            String a = " WHERE ";
+            if (i>0){
+                a = " AND ";
+            }
+            whereStmt = whereStmt + a + BookMark.TABLE + "." + BookMark.KEY_B_TYPE_ID + " IN "
+                    + fragmentDrawer_map.getSelectedBookTypeID();
         }
         String showQuery = " SELECT "
                 + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + ","
