@@ -5,8 +5,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -478,6 +480,13 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     private void initSpinner(View view){
         MultiSelectionSpinner spinner = (MultiSelectionSpinner) view.findViewById(R.id.spinner);
         spinner.setItems(new MapPageQuery().getBookMarkTypeList());
+        spinner.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                checkBoxBook.setChecked(true);
+                return false;
+            }
+        });
     }
 
 }
