@@ -52,6 +52,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     SeekBar seekBar01;
     SeekBar seekBar02;
     CheckBox checkBox01,checkBox02,checkBox03,checkBox04,checkBoxBook;
+    MultiSelectionSpinner spinner;
     EditText ediFilterTend;
     Button btnDateFilter01,btnDateFilter02;
     String DateFilter01,DateFilter02;
@@ -478,10 +479,9 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     }
 
     private void initSpinner(View view){
-        MultiSelectionSpinner spinner = (MultiSelectionSpinner) view.findViewById(R.id.spinner);
+        spinner = (MultiSelectionSpinner) view.findViewById(R.id.spinner);
         spinner.setItems(new MapPageQuery().getBookMarkTypeList());
         spinner.selectFirstItem();//Important
-        //spinner.getSelectedItemsAsStringID();
         spinner.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -489,6 +489,9 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
                 return false;
             }
         });
+    }
+    public String getSelectedBookTypeID(){
+        return spinner.getSelectedItemsAsStringID();
     }
 
 }
