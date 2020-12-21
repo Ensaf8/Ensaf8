@@ -138,7 +138,7 @@ public class MapPageQuery {
         Cursor cursor = db.rawQuery(showQuery, null);
         return cursor;
     }
-    public Cursor showConsIndiWhereFilter02(FragmentDrawer_map fragmentDrawer_map){
+    public Cursor showConsIndiWhereFilter02(FragmentDrawer_map fragmentDrawer_map){//TODO Resolve where statement (whereStmt)
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String whereStmt = "";
         String innerJoinStmt = "";
