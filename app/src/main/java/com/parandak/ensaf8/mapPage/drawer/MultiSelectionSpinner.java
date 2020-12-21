@@ -8,6 +8,8 @@ import android.widget.SpinnerAdapter;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
