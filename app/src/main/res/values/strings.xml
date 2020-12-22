@@ -20,7 +20,7 @@
     <string name="nav_item_map">CheckNet</string>
     <string name="nav_item_bookMark">BookMarks</string>
     <string name="nav_item_insertIndivi">InsertIndividual</string>
-    <string name="nav_item_export">Export</string>
+    <string name="nav_item_export">CreatReport!</string>
     <string name="nav_item_import">Import</string>
 
 

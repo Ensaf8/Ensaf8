@@ -102,7 +102,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
     }
 
     public static String ID_CONNECT_Indi1;
-    String mimeType = "text/xml";
+    String mimeType = "text/txt";
     ProgressDialog progressDialog;
     String Filename;
     public static final int REQUEST_CODE_OPEN_DIRECTORY = 123;
@@ -157,7 +157,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
         headerinit(c);
         SimpleDateFormat df = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
         String formattedDate = df.format(c);
-        Filename = "backUp " + formattedDate;
+        Filename = "REPORT : " + formattedDate;
         sessionManaging();
 
     }///end of on create
@@ -468,7 +468,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                 break;
             case 3:
                 createFile(mimeType,Filename);
-                Toast.makeText(getApplicationContext(), "Exporting", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "creating REPORT !", Toast.LENGTH_SHORT).show();
                 break;
             case 4:
                 Intent intent01 = new Intent()
@@ -984,7 +984,8 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
 
             final EnsafQueryExport ensafQueryExport = new EnsafQueryExport();
             final Uri treeUri = data.getData();
-            alterDocument(treeUri,ensafQueryExport.exportQuery());
+            //alterDocument(treeUri,ensafQueryExport.exportQuery());
+            alterDocument(treeUri,"TEST REPORT ! ! !");
         }
     }
     private class AsyncTaskExample extends AsyncTask<Uri, String, List<wpt>> {
