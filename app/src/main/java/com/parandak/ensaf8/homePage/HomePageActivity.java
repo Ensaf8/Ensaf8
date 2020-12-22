@@ -985,7 +985,8 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
             final EnsafQueryExport ensafQueryExport = new EnsafQueryExport();
             final Uri treeUri = data.getData();
             //alterDocument(treeUri,ensafQueryExport.exportQuery());
-            alterDocument(treeUri,"TEST REPORT ! ! !");
+            //alterDocument(treeUri,"TEST REPORT ! ! !");
+            alterDocument(treeUri,ensafQueryExport.dailyReport());
         }
     }
     private class AsyncTaskExample extends AsyncTask<Uri, String, List<wpt>> {

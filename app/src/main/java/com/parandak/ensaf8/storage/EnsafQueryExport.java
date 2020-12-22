@@ -2,6 +2,7 @@ package com.parandak.ensaf8.storage;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.ContactsContract;
 
 import com.parandak.ensaf8.dataBase.DatabaseManager;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
@@ -12,6 +13,18 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
 import com.parandak.ensaf8.dataBase.model_Indivi.PhoneNum;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
+import com.parandak.ensaf8.homePage.HomePageQuery;
+import com.parandak.ensaf8.homePage.model.TaskHomePage;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getPersianDate;
+import static com.parandak.ensaf8.homePage.HomePageActivity.ID_CONNECT_Indi1;
 
 
 public class EnsafQueryExport {
@@ -158,5 +171,42 @@ public class EnsafQueryExport {
         Ensaf.insert(7,XMLall0000);
         XMLensaf0.append(Ensaf);
         return XMLensaf0.toString();
+    }
+    public String dailyReport(){
+        Date c = Calendar.getInstance().getTime();
+        HomePageQuery homePageQuery = new HomePageQuery();
+        Cursor homePageTaskCusor =  homePageQuery.getTask(ID_CONNECT_Indi1,getDate01Daily(c),getDate02Daily(c));
+
+        StringBuilder report = new StringBuilder();
+
+        if (homePageTaskCusor.getCount() >= 0 ){
+            if (homePageTaskCusor.moveToFirst()){
+                do{
+                    String g_date = homePageTaskCusor.getString(4);
+                    String [] arrOfFomattedDate = g_date.split(" ",2);
+                    String [] arrOfGreDate = arrOfFomattedDate[0].split("-",3);
+                    report.append("   \n " + homePageTaskCusor.getString(1) +
+                            " \n " + homePageTaskCusor.getString(2) +
+                            " \n " + homePageTaskCusor.getString(3) +
+                            " \n " + getPersianDate(Integer.valueOf(arrOfGreDate[0]), Integer.valueOf(arrOfGreDate[1]), Integer.valueOf(arrOfGreDate[2])));
+                    report.append(" \n ");
+                }while (homePageTaskCusor.moveToNext());
+            }
+        } else {
+            report = new StringBuilder("error!");
+        }
+    return report.toString();
+    }
+    private String getDate01Daily(Date date){//TODO unify all Time Classes and Method
+        Calendar c = new GregorianCalendar();
+        c.setTime(date);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return df.format(date) + " 00:00";
+    }
+    private String getDate02Daily(Date date){
+        Calendar c = new GregorianCalendar();
+        c.setTime(date);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return df.format(date) + " 23:59";
     }
 }
