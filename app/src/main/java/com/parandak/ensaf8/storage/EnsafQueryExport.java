@@ -181,10 +181,12 @@ public class EnsafQueryExport {
 
         if (homePageTaskCusor.getCount() >= 0 ){
             if (homePageTaskCusor.moveToFirst()){
+                int i = 1;
                 do{
                     String g_date = homePageTaskCusor.getString(4);
                     String [] arrOfFomattedDate = g_date.split(" ",2);
                     String [] arrOfGreDate = arrOfFomattedDate[0].split("-",3);
+                    report.append(" \n " + i++ + ":");
                     report.append("   \n " + homePageTaskCusor.getString(1) +
                             " \n " + homePageTaskCusor.getString(2) +
                             " \n " + homePageTaskCusor.getString(3) +
