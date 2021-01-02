@@ -97,6 +97,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.parandak.ensaf8.dataBase.DataContract.dateFormat;
 import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getPersianDate;
 import static com.parandak.ensaf8.homePage.HomePageActivity.isConnected;
 
@@ -845,7 +846,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 isSingle = false;
                 button_edit.setText("Insert");
                 Date c = Calendar.getInstance().getTime();
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
+                SimpleDateFormat df = new SimpleDateFormat(dateFormat);
                 String formattedDate = df.format(c);
                 statusdate = formattedDate;
                 bottom_sheet_status_data.setText("Now : " + formattedDate);
@@ -1075,7 +1076,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         isSingle = true;
         /////////
         Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat(dateFormat);
         String formattedDate = df.format(c);
         statusdate = formattedDate;
 
