@@ -359,6 +359,10 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         consStateList.add(consState);
         consState = new ConsState();
         consState.setDrawable(R.drawable.ic_mblue2);
+        consState.setState("شروع اسکلت");
+        consStateList.add(consState);
+        consState = new ConsState();
+        consState.setDrawable(R.drawable.ic_mblue22);
         consState.setState("اجرای اسکلت");
         consStateList.add(consState);
         consState = new ConsState();
