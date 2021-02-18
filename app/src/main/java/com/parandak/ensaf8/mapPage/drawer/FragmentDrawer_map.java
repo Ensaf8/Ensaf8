@@ -402,6 +402,10 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         consStateList.add(consState);
         consState = new ConsState();
         consState.setDrawable(R.drawable.ic_mblue2);
+        consState.setState("شروع اسکلت");
+        consStateList.add(consState);
+        consState = new ConsState();
+        consState.setDrawable(R.drawable.ic_mblue22);
         consState.setState("اجرای اسکلت");
         consStateList.add(consState);
         consState = new ConsState();
