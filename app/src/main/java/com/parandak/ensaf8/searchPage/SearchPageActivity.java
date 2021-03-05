@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import static com.parandak.ensaf8.homePage.HomePageActivity.ID_CONNECT_Indi1;
 
 public class SearchPageActivity extends BaseActivity {
+    private final String TAG = this.getClass().getSimpleName();
     @Override
     public int getContentViewId() {
         return R.layout.activity_search_page;
@@ -64,6 +65,7 @@ public class SearchPageActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_search_page);
+        Toast.makeText(getBaseContext(), TAG + " : onCreate" , Toast.LENGTH_SHORT).show();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarsearch);
 
         setSupportActionBar(toolbar);
@@ -77,6 +79,19 @@ public class SearchPageActivity extends BaseActivity {
         floatinB();
         getCustomer();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Toast.makeText(getBaseContext(), TAG + " : onStart" , Toast.LENGTH_SHORT).show();
+    }
+
+    // Remove inter-activity transition to avoid screen tossing on tapping bottom navigation items
+    @Override
+    public void onPause() {
+        super.onPause();
+        Toast.makeText(getBaseContext(), TAG + " : onPause" , Toast.LENGTH_SHORT).show();
     }
 
     private void positionPromts(View view, int position){

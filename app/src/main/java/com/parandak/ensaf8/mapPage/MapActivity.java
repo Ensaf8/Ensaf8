@@ -184,6 +184,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     @Override
     protected void onCreate(Bundle savedInstanceState){
         Log.d("ensaf::::::::", TAG + "> onCreate ");
+        Toast.makeText(getBaseContext(), TAG + " : onCreate" , Toast.LENGTH_SHORT).show();
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         itemIdBefore = intent.getIntExtra("itemIdBefore",R.id.navigation_home);
@@ -907,12 +908,13 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onStart() {
         super.onStart();
-        //Toast.makeText(this,"onStart " , Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), TAG + " : onStart" , Toast.LENGTH_SHORT).show();
 
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onResume() {
         super.onResume();
+        Toast.makeText(getBaseContext(), TAG + " : onResume" , Toast.LENGTH_SHORT).show();
         if(mPermissionsGranted){
             bottomRVAdapter.notifyDataSetChanged();
             mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -929,7 +931,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onPause() {
         super.onPause();
-        //Toast.makeText(this,"onPause " , Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), TAG + " : onPause" , Toast.LENGTH_SHORT).show();
         if(map != null) {
             //this will refresh the osmdroid configuration on resuming.
             //if you make changes to the configuration, use
@@ -944,18 +946,18 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }
     public void onStop() {
         super.onStop();
-        //Toast.makeText(this,"onStop " , Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), TAG + " : onStop" , Toast.LENGTH_SHORT).show();
     }
     public void onRestart() {
         super.onRestart();
         //customerAdapter.notifyDataSetChanged();
         bottomRVAdapter.notifyDataSetChanged();
         hideKeyboard();
-        //Toast.makeText(this,"onRestart " , Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), TAG + " : onRestart" , Toast.LENGTH_SHORT).show();
     }
     public void onDestroy() {
         super.onDestroy();
-        //Toast.makeText(this,"onDestroy " , Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), TAG + " : onDestroy" , Toast.LENGTH_SHORT).show();
     }
     ///####permission Staff
     /* Check which permissions have been granted */

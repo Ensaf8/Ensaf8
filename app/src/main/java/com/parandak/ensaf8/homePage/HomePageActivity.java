@@ -138,6 +138,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Toast.makeText(getBaseContext(), TAG + " : onCreate" , Toast.LENGTH_SHORT).show();
         //setContentView(R.layout.activity_home);
         Intent intent = getIntent();
         itemIdBefore = intent.getIntExtra("itemIdBefore",R.id.navigation_home);
@@ -161,6 +162,19 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
         sessionManaging();
 
     }///end of on create
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Toast.makeText(getBaseContext(), TAG + " : onStart" , Toast.LENGTH_SHORT).show();
+    }
+
+    // Remove inter-activity transition to avoid screen tossing on tapping bottom navigation items
+    @Override
+    public void onPause() {
+        super.onPause();
+        Toast.makeText(getBaseContext(), TAG + " : onPause" , Toast.LENGTH_SHORT).show();
+    }
 
     private void checkConnection() {
         boolean isConnected = ConnectivityReceiver.isConnected();

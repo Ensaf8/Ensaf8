@@ -18,7 +18,7 @@ import com.parandak.ensaf8.searchPage.SearchPageActivity;
 public abstract class BaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     protected BottomNavigationView navigationView;
-
+    private final String TAG = this.getClass().getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,11 +26,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
         navigationView = (BottomNavigationView) findViewById(R.id.navigation);
         navigationView.setOnNavigationItemSelectedListener(this);
+        Toast.makeText(getBaseContext(), TAG + " : onCreate" , Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Toast.makeText(getBaseContext(), TAG + " : onStart" , Toast.LENGTH_SHORT).show();
         updateNavigationBarState();
     }
 
@@ -38,6 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     @Override
     public void onPause() {
         super.onPause();
+        Toast.makeText(getBaseContext(), TAG + " : onPause" , Toast.LENGTH_SHORT).show();
         overridePendingTransition(0, 0);
     }
 
