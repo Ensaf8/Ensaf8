@@ -102,7 +102,7 @@ import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getPersianD
 import static com.parandak.ensaf8.homePage.HomePageActivity.isConnected;
 
 public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnItemGestureListener<OverlayItem> {
-    private final String TAG = this.getClass().getSimpleName();
+    public final String TAG = this.getClass().getSimpleName();
 
     @Override
     public int getContentViewId() {
@@ -183,11 +183,13 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     String state02 = "6";
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        Log.d("ensaf::::::::", TAG + "> onCreate ");
-        Toast.makeText(getBaseContext(), TAG + " : onCreate" , Toast.LENGTH_SHORT).show();
+
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         itemIdBefore = intent.getIntExtra("itemIdBefore",R.id.navigation_home);
+        Bundle extras = intent.getBundleExtra("MapPageBundle");
+        Log.d("ensaf::::::::", TAG + "> onCreate INTENT extraBundle : " + extras.getString("NAME"));
+        Toast.makeText(getBaseContext(), TAG + " : onCreate" , Toast.LENGTH_SHORT).show();
         hideKeyboard();
         checkExternalStorageState();
         checkAndroid6 ();
@@ -914,6 +916,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onResume() {
         super.onResume();
+        Log.d("ensaf::::::::", TAG + "> onResume ");
         Toast.makeText(getBaseContext(), TAG + " : onResume" , Toast.LENGTH_SHORT).show();
         if(mPermissionsGranted){
             bottomRVAdapter.notifyDataSetChanged();
@@ -931,6 +934,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onPause() {
         super.onPause();
+        Log.d("ensaf::::::::", TAG + "> onPause ");
         Toast.makeText(getBaseContext(), TAG + " : onPause" , Toast.LENGTH_SHORT).show();
         if(map != null) {
             //this will refresh the osmdroid configuration on resuming.
@@ -946,6 +950,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }
     public void onStop() {
         super.onStop();
+        Log.d("ensaf::::::::", TAG + "> onStop ");
         Toast.makeText(getBaseContext(), TAG + " : onStop" , Toast.LENGTH_SHORT).show();
     }
     public void onRestart() {
@@ -953,10 +958,12 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         //customerAdapter.notifyDataSetChanged();
         bottomRVAdapter.notifyDataSetChanged();
         hideKeyboard();
+        Log.d("ensaf::::::::", TAG + "> onRestart ");
         Toast.makeText(getBaseContext(), TAG + " : onRestart" , Toast.LENGTH_SHORT).show();
     }
     public void onDestroy() {
         super.onDestroy();
+        Log.d("ensaf::::::::", TAG + "> onDestroy ");
         Toast.makeText(getBaseContext(), TAG + " : onDestroy" , Toast.LENGTH_SHORT).show();
     }
     ///####permission Staff

@@ -2,6 +2,7 @@ package com.parandak.ensaf8.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -18,7 +19,7 @@ import com.parandak.ensaf8.searchPage.SearchPageActivity;
 public abstract class BaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     protected BottomNavigationView navigationView;
-    private final String TAG = this.getClass().getSimpleName();
+    public final String TAG = this.getClass().getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,13 +27,15 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
         navigationView = (BottomNavigationView) findViewById(R.id.navigation);
         navigationView.setOnNavigationItemSelectedListener(this);
-        Toast.makeText(getBaseContext(), TAG + " : onCreate" , Toast.LENGTH_SHORT).show();
+        Log.d("ensaf::::::::", TAG + "> onCreate Base ");
+        Toast.makeText(getBaseContext(), TAG + " : onCreate Base" , Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Toast.makeText(getBaseContext(), TAG + " : onStart" , Toast.LENGTH_SHORT).show();
+        Log.d("ensaf::::::::", TAG + "> onStart Base");
+        Toast.makeText(getBaseContext(), TAG + " : onStart Base" , Toast.LENGTH_SHORT).show();
         updateNavigationBarState();
     }
 
@@ -40,8 +43,31 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     @Override
     public void onPause() {
         super.onPause();
-        Toast.makeText(getBaseContext(), TAG + " : onPause" , Toast.LENGTH_SHORT).show();
+        Log.d("ensaf::::::::", TAG + "> onPause Base");
+        Toast.makeText(getBaseContext(), TAG + " : onPause Base" , Toast.LENGTH_SHORT).show();
         overridePendingTransition(0, 0);
+    }
+
+    public void onResume() {
+        super.onResume();
+        Log.d("ensaf::::::::", TAG + "> onResume Base");
+        Toast.makeText(getBaseContext(), TAG + " : onResume Base" , Toast.LENGTH_SHORT).show();
+    }
+
+    public void onStop() {
+        super.onStop();
+        Log.d("ensaf::::::::", TAG + "> onStop Base");
+        Toast.makeText(getBaseContext(), TAG + " : onStop Base" , Toast.LENGTH_SHORT).show();
+    }
+    public void onRestart() {
+        super.onRestart();
+        Log.d("ensaf::::::::", TAG + "> onRestart Base");
+        Toast.makeText(getBaseContext(), TAG + " : onRestart Base" , Toast.LENGTH_SHORT).show();
+    }
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("ensaf::::::::", TAG + "> onDestroy Base");
+        Toast.makeText(getBaseContext(), TAG + " : onDestroy Base" , Toast.LENGTH_SHORT).show();
     }
 
 
@@ -68,6 +94,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                         }else {
                             Intent intentMap = new Intent(BaseActivity.this, MapActivity.class);
                             intentMap.putExtra("itemIdBefore",getNavigationMenuItemId());
+                            Bundle bundle = new Bundle();
+                            bundle.putString("NAME","MAP PAGE! from Base!");
+                            intentMap.putExtra("MapPageBundle",bundle);
                             BaseActivity.this.startActivity(intentMap);
                         }
                     }

@@ -195,7 +195,7 @@ public class MapPageQuery {
                 + whereStmt
                 + " GROUP BY " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons
                 + " ORDER BY " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lat + "," + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lon + " ASC ";
-        Log.d("ensaf::::::::", TAG + ">showConsIndiWhereFilter02 >showQuery : " + showQuery );
+        //Log.d("ensaf::::::::", TAG + ">showConsIndiWhereFilter02 >showQuery : " + showQuery );
         return db.rawQuery(showQuery, null);
     }//TODO use string builders for queries
     public String getGeopID(String IndiID){
