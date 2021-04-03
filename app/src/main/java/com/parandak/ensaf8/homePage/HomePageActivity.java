@@ -101,6 +101,13 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
         return itemIdBefore;
     }
 
+    @Override
+    public Bundle getLastState() {
+        Bundle bundle = new Bundle();
+        bundle.putString("NAME","HOME PAGE! from HomePageActivity!");
+        return bundle;
+    }
+
     public static String ID_CONNECT_Indi1;
     String mimeType = "text/txt";
     ProgressDialog progressDialog;

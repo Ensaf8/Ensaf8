@@ -50,6 +50,14 @@ public class SearchPageActivity extends BaseActivity {
     public int getItemIdBefore() {
         return itemIdBefore;
     }
+
+    @Override
+    public Bundle getLastState() {
+        Bundle bundle = new Bundle();
+        bundle.putString("NAME","SEARCH PAGE! from SearchPageActivity!");
+        return bundle;
+    }
+
     int itemIdBefore;
     Context context = this;
     private FloatingActionButton fab;

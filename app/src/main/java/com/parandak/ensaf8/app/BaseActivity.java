@@ -20,6 +20,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     protected BottomNavigationView navigationView;
     public final String TAG = this.getClass().getSimpleName();
+    private Bundle lastState = new Bundle();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("ensaf::::::::", TAG + "> onPause Base");
+        Log.d("ensaf::::::::", TAG + "> onPause Base read Bundle : " +getLastState());
         Toast.makeText(getBaseContext(), TAG + " : onPause Base" , Toast.LENGTH_SHORT).show();
         overridePendingTransition(0, 0);
     }
@@ -66,7 +67,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     }
     public void onDestroy() {
         super.onDestroy();
-        Log.d("ensaf::::::::", TAG + "> onDestroy Base");
+        Log.d("ensaf::::::::", TAG + "> onDestroy Base read Bundle : " +getLastState());
+        lastState = getLastState();
         Toast.makeText(getBaseContext(), TAG + " : onDestroy Base" , Toast.LENGTH_SHORT).show();
     }
 
@@ -94,9 +96,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                         }else {
                             Intent intentMap = new Intent(BaseActivity.this, MapActivity.class);
                             intentMap.putExtra("itemIdBefore",getNavigationMenuItemId());
-                            Bundle bundle = new Bundle();
-                            bundle.putString("NAME","MAP PAGE! from Base!");
-                            intentMap.putExtra("MapPageBundle",bundle);
+                            //Bundle bundle = new Bundle();
+                            //bundle.putString("NAME","MAP PAGE! from Base!");
+                            intentMap.putExtra("MapPageBundle",lastState);
                             BaseActivity.this.startActivity(intentMap);
                         }
                     }
@@ -137,4 +139,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     public abstract int getNavigationMenuItemId();
 
     public abstract int getItemIdBefore();
+
+    public abstract Bundle getLastState();
 }

@@ -116,6 +116,34 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     public int getItemIdBefore() {
         return itemIdBefore;
     }
+
+    @Override
+    public Bundle getLastState() {
+        Bundle bundle = new Bundle();
+        bundle.putString("NAME","MAP PAGE! from MapActivity!");
+        return bundle;
+    }
+
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+        outState.putString("NAME","MAP PAGE! from MapActivity onSavedInstanceState !");
+        Log.d("ensaf::::::::", TAG + "> onSavedInstanceState");
+        Toast.makeText(getBaseContext(), TAG + "> onSavedInstanceState" , Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d("ensaf::::::::", TAG + "> onRestoreInstanceState : " + savedInstanceState.getString("NAME"));
+        Toast.makeText(getBaseContext(), TAG + "> onRestoreInstanceState : " + savedInstanceState.getString("NAME") , Toast.LENGTH_SHORT).show();
+
+    }
+
     int itemIdBefore;
     Context context = this;
     Activity activity = this;
@@ -188,7 +216,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         Intent intent = getIntent();
         itemIdBefore = intent.getIntExtra("itemIdBefore",R.id.navigation_home);
         Bundle extras = intent.getBundleExtra("MapPageBundle");
-        Log.d("ensaf::::::::", TAG + "> onCreate INTENT extraBundle : " + extras.getString("NAME"));
+        Log.d("ensaf::::::::", TAG + "> onCreate savedInstanceState : " + savedInstanceState);
         Toast.makeText(getBaseContext(), TAG + " : onCreate" , Toast.LENGTH_SHORT).show();
         hideKeyboard();
         checkExternalStorageState();
@@ -1019,7 +1047,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             });*/
         }
     }
-    @Override
+    /*@Override
     public void onSaveInstanceState(Bundle outState) {
         if(map != null) {
             outState.putDouble(INSTANCE_LATITUDE_MAIN_MAP, map.getMapCenter().getLatitude());
@@ -1027,7 +1055,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             outState.putDouble(INSTANCE_ZOOM_LEVEL_MAIN_MAP, map.getZoomLevelDouble());
         }
         super.onSaveInstanceState(outState);
-    }
+    }*/
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
