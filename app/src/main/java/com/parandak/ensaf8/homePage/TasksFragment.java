@@ -2,6 +2,7 @@ package com.parandak.ensaf8.homePage;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,6 +39,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getDayOfMonthJalali;
 import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getDayOfWeek;
 import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getMonthOfYearJalali;
@@ -44,6 +48,7 @@ import static com.parandak.ensaf8.homePage.HomePageActivity.ID_CONNECT_Indi1;
 import static com.parandak.ensaf8.homePage.HomePageActivity.isConnected;
 
 public class TasksFragment extends Fragment {
+    private final String TAG = this.getClass().getSimpleName();
     private List<TaskHomePage> taskHomePageList= new ArrayList<>();
     private RecyclerView recyclerView;
     private TaskHomePageAdapter taskHomePageAdapter;
@@ -58,13 +63,40 @@ public class TasksFragment extends Fragment {
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+        Log.d("ensaf::::::::", TAG + "> : onCreate");
         super.onCreate(savedInstanceState);
         if (taskHomePageAdapter!=null){
             preparingDataReminder(date01,date02);
             taskHomePageAdapter.notifyDataSetChanged();
         }
+        if (savedInstanceState!=null){
+            String myString = savedInstanceState.getString("MyString");
+            Log.d("ensaf::::::::", TAG + "> : onCreate : savedInstanceState " + myString);
+        }
     }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+        Log.d("ensaf::::::::", TAG + "> : savedInstanceState ");
+        //savedInstanceState.putBoolean("MyBoolean", true);
+        //savedInstanceState.putDouble("myDouble", 1.9);
+        //savedInstanceState.putInt("MyInt", 1);
+        savedInstanceState.putString("MyString", "Welcome back to : " + TAG);
+        // etc.
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        // Restore UI state from the savedInstanceState.
+        // This bundle has also been passed to onCreate.
+//        String myString = savedInstanceState.getString("MyString");
+        Log.d("ensaf::::::::", TAG + "> onViewStateRestored ");
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         if (isConnected){
@@ -395,15 +427,7 @@ public class TasksFragment extends Fragment {
             }
         });
     }
-    public void onResume() {
-        super.onResume();
-        if (taskHomePageAdapter!=null){
-            preparingDataReminder(date01,date02);
-            taskHomePageAdapter.notifyDataSetChanged();
-        }
 
-
-    }
 
 
 }

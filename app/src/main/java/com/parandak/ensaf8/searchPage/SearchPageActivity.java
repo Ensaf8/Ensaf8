@@ -75,7 +75,7 @@ public class SearchPageActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_search_page);
         Log.d("ensaf::::::::", TAG + "> onCreate ");
-        Toast.makeText(getBaseContext(), TAG + " : onCreate" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), TAG + " : onCreate" , Toast.LENGTH_SHORT).show();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarsearch);
 
         setSupportActionBar(toolbar);
@@ -94,13 +94,13 @@ public class SearchPageActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         Log.d("ensaf::::::::", TAG + "> onStart ");
-        Toast.makeText(getBaseContext(), TAG + " : onStart" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), TAG + " : onStart" , Toast.LENGTH_SHORT).show();
     }
 
     public void onResume() {
         super.onResume();
         Log.d("ensaf::::::::", TAG + "> onResume ");
-        Toast.makeText(getBaseContext(), TAG + " : onResume" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), TAG + " : onResume" , Toast.LENGTH_SHORT).show();
     }
 
     // Remove inter-activity transition to avoid screen tossing on tapping bottom navigation items
@@ -108,22 +108,22 @@ public class SearchPageActivity extends BaseActivity {
     public void onPause() {
         super.onPause();
         Log.d("ensaf::::::::", TAG + "> onPause ");
-        Toast.makeText(getBaseContext(), TAG + " : onPause" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), TAG + " : onPause" , Toast.LENGTH_SHORT).show();
     }
     public void onStop() {
         super.onStop();
         Log.d("ensaf::::::::", TAG + "> onStop ");
-        Toast.makeText(getBaseContext(), TAG + " : onStop" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), TAG + " : onStop" , Toast.LENGTH_SHORT).show();
     }
     public void onRestart() {
         super.onRestart();
         Log.d("ensaf::::::::", TAG + "> onRestart ");
-        Toast.makeText(getBaseContext(), TAG + " : onRestart" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), TAG + " : onRestart" , Toast.LENGTH_SHORT).show();
     }
     public void onDestroy() {
         super.onDestroy();
         Log.d("ensaf::::::::", TAG + "> onDestroy ");
-        Toast.makeText(getBaseContext(), TAG + " : onDestroy" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), TAG + " : onDestroy" , Toast.LENGTH_SHORT).show();
     }
 
     private void positionPromts(View view, int position){

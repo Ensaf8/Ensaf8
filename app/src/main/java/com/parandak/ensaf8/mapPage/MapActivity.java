@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -123,27 +124,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bundle.putString("NAME","MAP PAGE! from MapActivity!");
         return bundle;
     }
-
-
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-
-        super.onSaveInstanceState(outState);
-        outState.putString("NAME","MAP PAGE! from MapActivity onSavedInstanceState !");
-        Log.d("ensaf::::::::", TAG + "> onSavedInstanceState");
-        Toast.makeText(getBaseContext(), TAG + "> onSavedInstanceState" , Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState)
-    {
-        super.onRestoreInstanceState(savedInstanceState);
-        Log.d("ensaf::::::::", TAG + "> onRestoreInstanceState : " + savedInstanceState.getString("NAME"));
-        Toast.makeText(getBaseContext(), TAG + "> onRestoreInstanceState : " + savedInstanceState.getString("NAME") , Toast.LENGTH_SHORT).show();
-
-    }
-
     int itemIdBefore;
     Context context = this;
     Activity activity = this;
@@ -215,9 +195,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         itemIdBefore = intent.getIntExtra("itemIdBefore",R.id.navigation_home);
-        Bundle extras = intent.getBundleExtra("MapPageBundle");
         Log.d("ensaf::::::::", TAG + "> onCreate savedInstanceState : " + savedInstanceState);
-        Toast.makeText(getBaseContext(), TAG + " : onCreate" , Toast.LENGTH_SHORT).show();
         hideKeyboard();
         checkExternalStorageState();
         checkAndroid6 ();
@@ -938,61 +916,69 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onStart() {
         super.onStart();
-        Toast.makeText(getBaseContext(), TAG + " : onStart" , Toast.LENGTH_SHORT).show();
-
+        Log.d("ensaf::::::::", TAG + "> : onStart");
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onResume() {
         super.onResume();
-        Log.d("ensaf::::::::", TAG + "> onResume ");
-        Toast.makeText(getBaseContext(), TAG + " : onResume" , Toast.LENGTH_SHORT).show();
+        Log.d("ensaf::::::::", TAG + "> : onResume");
         if(mPermissionsGranted){
             bottomRVAdapter.notifyDataSetChanged();
             mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
         hideKeyboard();
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+
+
+        Log.d("ensaf::::::::", TAG + "> : onResume : lat :" + preferences.getFloat(INSTANCE_LATITUDE_MAIN_MAP, (float) DEFAULT_LATITUDE));
+        Log.d("ensaf::::::::", TAG + "> : onResume : lon :" + preferences.getFloat(INSTANCE_LONGITUDE_MAIN_MAP, (float) DEFAULT_LONGITUDE));
+        Log.d("ensaf::::::::", TAG + "> : onResume : zoomLevel :" + preferences.getFloat(INSTANCE_ZOOM_LEVEL_MAIN_MAP, (float) DEFAULT_ZOOM_LEVEL_MAIN_MAP));
         if(map != null) {
             //this will refresh the osmdroid configuration on resuming.
             //if you make changes to the configuration, use
             //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             //Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
             map.onResume(); //needed for compass, my location overlays, v6.0.0 and up
+            mController.setZoom(preferences.getFloat(INSTANCE_ZOOM_LEVEL_MAIN_MAP, (float) DEFAULT_ZOOM_LEVEL_MAIN_MAP));
+            GeoPoint startPoint = new GeoPoint(preferences.getFloat(INSTANCE_LATITUDE_MAIN_MAP, (float) DEFAULT_LATITUDE)
+                    ,preferences.getFloat(INSTANCE_LONGITUDE_MAIN_MAP, (float) DEFAULT_LONGITUDE));
+            mController.setCenter(startPoint);
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onPause() {
         super.onPause();
-        Log.d("ensaf::::::::", TAG + "> onPause ");
-        Toast.makeText(getBaseContext(), TAG + " : onPause" , Toast.LENGTH_SHORT).show();
+        Log.d("ensaf::::::::", TAG + "> : onPause");
         if(map != null) {
             //this will refresh the osmdroid configuration on resuming.
             //if you make changes to the configuration, use
             //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             //Configuration.getInstance().save(this, prefs);
-            map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
+              //needed for compass, my location overlays, v6.0.0 and up
+            SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();  // Put the values from the UI
+            editor.putFloat(INSTANCE_LATITUDE_MAIN_MAP, (float) map.getMapCenter().getLatitude());
+            editor.putFloat(INSTANCE_LONGITUDE_MAIN_MAP,(float) map.getMapCenter().getLongitude());
+            editor.putFloat(INSTANCE_ZOOM_LEVEL_MAIN_MAP, (float) map.getZoomLevelDouble());
+            // Commit to storage
+            editor.apply();
+            map.onPause();
         }
-        /*} else {
-            //boarding();
-        }*/
 
     }
     public void onStop() {
         super.onStop();
-        Log.d("ensaf::::::::", TAG + "> onStop ");
-        Toast.makeText(getBaseContext(), TAG + " : onStop" , Toast.LENGTH_SHORT).show();
+        Log.d("ensaf::::::::", TAG + "> : onStop");
     }
     public void onRestart() {
         super.onRestart();
         //customerAdapter.notifyDataSetChanged();
         bottomRVAdapter.notifyDataSetChanged();
         hideKeyboard();
-        Log.d("ensaf::::::::", TAG + "> onRestart ");
-        Toast.makeText(getBaseContext(), TAG + " : onRestart" , Toast.LENGTH_SHORT).show();
     }
     public void onDestroy() {
         super.onDestroy();
-        Log.d("ensaf::::::::", TAG + "> onDestroy ");
-        Toast.makeText(getBaseContext(), TAG + " : onDestroy" , Toast.LENGTH_SHORT).show();
+        Log.d("ensaf::::::::", TAG + "> : onDestroy");
     }
     ///####permission Staff
     /* Check which permissions have been granted */

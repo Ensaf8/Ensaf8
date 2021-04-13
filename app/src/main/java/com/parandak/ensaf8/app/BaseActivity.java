@@ -29,14 +29,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         navigationView = (BottomNavigationView) findViewById(R.id.navigation);
         navigationView.setOnNavigationItemSelectedListener(this);
         Log.d("ensaf::::::::", TAG + "> onCreate Base ");
-        Toast.makeText(getBaseContext(), TAG + " : onCreate Base" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), TAG + " : onCreate Base" , Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.d("ensaf::::::::", TAG + "> onStart Base");
-        Toast.makeText(getBaseContext(), TAG + " : onStart Base" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), TAG + " : onStart Base" , Toast.LENGTH_SHORT).show();
         updateNavigationBarState();
     }
 
@@ -45,31 +45,31 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     public void onPause() {
         super.onPause();
         Log.d("ensaf::::::::", TAG + "> onPause Base read Bundle : " +getLastState());
-        Toast.makeText(getBaseContext(), TAG + " : onPause Base" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), TAG + " : onPause Base" , Toast.LENGTH_SHORT).show();
         overridePendingTransition(0, 0);
     }
 
     public void onResume() {
         super.onResume();
         Log.d("ensaf::::::::", TAG + "> onResume Base");
-        Toast.makeText(getBaseContext(), TAG + " : onResume Base" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), TAG + " : onResume Base" , Toast.LENGTH_SHORT).show();
     }
 
     public void onStop() {
         super.onStop();
         Log.d("ensaf::::::::", TAG + "> onStop Base");
-        Toast.makeText(getBaseContext(), TAG + " : onStop Base" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), TAG + " : onStop Base" , Toast.LENGTH_SHORT).show();
     }
     public void onRestart() {
         super.onRestart();
         Log.d("ensaf::::::::", TAG + "> onRestart Base");
-        Toast.makeText(getBaseContext(), TAG + " : onRestart Base" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), TAG + " : onRestart Base" , Toast.LENGTH_SHORT).show();
     }
     public void onDestroy() {
         super.onDestroy();
         Log.d("ensaf::::::::", TAG + "> onDestroy Base read Bundle : " +getLastState());
         lastState = getLastState();
-        Toast.makeText(getBaseContext(), TAG + " : onDestroy Base" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), TAG + " : onDestroy Base" , Toast.LENGTH_SHORT).show();
     }
 
 
