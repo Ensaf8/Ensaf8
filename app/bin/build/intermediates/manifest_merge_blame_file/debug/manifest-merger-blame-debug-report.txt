@@ -1,0 +1,187 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.parandak.ensaf8"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="29" />
+9-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+11-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:5:5-79
+11-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:5:22-76
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:6:5-67
+12-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:6:22-64
+13    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+13-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:7:5-79
+13-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:7:22-76
+14    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+14-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:8:5-81
+14-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:8:22-78
+15    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+15-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:9:5-81
+15-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:9:22-78
+16
+17    <!-- client -->
+18    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+18-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:12:5-74
+18-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:12:22-71
+19    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+19-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:13:5-71
+19-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:13:22-68
+20    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" /> <!-- Authenticator -->
+20-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:14:5-74
+20-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:14:22-71
+21    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+21-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:15:5-76
+21-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:15:22-73
+22    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+22-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:16:5-80
+22-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:16:22-77
+23
+24    <supports-screens
+24-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:11:5-14:40
+25        android:anyDensity="true"
+25-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:12:9-34
+26        android:largeScreens="true"
+26-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:13:9-36
+27        android:normalScreens="true" />
+27-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:14:9-37
+28
+29    <uses-feature
+29-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:16:5-18:36
+30        android:name="android.hardware.location.network"
+30-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:17:9-57
+31        android:required="false" />
+31-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:18:9-33
+32    <uses-feature
+32-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:19:5-21:36
+33        android:name="android.hardware.location.gps"
+33-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:20:9-53
+34        android:required="false" />
+34-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:21:9-33
+35    <uses-feature
+35-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:22:5-24:36
+36        android:name="android.hardware.telephony"
+36-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:23:9-50
+37        android:required="false" />
+37-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:24:9-33
+38    <uses-feature
+38-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:25:5-27:36
+39        android:name="android.hardware.wifi"
+39-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:26:9-45
+40        android:required="false" />
+40-->[org.osmdroid:osmdroid-android:6.1.5] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\ca98974dadda2fe1429cd7883aea4b76\osmdroid-android-6.1.5\AndroidManifest.xml:27:9-33
+41
+42    <uses-permission android:name="android.permission.VIBRATE" />
+42-->[com.mohamadamin:persianmaterialdatetimepicker:1.2.1] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\7984c6f8a18e7503e7e450ccf813d7c0\jetified-persianmaterialdatetimepicker-1.2.1\AndroidManifest.xml:26:5-66
+42-->[com.mohamadamin:persianmaterialdatetimepicker:1.2.1] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\7984c6f8a18e7503e7e450ccf813d7c0\jetified-persianmaterialdatetimepicker-1.2.1\AndroidManifest.xml:26:22-63
+43
+44    <application
+44-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:18:5-66:19
+45        android:name="com.parandak.ensaf8.app.App"
+45-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:19:9-32
+46        android:allowBackup="true"
+46-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:20:9-35
+47        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+47-->[androidx.core:core:1.1.0] C:\Users\Ali\.gradle\caches\transforms-2\files-2.1\e9dab9c67c1ee3668e0bbf86c6d8cbd8\core-1.1.0\AndroidManifest.xml:24:18-86
+48        android:debuggable="true"
+49        android:icon="@drawable/ic_ensaflogo02"
+49-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:21:9-48
+50        android:label="@string/app_name"
+50-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:22:9-41
+51        android:roundIcon="@mipmap/ic_launcher_round"
+51-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:23:9-54
+52        android:supportsRtl="true"
+52-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:24:9-35
+53        android:testOnly="true"
+54        android:theme="@style/MyMaterialTheme"
+54-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:25:9-47
+55        android:usesCleartextTraffic="true" >
+55-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:26:9-44
+56        <activity android:name="com.parandak.ensaf8.searchPage.SearchPageActivity" />
+56-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:27:9-76
+56-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:27:19-64
+57        <activity android:name="com.parandak.ensaf8.mapPage.MapActivity" />
+57-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:28:9-66
+57-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:28:19-54
+58        <activity
+58-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:29:9-37:20
+59            android:name="com.parandak.ensaf8.homePage.HomePageActivity"
+59-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:30:13-54
+60            android:theme="@style/TestTheme01" >
+60-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:31:13-47
+61            <intent-filter>
+61-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:32:13-36:29
+62                <action android:name="android.intent.action.MAIN" />
+62-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:33:17-69
+62-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:33:25-66
+63
+64                <category android:name="android.intent.category.LAUNCHER" />
+64-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:35:17-77
+64-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:35:27-74
+65            </intent-filter>
+66        </activity>
+67        <activity
+67-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:38:9-40:51
+68            android:name="com.parandak.ensaf8.accountAuthenticator.AuthenticatorActivity"
+68-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:39:13-71
+69            android:label="@string/login_label" />
+69-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:40:13-48
+70        <!--
+71        Introducing our Content Provider.
+72        W/O that, we'll get: "Failed to find provider info for com.udinic.tvshows.provider"
+73        -->
+74        <provider
+74-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:44:9-49:38
+75            android:name="com.parandak.ensaf8.dataBase.Provider.EnsafContentProvider"
+75-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:45:13-67
+76            android:authorities="com.parandak.ensaf8"
+76-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:44:19-60
+77            android:exported="false"
+77-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:47:13-37
+78            android:label="@string/provider_name"
+78-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:46:13-50
+79            android:multiprocess="true"
+79-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:48:13-40
+80            android:syncable="true" />
+80-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:49:13-36
+81
+82        <receiver
+82-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:50:9-56:20
+83            android:name="com.parandak.ensaf8.broadCast.ConnectivityReceiver"
+83-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:51:13-59
+84            android:enabled="true" >
+84-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:52:13-35
+85            <intent-filter>
+85-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:53:13-55:29
+86                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+86-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:54:17-79
+86-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:54:25-76
+87            </intent-filter>
+88        </receiver>
+89
+90        <service android:name="com.parandak.ensaf8.accountAuthenticator.EnsafAuthenticatorService" >
+90-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:57:9-65:19
+90-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:57:18-80
+91            <intent-filter>
+91-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:58:13-60:29
+92                <action android:name="android.accounts.AccountAuthenticator" />
+92-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:59:17-80
+92-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:59:25-77
+93            </intent-filter>
+94
+95            <meta-data
+95-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:62:13-64:57
+96                android:name="android.accounts.AccountAuthenticator"
+96-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:63:17-69
+97                android:resource="@xml/authenticator" />
+97-->D:\MyWorks\Ensaf\AndroidProject\Ensaf8\app\src\main\AndroidManifest.xml:64:17-54
+98        </service>
+99    </application>
+100
+101</manifest>

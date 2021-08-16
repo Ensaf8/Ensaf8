@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "D:\\MyWorks\\Ensaf\\AndroidProject\\Ensaf8\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-mr-rIN\\values-mr-rIN.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Ali\\.gradle\\caches\\transforms-2\\files-2.1\\7984c6f8a18e7503e7e450ccf813d7c0\\jetified-persianmaterialdatetimepicker-1.2.1\\res\\values-mr-rIN\\values-mr-rIN.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10,11,12,13,14",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "282,389,500,585,693,810,923,1018,1104,1195,1281",
+                        "endColumns": "106,110,84,107,116,112,94,85,90,85,96",
+                        "endOffsets": "384,495,580,688,805,918,1013,1099,1190,1276,1373"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,212,323,408,516,633,746,841,927,1018,1104",
+                        "endColumns": "106,110,84,107,116,112,94,85,90,85,96",
+                        "endOffsets": "207,318,403,511,628,741,836,922,1013,1099,1196"
+                    }
+                }
+            ]
+        }
+    ]
+}
