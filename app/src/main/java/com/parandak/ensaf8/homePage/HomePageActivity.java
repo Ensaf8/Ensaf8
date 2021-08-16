@@ -168,7 +168,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
         headerinit(c);
         SimpleDateFormat df = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
         String formattedDate = df.format(c);
-        Filename = "REPORT : " + formattedDate;
+        Filename = "SyncFile : " + formattedDate +".txt";
         sessionManaging();
 
         if (savedInstanceState!=null){
@@ -520,7 +520,6 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                 break;
             case 3:
                 createFile(mimeType,Filename);
-                Toast.makeText(getApplicationContext(), "creating REPORT !", Toast.LENGTH_SHORT).show();
                 break;
             case 4:
                 Intent intent01 = new Intent()
@@ -675,10 +674,10 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
             // Let the document provider know you're done by closing the stream.
             fileOutputStream.close();
             pfd.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            Toast.makeText(getApplicationContext(), "Sync File Created !", Toast.LENGTH_SHORT).show();
         }
     }
 }
