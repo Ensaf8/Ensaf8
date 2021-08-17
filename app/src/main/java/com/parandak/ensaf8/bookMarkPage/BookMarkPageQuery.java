@@ -33,12 +33,12 @@ public class BookMarkPageQuery {
         return bookMarkFolderList;
     }
 
-    public ArrayList<Integer> getBookMarkFolderListIntID(){
-        ArrayList<Integer> bookMarkFolderList = new ArrayList<>();
+    public ArrayList<String> getBookMarkFolderListIntID(){
+        ArrayList<String> bookMarkFolderList = new ArrayList<>();
         Cursor cursor  = getBookMarkType();
         if (cursor.moveToFirst()){
             do{
-                bookMarkFolderList.add(cursor.getInt(0));
+                bookMarkFolderList.add(cursor.getString(0));
             }while (cursor.moveToNext());
         }
         return bookMarkFolderList;

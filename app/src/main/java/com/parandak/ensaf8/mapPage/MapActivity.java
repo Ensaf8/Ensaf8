@@ -494,7 +494,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         });
         ListView listView;
         final ArrayList<String>[] bookMarkFolderList = new ArrayList[]{new ArrayList<>()};
-        final ArrayList<Integer>[] bookMarkFolderListID = new ArrayList[]{new ArrayList<>()};
+        final ArrayList<String>[] bookMarkFolderListID = new ArrayList[]{new ArrayList<>()};
         checkBoxBookmark.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -533,15 +533,19 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                     public void onClick(DialogInterface dialogInterface, int i) {
                         int ii = 0 ;
                         String ValueHolder = "" ;
+                        String bookTxtTitle = "";
+                        MapPageQuery mapPageQuery = new MapPageQuery();
                         while (ii < sparseBooleanArray.size()) {
-
                             if (sparseBooleanArray.valueAt(ii)) {
-
+                                txt_bottom_book_type.setEnabled(true);
+                                txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
                                 ValueHolder += bookMarkFolderListID[0].get(sparseBooleanArray.keyAt(ii)) + ",";
+                                bookTxtTitle += mapPageQuery.getBookmarkTypeTitle(bookMarkFolderListID[0].get(sparseBooleanArray.keyAt(ii))) + ",";
                             }
-
                             ii++ ;
                         }
+
+                        txt_bottom_book_type.setText(bookTxtTitle);
                         Toast.makeText(getBaseContext(),  ValueHolder + " are Selected " , Toast.LENGTH_SHORT).show();
                     }
                 });
