@@ -33,14 +33,14 @@ public class MapPageQuery {
                 + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_lon + " , "
                 + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhase + " , "
                 + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_lastPhaseDate + " , "
-                + BookMark.TABLE + "." + BookMark.KEY_B_TYPE_ID + " , "
+                //+ BookMark.TABLE + "." + BookMark.KEY_B_TYPE_ID + " , "
                 + Rating.TABLE + "." + Rating.KEY_Rate
                 + " FROM "
                 + CreateViews.Construction.VIEW
                 + " INNER JOIN " + CreateViews.LastUpConsInd.VIEW
                 + " ON " +  CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + CreateViews.LastUpConsInd.VIEW + "." + CreateViews.LastUpConsInd.KEY_ID_cons
-                + " LEFT JOIN " + BookMark.TABLE
-                + " ON " +  CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + BookMark.TABLE + "." + BookMark.KEY_IndID
+                //+ " LEFT JOIN " + BookMark.TABLE
+                //+ " ON " +  CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + BookMark.TABLE + "." + BookMark.KEY_IndID
                 + " LEFT JOIN " + Rating.TABLE
                 + " ON " +  CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + Rating.TABLE + "." + Rating.KEY_IndID
                 + " WHERE " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = ' " + consID + " ';";
@@ -61,6 +61,22 @@ public class MapPageQuery {
                 + " INNER JOIN " + Individual.TABLE
                 + " ON " +  Individual.TABLE + "." + Individual.KEY_ID_Indi+ " = " + Indi_Coop.TABLE + "." + Indi_Coop.KEY_SecondPartID
                 + " WHERE " + Indi_Coop.TABLE + "." + Indi_Coop.KEY_FirstPartID + " = ' " + consID + " ';";
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //cursor.close();
+        //DatabaseManager.getInstance().closeDatabase();
+        return cursor;
+    }
+    public Cursor singleTapOnConsIndThirdBook(String consID){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = " SELECT "
+                + BookMark.TABLE + "." + BookMark.KEY_B_TYPE_ID + " , "
+                + BookMarkType.TABLE + "." + BookMarkType.KEY_TITLE
+                + " FROM "
+                + BookMark.TABLE
+                + " INNER JOIN " + BookMarkType.TABLE
+                + " ON " +  BookMark.TABLE + "." + BookMark.KEY_B_TYPE_ID+ " = " + BookMarkType.TABLE + "." + BookMarkType.KEY_ID
+                + " WHERE " + BookMark.TABLE + "." + BookMark.KEY_IndID + " = ' " + consID + " ';";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         //cursor.close();
