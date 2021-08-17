@@ -31,6 +31,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -491,21 +492,29 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 }
             }
         });
+        ListView listView;
+        final ArrayList<String>[] bookMarkFolderList = new ArrayList[]{new ArrayList<>()};
+        final ArrayList<Integer>[] bookMarkFolderListID = new ArrayList[]{new ArrayList<>()};
         checkBoxBookmark.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 final BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
+
+                bookMarkFolderList[0] =  bookMarkPageQuery.getBookMarkFolderListString();
+                bookMarkFolderListID[0] = bookMarkPageQuery.getBookMarkFolderListIntID();
                 final AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
 
                 View rowList = getLayoutInflater().inflate(R.layout.bookmark_listview, null);
                 ListView listView = rowList.findViewById(R.id.listView);
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, bookMarkPageQuery.getBookMarkFolderListString());
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
+                        bookMarkFolderList[0]);
                 builderInner.setCancelable(true);
                 listView.setAdapter(adapter);
+                final SparseBooleanArray sparseBooleanArray = listView.getCheckedItemPositions();
                 builderInner.setView(rowList);
                 builderInner.setTitle("BOOKMARKS FOLDERS");
-                final Dialog dialog = builderInner.create();
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Toast.makeText(getBaseContext(), "BOOKMARK : " + bookMarkPageQuery.getBookMarkFoldeList().get(position).getId() , Toast.LENGTH_SHORT).show();
@@ -517,7 +526,26 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         checkBoxBookmark.setChecked(true);
                         dialog.dismiss();
                     }
+                });*/
+
+                builderInner.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        int ii = 0 ;
+                        String ValueHolder = "" ;
+                        while (ii < sparseBooleanArray.size()) {
+
+                            if (sparseBooleanArray.valueAt(ii)) {
+
+                                ValueHolder += bookMarkFolderListID[0].get(sparseBooleanArray.keyAt(ii)) + ",";
+                            }
+
+                            ii++ ;
+                        }
+                        Toast.makeText(getBaseContext(),  ValueHolder + " are Selected " , Toast.LENGTH_SHORT).show();
+                    }
                 });
+                final Dialog dialog = builderInner.create();
                 adapter.notifyDataSetChanged();
                 dialog.show();
                 return false;

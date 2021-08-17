@@ -15,7 +15,8 @@ public class BookMarkPageQuery {
         String selectQuery = " SELECT "
                 + BookMarkType.KEY_ID + ","
                 + BookMarkType.KEY_TITLE
-                + " FROM " + BookMarkType.TABLE;
+                + " FROM " + BookMarkType.TABLE
+                + " ORDER BY " + BookMarkType.KEY_ID + " ASC ";
         Cursor cursor = db.rawQuery(selectQuery, null);
         //cursor.close();
         //DatabaseManager.getInstance().closeDatabase();
@@ -25,13 +26,24 @@ public class BookMarkPageQuery {
         ArrayList<String> bookMarkFolderList = new ArrayList<>();
         Cursor cursor  = getBookMarkType();
         if (cursor.moveToFirst()){
-            bookMarkFolderList.clear();
             do{
                 bookMarkFolderList.add(cursor.getString(1));
             }while (cursor.moveToNext());
         }
         return bookMarkFolderList;
     }
+
+    public ArrayList<Integer> getBookMarkFolderListIntID(){
+        ArrayList<Integer> bookMarkFolderList = new ArrayList<>();
+        Cursor cursor  = getBookMarkType();
+        if (cursor.moveToFirst()){
+            do{
+                bookMarkFolderList.add(cursor.getInt(0));
+            }while (cursor.moveToNext());
+        }
+        return bookMarkFolderList;
+    }
+
     public ArrayList<BookMarkFolder> getBookMarkFoldeList(){
         ArrayList<BookMarkFolder> bookMarkFoldeList = new ArrayList<>();
         Cursor cursor  = getBookMarkType();
