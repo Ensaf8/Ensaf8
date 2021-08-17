@@ -175,6 +175,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     String ID_CONS_SELECTED;
     boolean isRatingBottomChange = false;
     String initBookedTypeID,bookedTypeID = "0";
+    ArrayList<String> bookMarkFolderListID = new ArrayList<>();
+    ArrayList<String> initBookMarkFolderListID = new ArrayList<>();
     float initRating = 0;
 
     boolean isEdiNameChange = false;
@@ -494,14 +496,14 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         });
         ListView listView;
         final ArrayList<String>[] bookMarkFolderList = new ArrayList[]{new ArrayList<>()};
-        final ArrayList<String>[] bookMarkFolderListID = new ArrayList[]{new ArrayList<>()};
+
         checkBoxBookmark.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 final BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
 
                 bookMarkFolderList[0] =  bookMarkPageQuery.getBookMarkFolderListString();
-                bookMarkFolderListID[0] = bookMarkPageQuery.getBookMarkFolderListIntID();
+                bookMarkFolderListID = bookMarkPageQuery.getBookMarkFolderListIntID();
                 final AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
 
                 View rowList = getLayoutInflater().inflate(R.layout.bookmark_listview, null);
@@ -539,8 +541,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                             if (sparseBooleanArray.valueAt(ii)) {
                                 txt_bottom_book_type.setEnabled(true);
                                 txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
-                                ValueHolder += bookMarkFolderListID[0].get(sparseBooleanArray.keyAt(ii)) + ",";
-                                bookTxtTitle += mapPageQuery.getBookmarkTypeTitle(bookMarkFolderListID[0].get(sparseBooleanArray.keyAt(ii))) + ",";
+                                ValueHolder += bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii)) + ",";
+                                bookTxtTitle += mapPageQuery.getBookmarkTypeTitle(bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii))) + ",";
                             }
                             ii++ ;
                         }

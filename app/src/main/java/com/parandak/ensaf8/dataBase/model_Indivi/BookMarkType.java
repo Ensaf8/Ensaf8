@@ -7,7 +7,7 @@ public class BookMarkType {
     public static final String KEY_TITLE = "title";
 
     private String id;
-    private String title;
+    private String title;////must be UNIQUE
 
     public String getId() {
         return id;
