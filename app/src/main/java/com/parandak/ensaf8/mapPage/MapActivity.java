@@ -798,20 +798,52 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             drawerFragmentMap.setCheckBox01(false);
         }
 
-        /*bookMarkSelectedList
 
-        int ibk = 0;
-        while (ibk < initBookMarkFolderList.size()) {
-            int bk = 0;
-            while (bk < bookMarkSelectedList.size()){
+        int bk = 0;
+        while (bk < bookMarkSelectedList.size()) {
 
+            int ibk = 0;
+            boolean isInsert = true;
+            while (ibk < initBookMarkFolderListID.size()){
+                if (isInsert && (initBookMarkFolderListID.get(ibk).equals(bookMarkSelectedList.get(bk)))){
+                    isInsert = false;
+                }
+                ibk++;
             }
-            if (sparseBooleanArray.valueAt(ii)) {
-                bookMarkSelectedList.add(bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii)));
-                bookTxtTitle += mapPageQuery.getBookmarkTypeTitle(bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii))) + ",";
+            if (isInsert){
+                BookMark bookMark = new BookMark();
+                bookMark.setIndID(ID_CONS_SELECTED);
+                bookMark.setB_type_id(bookMarkSelectedList.get(bk));
+                BookMarkRepo bookMarkRepo = new BookMarkRepo();
+                Log.d("ensaf::::::::", TAG + "> bookMark "+ bookMarkSelectedList.get(bk) + " is added.");
+                if(bookMarkRepo.insert(bookMark)>0)
+                    Toast.makeText(getBaseContext(),  ID_CONS_SELECTED + " isBookMarked ", Toast.LENGTH_SHORT).show();
             }
-            ii++ ;
-        } */
+
+            bk++;
+        }
+        /////
+        /*
+
+
+         */
+        int ibk2 = 0;
+        while (ibk2 < initBookMarkFolderListID.size()) {
+            int bk2 = 0;
+            boolean isDeleted = true;
+            while (bk2 < bookMarkSelectedList.size()){
+                if (isDeleted && (initBookMarkFolderListID.get(ibk2).equals(bookMarkSelectedList.get(bk2)))){
+                   isDeleted = false;
+                }
+                bk2++;
+            }
+            if (isDeleted){
+                BookMarkRepo bookMarkRepo = new BookMarkRepo();
+                bookMarkRepo.delete_indiID_BtypeID(ID_CONS_SELECTED,initBookMarkFolderListID.get(ibk2));
+                Log.d("ensaf::::::::", TAG + "> bookMark "+ initBookMarkFolderListID.get(ibk2) + " is deleted.");
+            }
+            ibk2++;
+        }
         /*if (!initBookedTypeID.equals(bookedTypeID)){
             BookMark bookMark = new BookMark();
             bookMark.setIndID(ID_CONS_SELECTED);

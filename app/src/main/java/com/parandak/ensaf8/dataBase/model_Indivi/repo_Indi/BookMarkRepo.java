@@ -92,4 +92,12 @@ public class BookMarkRepo {
         DatabaseManager.getInstance().closeDatabase();
         return b;
     }
+
+    public void delete_indiID_BtypeID(String indID_BookMark,String bTypeID){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String sql = "DELETE FROM " + BookMark.TABLE
+                + " WHERE " + BookMark.KEY_IndID + " = '" + indID_BookMark + "' AND "
+                + BookMark.KEY_B_TYPE_ID + " = '" + bTypeID + "'";
+        db.execSQL(sql);
+    }
 }
