@@ -175,8 +175,11 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     String ID_CONS_SELECTED;
     boolean isRatingBottomChange = false;
     //String initBookedTypeID,bookedTypeID = "0";
+    ArrayList<String> bookMarkFolderList = new ArrayList<>();
+
     ArrayList<String> bookMarkFolderListID = new ArrayList<>();
     ArrayList<String> initBookMarkFolderListID = new ArrayList<>();
+    ArrayList<String> initBookMarkFolderList = new ArrayList<>();
     float initRating = 0;
 
     boolean isEdiNameChange = false;
@@ -498,24 +501,44 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 }
             }
         });
-        ListView listView;
-        final ArrayList<String>[] bookMarkFolderList = new ArrayList[]{new ArrayList<>()};
 
         checkBoxBookmark.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 final BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
-
-                bookMarkFolderList[0] =  bookMarkPageQuery.getBookMarkFolderListString();
+                Log.d("ensaf::::::::", TAG + "> onLongClick");
+                bookMarkFolderList =  bookMarkPageQuery.getBookMarkFolderListString();
                 bookMarkFolderListID = bookMarkPageQuery.getBookMarkFolderListIntID();
+                Log.d("ensaf::::::::", TAG + "> bookMarkFolderList>" + bookMarkFolderList.size());
+                Log.d("ensaf::::::::", TAG + "> bookMarkFolderListID>" + bookMarkFolderListID.size());
+                Log.d("ensaf::::::::", TAG + "> initBookMarkFolderList>" + initBookMarkFolderList.size());
                 final AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
 
                 View rowList = getLayoutInflater().inflate(R.layout.bookmark_listview, null);
                 ListView listView = rowList.findViewById(R.id.listView);
+
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                        bookMarkFolderList[0]);
+                        bookMarkFolderList);
                 builderInner.setCancelable(true);
                 listView.setAdapter(adapter);
+                int ij = 0;
+                while (bookMarkFolderList.size()>ij){
+                    Log.d("ensaf::::::::", TAG + "> bookMarkFolderList : "+ bookMarkFolderList.get(ij) +" while >" + ij);
+                    int ijj = 0;
+                    while (initBookMarkFolderList.size()>ijj){
+                        Log.d("ensaf::::::::", TAG + "> initBookMarkFolderList : " + initBookMarkFolderList.get(ijj) +" while >" + ijj);
+                        if (bookMarkFolderList.get(ij).equals(initBookMarkFolderList.get(ijj))){
+                            Log.d("ensaf::::::::", TAG + "> initBookMarkFolderList : " + initBookMarkFolderList.get(ijj) +" > " + ijj +
+                                    " Equal  bookMarkFolderList : " + bookMarkFolderList.get(ij) + " > " + ij);
+                            listView.setItemChecked(ij,true);
+                        }
+                        ijj++;
+                    }
+                    ij++;
+                }
+
+
+
                 final SparseBooleanArray sparseBooleanArray = listView.getCheckedItemPositions();
                 builderInner.setView(rowList);
                 builderInner.setTitle("BOOKMARKS FOLDERS");
@@ -1225,9 +1248,11 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
         if (cursor2.moveToFirst()){
             initBookMarkFolderListID.clear();
+            initBookMarkFolderList.clear();
             String bookmarkTitle = "";
             do {
                 initBookMarkFolderListID.add(cursor2.getString(0));
+                initBookMarkFolderList.add(cursor2.getString(1));
                 bookmarkTitle += cursor2.getString(1);
             }while (cursor2.moveToNext());
             checkBoxBookmark.setChecked(true);
@@ -1239,6 +1264,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             txt_bottom_book_type.setText("* * *");
             txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.darkGray));
             initBookMarkFolderListID.clear();
+            initBookMarkFolderList.clear();
         }
         mController.animateTo(item.getPoint());
         return false;
