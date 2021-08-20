@@ -176,6 +176,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     boolean isRatingBottomChange = false;
     //String initBookedTypeID,bookedTypeID = "0";
     ArrayList<String> bookMarkFolderList = new ArrayList<>();
+    ArrayList<String> bookMarkSelectedList = new ArrayList<>();
 
     ArrayList<String> bookMarkFolderListID = new ArrayList<>();
     ArrayList<String> initBookMarkFolderListID = new ArrayList<>();
@@ -506,12 +507,12 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             @Override
             public boolean onLongClick(View v) {
                 final BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
-                Log.d("ensaf::::::::", TAG + "> onLongClick");
+                //Log.d("ensaf::::::::", TAG + "> onLongClick");
                 bookMarkFolderList =  bookMarkPageQuery.getBookMarkFolderListString();
                 bookMarkFolderListID = bookMarkPageQuery.getBookMarkFolderListIntID();
-                Log.d("ensaf::::::::", TAG + "> bookMarkFolderList>" + bookMarkFolderList.size());
-                Log.d("ensaf::::::::", TAG + "> bookMarkFolderListID>" + bookMarkFolderListID.size());
-                Log.d("ensaf::::::::", TAG + "> initBookMarkFolderList>" + initBookMarkFolderList.size());
+                //Log.d("ensaf::::::::", TAG + "> bookMarkFolderList>" + bookMarkFolderList.size());
+                //Log.d("ensaf::::::::", TAG + "> bookMarkFolderListID>" + bookMarkFolderListID.size());
+                //Log.d("ensaf::::::::", TAG + "> initBookMarkFolderList>" + initBookMarkFolderList.size());
                 final AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
 
                 View rowList = getLayoutInflater().inflate(R.layout.bookmark_listview, null);
@@ -523,10 +524,10 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 listView.setAdapter(adapter);
                 int ij = 0;
                 while (bookMarkFolderList.size()>ij){
-                    Log.d("ensaf::::::::", TAG + "> bookMarkFolderList : "+ bookMarkFolderList.get(ij) +" while >" + ij);
+                    //Log.d("ensaf::::::::", TAG + "> bookMarkFolderList : "+ bookMarkFolderList.get(ij) +" while >" + ij);
                     int ijj = 0;
                     while (initBookMarkFolderList.size()>ijj){
-                        Log.d("ensaf::::::::", TAG + "> initBookMarkFolderList : " + initBookMarkFolderList.get(ijj) +" while >" + ijj);
+                        //Log.d("ensaf::::::::", TAG + "> initBookMarkFolderList : " + initBookMarkFolderList.get(ijj) +" while >" + ijj);
                         if (bookMarkFolderList.get(ij).equals(initBookMarkFolderList.get(ijj))){
                             Log.d("ensaf::::::::", TAG + "> initBookMarkFolderList : " + initBookMarkFolderList.get(ijj) +" > " + ijj +
                                     " Equal  bookMarkFolderList : " + bookMarkFolderList.get(ij) + " > " + ij);
@@ -537,45 +538,37 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                     ij++;
                 }
 
-
-
                 final SparseBooleanArray sparseBooleanArray = listView.getCheckedItemPositions();
                 builderInner.setView(rowList);
                 builderInner.setTitle("BOOKMARKS FOLDERS");
-
-                /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(getBaseContext(), "BOOKMARK : " + bookMarkPageQuery.getBookMarkFoldeList().get(position).getId() , Toast.LENGTH_SHORT).show();
-                        bookedTypeID = bookMarkPageQuery.getBookMarkFoldeList().get(position).getId();
-                        MapPageQuery mapPageQuery = new MapPageQuery();
-                        txt_bottom_book_type.setEnabled(true);
-                        txt_bottom_book_type.setText(mapPageQuery.getBookmarkTypeTitle(bookedTypeID));
-                        txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
-                        checkBoxBookmark.setChecked(true);
-                        dialog.dismiss();
-                    }
-                });*/
 
                 builderInner.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         int ii = 0 ;
-                        String ValueHolder = "" ;
                         String bookTxtTitle = "";
                         MapPageQuery mapPageQuery = new MapPageQuery();
+                        bookMarkSelectedList.clear();
                         while (ii < sparseBooleanArray.size()) {
                             if (sparseBooleanArray.valueAt(ii)) {
-                                txt_bottom_book_type.setEnabled(true);
-                                txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
-                                ValueHolder += bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii)) + ",";
+                                bookMarkSelectedList.add(bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii)));
+                                Log.d("ensaf::::::::", TAG + "> bookMarkSelectedList + " + bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii)));
                                 bookTxtTitle += mapPageQuery.getBookmarkTypeTitle(bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii))) + ",";
                             }
                             ii++ ;
                         }
 
-                        txt_bottom_book_type.setText(bookTxtTitle);
-                        Toast.makeText(getBaseContext(),  ValueHolder + " are Selected " , Toast.LENGTH_SHORT).show();
+                        if (bookMarkSelectedList.size()>0){
+                            txt_bottom_book_type.setText(bookTxtTitle);
+                            checkBoxBookmark.setChecked(true);
+                            txt_bottom_book_type.setEnabled(true);
+                            txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
+                        }else {
+                            checkBoxBookmark.setChecked(false);
+                            txt_bottom_book_type.setText("* * *");
+                            txt_bottom_book_type.setEnabled(false);
+                        }
+                        Log.d("ensaf::::::::", TAG + "> bookMarkSelectedListSize : "+ bookMarkSelectedList.size());
                     }
                 });
                 final Dialog dialog = builderInner.create();
@@ -804,6 +797,21 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             }
             drawerFragmentMap.setCheckBox01(false);
         }
+
+        /*bookMarkSelectedList
+
+        int ibk = 0;
+        while (ibk < initBookMarkFolderList.size()) {
+            int bk = 0;
+            while (bk < bookMarkSelectedList.size()){
+
+            }
+            if (sparseBooleanArray.valueAt(ii)) {
+                bookMarkSelectedList.add(bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii)));
+                bookTxtTitle += mapPageQuery.getBookmarkTypeTitle(bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii))) + ",";
+            }
+            ii++ ;
+        } */
         /*if (!initBookedTypeID.equals(bookedTypeID)){
             BookMark bookMark = new BookMark();
             bookMark.setIndID(ID_CONS_SELECTED);
@@ -1253,6 +1261,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             do {
                 initBookMarkFolderListID.add(cursor2.getString(0));
                 initBookMarkFolderList.add(cursor2.getString(1));
+                Log.d("ensaf::::::::", TAG + "> initBookMarkFolderListID + "+ cursor2.getString(0));
                 bookmarkTitle += cursor2.getString(1);
             }while (cursor2.moveToNext());
             checkBoxBookmark.setChecked(true);
