@@ -1,11 +1,16 @@
 package com.parandak.ensaf8.bookMarkPage;
 
+import static com.parandak.ensaf8.homePage.HomePageActivity.WRITE_REQUEST_CODE;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,6 +21,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
@@ -29,8 +35,15 @@ import com.parandak.ensaf8.bookMarkPage.rv.BookMarkFolderAdapter;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkTypeRepo;
 import com.parandak.ensaf8.fullScreenDialog.MyDividerItemDecoration;
+import com.parandak.ensaf8.homePage.HomePageActivity;
+import com.parandak.ensaf8.storage.EnsafQueryExport;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class BookMarkPage extends DialogFragment {
@@ -175,12 +188,61 @@ public class BookMarkPage extends DialogFragment {
                 if (isEdit){
                     showDialogueEDITE(bookMarkFolderList.get(position).getId() ,bookMarkFolderList.get(position).getTitle());
                 }else {
+                    SimpleDateFormat df = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+                    Date c = Calendar.getInstance().getTime();
+                    String formattedDate = df.format(c);
+                    String Filename = "SyncFile : " + formattedDate +".txt";
+                    createFile(HomePageActivity.mimeType,Filename);
                     Toast.makeText(mcontext, "Item clicked !!!! " + bookMarkFolderList.get(position).getId(), Toast.LENGTH_SHORT).show();
                 }
 
 
             }
         });
+    }
+    private void createFile(String mimeType, String fileName) {
+        int WRITE_REQUEST_CODE = HomePageActivity.WRITE_REQUEST_CODE;
+        //Intent intent = mactivity.getIntent();
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+
+        // Filter to only show results that can be "opened", such as
+        // a file (as opposed to a list of contacts or timezones).
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        // Create a file with the requested MIME type.
+        intent.setType(mimeType);
+        intent.putExtra(Intent.EXTRA_TITLE, fileName);
+        startActivityForResult(intent, WRITE_REQUEST_CODE);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == WRITE_REQUEST_CODE && resultCode == AppCompatActivity.RESULT_OK){
+
+            final EnsafQueryExport ensafQueryExport = new EnsafQueryExport();
+            final Uri treeUri = data.getData();
+            //alterDocument(treeUri,ensafQueryExport.exportQuery());
+            alterDocument(treeUri,"TEST Export 02 ! ! !");
+            //alterDocument(treeUri,ensafQueryExport.dailyReport());
+        }
+    }
+    private void alterDocument(Uri uri,String txt) {
+        try {
+            ParcelFileDescriptor pfd = mcontext.getContentResolver().
+                    openFileDescriptor(uri, "w");
+            FileOutputStream fileOutputStream =
+                    new FileOutputStream(pfd.getFileDescriptor());
+            //fileOutputStream.write(("Overwritten by MyCloud at " +
+            //System.currentTimeMillis() + "\n").getBytes());
+            fileOutputStream.write((txt+"\n").getBytes());
+            // Let the document provider know you're done by closing the stream.
+            fileOutputStream.close();
+            pfd.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            Toast.makeText(mcontext, "Sync File Created !", Toast.LENGTH_SHORT).show();
+        }
     }
     private void initBookMarkType(){
         Log.d("ensaf::::::::", TAG + "> initBookMarkType");

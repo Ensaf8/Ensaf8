@@ -110,11 +110,11 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
     }
 
     public static String ID_CONNECT_Indi1;
-    String mimeType = "text/txt";
+    public static String mimeType = "text/txt";
     ProgressDialog progressDialog;
     String Filename;
     public static final int REQUEST_CODE_OPEN_DIRECTORY = 123;
-    private static final int WRITE_REQUEST_CODE = 43;
+    public static final int WRITE_REQUEST_CODE = 43;
     List<wpt> wpts;
 
     String __mj, _dj, _dwj;
@@ -593,8 +593,8 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
             final EnsafQueryExport ensafQueryExport = new EnsafQueryExport();
             final Uri treeUri = data.getData();
             //alterDocument(treeUri,ensafQueryExport.exportQuery());
-            //alterDocument(treeUri,"TEST REPORT ! ! !");
-            alterDocument(treeUri,ensafQueryExport.dailyReport());
+            alterDocument(treeUri,"TEST Export ! ! !");
+            //alterDocument(treeUri,ensafQueryExport.dailyReport());
         }
     }
     private class AsyncTaskExample extends AsyncTask<Uri, String, List<wpt>> {
