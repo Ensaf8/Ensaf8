@@ -61,6 +61,8 @@ public class BookMarkPage extends DialogFragment {
 
     List<BookMarkFolder> bookMarkFolderList = new ArrayList<>();
 
+    String bTypeID;
+
     public BookMarkPage displayBookMarkFolder(FragmentManager fragmentManager){
         BookMarkPage bookMarkPage = new BookMarkPage();
         bookMarkPage.show(fragmentManager,TAG);
@@ -192,6 +194,7 @@ public class BookMarkPage extends DialogFragment {
                     Date c = Calendar.getInstance().getTime();
                     String formattedDate = df.format(c);
                     String Filename = "SyncFile : " + formattedDate +".txt";
+                    bTypeID = bookMarkFolderList.get(position).getId();
                     createFile(HomePageActivity.mimeType,Filename);
                     Toast.makeText(mcontext, "Item clicked !!!! " + bookMarkFolderList.get(position).getId(), Toast.LENGTH_SHORT).show();
                 }
@@ -204,7 +207,7 @@ public class BookMarkPage extends DialogFragment {
         int WRITE_REQUEST_CODE = HomePageActivity.WRITE_REQUEST_CODE;
         //Intent intent = mactivity.getIntent();
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-
+        intent.putExtra("B_type_id","2020");
         // Filter to only show results that can be "opened", such as
         // a file (as opposed to a list of contacts or timezones).
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -218,11 +221,10 @@ public class BookMarkPage extends DialogFragment {
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == WRITE_REQUEST_CODE && resultCode == AppCompatActivity.RESULT_OK){
-
-            final EnsafQueryExport ensafQueryExport = new EnsafQueryExport();
+            BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
             final Uri treeUri = data.getData();
             //alterDocument(treeUri,ensafQueryExport.exportQuery());
-            alterDocument(treeUri,"TEST Export 02 ! ! !");
+            alterDocument(treeUri,"TEST Export => the query is : " + bookMarkPageQuery.getPhaseBookMark(bTypeID));
             //alterDocument(treeUri,ensafQueryExport.dailyReport());
         }
     }

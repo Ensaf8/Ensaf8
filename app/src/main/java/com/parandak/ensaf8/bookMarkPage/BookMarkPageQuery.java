@@ -5,11 +5,48 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.parandak.ensaf8.bookMarkPage.rv.BookMarkFolder;
 import com.parandak.ensaf8.dataBase.DatabaseManager;
+import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
+import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
+import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
+import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 
 import java.util.ArrayList;
 
 public class BookMarkPageQuery {
+    public String getIndiBookMark(String B_type_id){
+        return "SELECT " + BookMark.KEY_IndID
+                + " FROM " + BookMark.TABLE
+                + " WHERE " + BookMark.KEY_B_TYPE_ID + " = " + B_type_id;
+        //        + " ORDER BY " + BookMark.KEY_IndID + " ASC";
+    }
+
+    public String getGeoPointBookMark(String B_type_id){
+        return "SELECT " + Indi_Geop.TABLE + "." + Indi_Geop.KEY_IndiID + ","
+                + GPoint.TABLE + "." + GPoint.KEY_Lat + ","
+                + GPoint.TABLE + "." + GPoint.KEY_Lon
+                + " FROM " + GPoint.TABLE
+                + " INNER JOIN " + Indi_Geop.TABLE
+                + " ON " + Indi_Geop.TABLE + "." + Indi_Geop.KEY_GeopID
+                + " = " + GPoint.TABLE + "." + GPoint.KEY_IDGeop
+                + " WHERE " + Indi_Geop.TABLE + "." + Indi_Geop.KEY_IndiID + " IN "
+                + "(" + getIndiBookMark(B_type_id) + ")"
+                + " ORDER BY " + Indi_Geop.TABLE + "." + Indi_Geop.KEY_IndiID + " ASC";
+
+    }
+
+    public String getPhaseBookMark(String B_type_id){
+        return "SELECT " + Cons_Phase.TABLE + "." + Cons_Phase.KEY_ID_Cons_Phase + ","
+                + Cons_Phase.TABLE + "." + Cons_Phase.KEY_IndID + ","
+                + Cons_Phase.TABLE + "." + Cons_Phase.KEY_Phase + ","
+                + Cons_Phase.TABLE + "." + Cons_Phase.KEY_PhaseDate
+                + " FROM " + Cons_Phase.TABLE
+                + " WHERE " + Cons_Phase.TABLE + "." + Cons_Phase.KEY_IndID + " IN "
+                + "(" + getIndiBookMark(B_type_id) + ")"
+                + " ORDER BY " + Cons_Phase.TABLE + "." + Cons_Phase.KEY_IndID + " ASC";
+
+    }
+
     public Cursor getBookMarkType(){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = " SELECT "
