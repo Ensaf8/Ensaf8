@@ -485,18 +485,18 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                     txt_bottom_book_type.setEnabled(false);
                     txt_bottom_book_type.setText("* * *");
                     txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.darkGray));
-                    bookMarkFolderListID.clear();
+                    bookMarkSelectedList.clear();
                     //bookedTypeID = "0";
                 }else {
                     /*if (bookedTypeID.equals("0")){
                         bookedTypeID = "1";
                     }*/
-                    if (bookMarkFolderListID.size() == 0){
-                        bookMarkFolderListID.add("1");
+                    if (bookMarkSelectedList.size() == 0){
+                        bookMarkSelectedList.add("1");
                     }
                     MapPageQuery mapPageQuery = new MapPageQuery();
                     txt_bottom_book_type.setEnabled(true);
-                    txt_bottom_book_type.setText(mapPageQuery.getBookmarkTypeTitle(bookMarkFolderListID.get(0)));
+                    txt_bottom_book_type.setText(mapPageQuery.getBookmarkTypeTitle(bookMarkSelectedList.get(0)));
                     txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
                     checkBoxBookmark.setChecked(true);
                 }
@@ -745,7 +745,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         txt_bottom_book_type.setText("پیش فرض");
                         ratingBottom.setRating(0);
                         isRatingBottomChange = false;
-                        bookMarkFolderListID.clear();
+                        bookMarkSelectedList.clear();
                         initRating = 0;
                         break;
                     }
