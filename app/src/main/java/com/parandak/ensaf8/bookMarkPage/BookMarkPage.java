@@ -38,6 +38,8 @@ public class BookMarkPage extends DialogFragment {
     public static final String TAG = "full_dialog";
     private Context mcontext;
     private Activity mactivity;
+    String title;
+    boolean isEdit;
     BookMarkPage bookMarkPage = this;
 
     private Toolbar toolbar;
@@ -46,8 +48,23 @@ public class BookMarkPage extends DialogFragment {
 
     List<BookMarkFolder> bookMarkFolderList = new ArrayList<>();
 
-    public static BookMarkPage display(FragmentManager fragmentManager){
+    public BookMarkPage displayBookMarkFolder(FragmentManager fragmentManager){
         BookMarkPage bookMarkPage = new BookMarkPage();
+        bookMarkPage.show(fragmentManager,TAG);
+        return bookMarkPage;
+    }
+    public BookMarkPage(){
+        this.title = "BooK Mark Folder";
+        this.isEdit = true;
+    }
+
+    public BookMarkPage(String title){
+        this.title = title;
+        this.isEdit = false;
+    }
+
+    public BookMarkPage export(FragmentManager fragmentManager,String title){
+        BookMarkPage bookMarkPage = new BookMarkPage(title);
         bookMarkPage.show(fragmentManager,TAG);
         return bookMarkPage;
     }
@@ -97,7 +114,7 @@ public class BookMarkPage extends DialogFragment {
     }
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        Log.d("ensaf::::::::", TAG + "> onViewCreated");
+        Log.d("ensaf::::::::", TAG + "> onViewCreated title : " + title);
         super.onViewCreated(view, savedInstanceState);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +122,7 @@ public class BookMarkPage extends DialogFragment {
                 BookMarkPage.this.dismiss();
             }
         });
-        toolbar.setTitle("Some Title");
+        toolbar.setTitle(title);
         toolbar.inflateMenu(R.menu.example_dialog);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -155,8 +172,13 @@ public class BookMarkPage extends DialogFragment {
         bookMarkFolderAdapter.setOnItemClickListener(new BookMarkFolderAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(mcontext, "Item clicked !!!! " + bookMarkFolderList.get(position).getId(), Toast.LENGTH_SHORT).show();
-                showDialogueEDITE(bookMarkFolderList.get(position).getId() ,bookMarkFolderList.get(position).getTitle());
+                if (isEdit){
+                    showDialogueEDITE(bookMarkFolderList.get(position).getId() ,bookMarkFolderList.get(position).getTitle());
+                }else {
+                    Toast.makeText(mcontext, "Item clicked !!!! " + bookMarkFolderList.get(position).getId(), Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         });
     }

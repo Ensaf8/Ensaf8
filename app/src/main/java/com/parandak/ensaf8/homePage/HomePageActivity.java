@@ -494,11 +494,13 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                 checkConnection();
                 break;
             case 1:
-                BookMarkPage.display(getSupportFragmentManager());
-                HomePageQuery homePageQuery = new HomePageQuery();
+                BookMarkPage bookMarkPage = new BookMarkPage();
+                bookMarkPage.displayBookMarkFolder(getSupportFragmentManager());
+                //BookMarkPage.display(getSupportFragmentManager());
+                /*HomePageQuery homePageQuery = new HomePageQuery();
                 Cursor cursor = homePageQuery.getBookMark();
                 Toast.makeText(getApplicationContext(), "BookMarks : " + cursor.getCount(), Toast.LENGTH_SHORT).show();
-                Log.d("ensaf::::::::", TAG + "> transaction : " + BookMarkRepo.updateBookMarkTable());
+                Log.d("ensaf::::::::", TAG + "> transaction : " + BookMarkRepo.updateBookMarkTable());*/
                 break;
             case 2:
                 AlertDialog.Builder builderInner02 = new AlertDialog.Builder(context);
@@ -519,7 +521,8 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                 builderInner02.show();
                 break;
             case 3:
-                createFile(mimeType,Filename);
+                toExportData();
+                //createFile(mimeType,Filename);
                 break;
             case 4:
                 Intent intent01 = new Intent()
@@ -533,6 +536,11 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
             default:
                 break;
         }
+    }
+    private void toExportData(){
+        //BookMarkPage.display(getSupportFragmentManager());
+        BookMarkPage bookMarkPage = new BookMarkPage();
+        bookMarkPage.export(getSupportFragmentManager(),"Choose to Export!");
     }
     private void clearDataBase(){
         Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
