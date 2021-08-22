@@ -21,7 +21,7 @@ public class BookMarkPageQuery {
         //        + " ORDER BY " + BookMark.KEY_IndID + " ASC";
     }
 
-    public String getGeoPointBookMark(String B_type_id){
+    public String getGPointBookMark(String B_type_id){
         return "SELECT " + Indi_Geop.TABLE + "." + Indi_Geop.KEY_IndiID + ","
                 + GPoint.TABLE + "." + GPoint.KEY_Lat + ","
                 + GPoint.TABLE + "." + GPoint.KEY_Lon
@@ -45,6 +45,11 @@ public class BookMarkPageQuery {
                 + "(" + getIndiBookMark(B_type_id) + ")"
                 + " ORDER BY " + Cons_Phase.TABLE + "." + Cons_Phase.KEY_IndID + " ASC";
 
+    }
+
+    public Cursor runSqlQuery(String sql){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        return  db.rawQuery(sql, null);
     }
 
     public Cursor getBookMarkType(){

@@ -36,7 +36,6 @@ import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkTypeRepo;
 import com.parandak.ensaf8.fullScreenDialog.MyDividerItemDecoration;
 import com.parandak.ensaf8.homePage.HomePageActivity;
-import com.parandak.ensaf8.storage.EnsafQueryExport;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -224,7 +223,13 @@ public class BookMarkPage extends DialogFragment {
             BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
             final Uri treeUri = data.getData();
             //alterDocument(treeUri,ensafQueryExport.exportQuery());
-            alterDocument(treeUri,"TEST Export => the query is : " + bookMarkPageQuery.getPhaseBookMark(bTypeID));
+            Cursor phaseCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getPhaseBookMark(bTypeID));
+            Cursor gPointCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getGPointBookMark(bTypeID));
+            Cursor indiCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getIndiBookMark(bTypeID));
+            String outPutExport = bookMarkPageQuery.getPhaseBookMark(bTypeID) + String.valueOf(phaseCursor.getCount());
+
+            alterDocument(treeUri,outPutExport);
+            Log.d("ensaf::::::::", TAG + "> initBookMarkType" + outPutExport);
             //alterDocument(treeUri,ensafQueryExport.dailyReport());
         }
     }
