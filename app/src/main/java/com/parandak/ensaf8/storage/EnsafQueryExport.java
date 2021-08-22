@@ -2,8 +2,8 @@ package com.parandak.ensaf8.storage;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.ContactsContract;
 
+import com.parandak.ensaf8.bookMarkPage.BookMarkPageQuery;
 import com.parandak.ensaf8.dataBase.DatabaseManager;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.CusAccount;
@@ -14,14 +14,11 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
 import com.parandak.ensaf8.dataBase.model_Indivi.PhoneNum;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 import com.parandak.ensaf8.homePage.HomePageQuery;
-import com.parandak.ensaf8.homePage.model.TaskHomePage;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getPersianDate;
 import static com.parandak.ensaf8.homePage.HomePageActivity.ID_CONNECT_Indi1;
@@ -32,7 +29,51 @@ public class EnsafQueryExport {
     public EnsafQueryExport(){
 
     }
-
+    public String exportFromBookMark(String bTypeID){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        StringBuilder XMLensaf0 = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>  \n");
+        StringBuilder Ensaf = new StringBuilder("<ensaf></ensaf>");
+        StringBuilder XMLall0000 = new StringBuilder();
+        BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
+        Cursor phaseCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getPhaseBookMark(bTypeID));
+        Cursor gPointCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getGPointBookMark(bTypeID));
+        Cursor indiCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getIndiBookMark(bTypeID));
+        if (phaseCursor.moveToFirst()) {
+            do  {
+                XMLall0000.append(
+                        "   \n <"+Cons_Phase.TABLE+">  \n" +
+                                "        <"+Cons_Phase.KEY_ID_Cons_Phase+">" + phaseCursor.getString(0) + "<"+Cons_Phase.KEY_ID_Cons_Phase+">  \n" +
+                                "        <"+Cons_Phase.KEY_IndID+">" + phaseCursor.getString(1) + "</"+Cons_Phase.KEY_IndID+">  \n" +
+                                "        <"+Cons_Phase.KEY_Phase+">" + phaseCursor.getString(2) + "</"+Cons_Phase.KEY_Phase+"> \n" +
+                                "        <"+Cons_Phase.KEY_PhaseDate+">" + phaseCursor.getString(3) + "</"+Cons_Phase.KEY_PhaseDate+"> \n" +
+                                "    </" + Cons_Phase.TABLE + ">  \n");
+            }while (phaseCursor.moveToNext());
+        }
+        if (gPointCursor.moveToFirst()) {
+            do  {
+                XMLall0000.append(
+                        "   \n <"+GPoint.TABLE+">  \n" +
+                                "        <"+Indi_Geop.KEY_IndiID+">" + gPointCursor.getString(0) + "<"+Indi_Geop.KEY_IndiID+">  \n" +
+                                "        <"+GPoint.KEY_IDGeop+">" + gPointCursor.getString(1) + "<"+GPoint.KEY_IDGeop+">  \n" +
+                                "        <"+GPoint.KEY_Lat+">" + gPointCursor.getString(2) + "<"+GPoint.KEY_Lat+">  \n" +
+                                "        <"+GPoint.KEY_Lon+">" + gPointCursor.getString(3) + "<"+GPoint.KEY_Lon+">  \n" +
+                                "    </" + GPoint.TABLE + ">  \n");
+            } while (gPointCursor.moveToNext());
+        }
+        if (indiCursor.moveToFirst()) {
+            do  {
+                XMLall0000.append(
+                        "   \n <"+Individual.TABLE+">  \n" +
+                                "        <"+Individual.KEY_ID_Indi+">" + indiCursor.getString(0) + "<"+Individual.KEY_ID_Indi+">  \n" +
+                                "        <"+Individual.KEY_IndiName+">" + indiCursor.getString(1) + "<"+Individual.KEY_IndiName+">  \n" +
+                                "        <"+Individual.KEY_IsCons+">" + indiCursor.getString(2) + "<"+Individual.KEY_IsCons+">  \n" +
+                                "    </" + Individual.TABLE + ">  \n");
+            } while (indiCursor.moveToNext());
+        }
+        Ensaf.insert(7,XMLall0000);
+        XMLensaf0.append(Ensaf);
+        return XMLensaf0.toString();
+    }
     public String exportQuery(){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         StringBuilder XMLensaf0 = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>  \n");
