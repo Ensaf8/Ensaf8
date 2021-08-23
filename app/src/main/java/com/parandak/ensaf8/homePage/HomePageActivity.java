@@ -18,8 +18,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,13 +41,9 @@ import com.parandak.ensaf8.app.BaseActivity;
 import com.parandak.ensaf8.bookMarkPage.BookMarkPage;
 import com.parandak.ensaf8.broadCast.ConnectivityReceiver;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
-import com.parandak.ensaf8.dataBase.model_Indivi.CusAccount;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
-import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Coop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
-import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
-import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Cons_PhaseRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.CusAccountRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.GPointRepo;
@@ -65,7 +59,6 @@ import com.parandak.ensaf8.homePage.sessionManager.ConnectSQLite;
 import com.parandak.ensaf8.homePage.sessionManager.SessionManager;
 import com.parandak.ensaf8.storage.EnsafQueryExport;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -540,7 +533,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
     private void toExportData(){
         //BookMarkPage.display(getSupportFragmentManager());
         BookMarkPage bookMarkPage = new BookMarkPage();
-        bookMarkPage.export(getSupportFragmentManager(),"Choose to Export!");
+        bookMarkPage.showExportPage(getSupportFragmentManager(),"Choose to Export!");
     }
     private void clearDataBase(){
         Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();

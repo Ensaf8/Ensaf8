@@ -78,7 +78,7 @@ public class BookMarkPage extends DialogFragment {
         this.isEdit = false;
     }
 
-    public BookMarkPage export(FragmentManager fragmentManager,String title){
+    public BookMarkPage showExportPage(FragmentManager fragmentManager, String title){
         BookMarkPage bookMarkPage = new BookMarkPage(title);
         bookMarkPage.show(fragmentManager,TAG);
         return bookMarkPage;
