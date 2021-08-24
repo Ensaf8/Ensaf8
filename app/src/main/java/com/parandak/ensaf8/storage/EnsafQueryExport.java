@@ -38,6 +38,7 @@ public class EnsafQueryExport {
         Cursor phaseCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getPhaseBookMark(bTypeID));
         Cursor gPointCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getGPointBookMark(bTypeID));
         Cursor indiCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getIndiBookMark(bTypeID));
+        Cursor indiCoopCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getIndiCoopBookMark(bTypeID));
         if (phaseCursor.moveToFirst()) {
             do  {
                 XMLall0000.append(
@@ -69,6 +70,17 @@ public class EnsafQueryExport {
                                 "        <"+Individual.KEY_IsCons+">" + indiCursor.getString(2) + "<"+Individual.KEY_IsCons+">  \n" +
                                 "    </" + Individual.TABLE + ">  \n");
             } while (indiCursor.moveToNext());
+        }
+        if (indiCoopCursor.moveToFirst()){
+            do  {
+                XMLall0000.append(
+                        "   \n <"+Indi_Coop.TABLE+">  \n" +
+                                "        <"+Indi_Coop.KEY_FirstPartID+">" + indiCoopCursor.getString(0) + "<"+Indi_Coop.KEY_FirstPartID+">  \n" +
+                                "        <"+Indi_Coop.KEY_SecondPartID+">" + indiCoopCursor.getString(1) + "<"+Indi_Coop.KEY_SecondPartID+">  \n" +
+                                "        <"+Indi_Coop.KEY_Title+">" + indiCoopCursor.getString(2) + "<"+Indi_Coop.KEY_Title+">  \n" +
+                                "        <"+Individual.KEY_IndiName+">" + indiCoopCursor.getString(3) + "<"+Individual.KEY_IndiName+">  \n" +
+                                "    </" + Indi_Coop.TABLE + ">  \n");
+            } while (indiCoopCursor.moveToNext());
         }
         Ensaf.insert(7,XMLall0000);
         XMLensaf0.append(Ensaf);

@@ -27,8 +27,8 @@ public class BookMarkPageQuery {
     public String getIndiCoopBookMark(String B_type_id){
         return " SELECT "
                 + Indi_Coop.TABLE + "." + Indi_Coop.KEY_FirstPartID + " , "
+                + Indi_Coop.TABLE + "." + Indi_Coop.KEY_SecondPartID + " , "
                 + Indi_Coop.TABLE + "." + Indi_Coop.KEY_Title + " , "
-                + Individual.TABLE + "." + Individual.KEY_ID_Indi + " , "
                 + Individual.TABLE + "." + Individual.KEY_IndiName
                 + " FROM "
                 + Indi_Coop.TABLE
