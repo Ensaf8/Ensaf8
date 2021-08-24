@@ -67,7 +67,6 @@ public class EnsafQueryExport {
                         "   \n <"+Individual.TABLE+">  \n" +
                                 "        <"+Individual.KEY_ID_Indi+">" + indiCursor.getString(0) + "<"+Individual.KEY_ID_Indi+">  \n" +
                                 "        <"+Individual.KEY_IndiName+">" + indiCursor.getString(1) + "<"+Individual.KEY_IndiName+">  \n" +
-                                "        <"+Individual.KEY_IsCons+">" + indiCursor.getString(2) + "<"+Individual.KEY_IsCons+">  \n" +
                                 "    </" + Individual.TABLE + ">  \n");
             } while (indiCursor.moveToNext());
         }

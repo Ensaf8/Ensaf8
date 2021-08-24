@@ -41,8 +41,7 @@ public class BookMarkPageQuery {
 
     public String getIndiBookMark(String B_type_id){
         return "SELECT " + Individual.TABLE + "." + Individual.KEY_ID_Indi + ","
-                + Individual.TABLE + "." + Individual.KEY_IndiName + ","
-                + Individual.TABLE + "." + Individual.KEY_IsCons
+                + Individual.TABLE + "." + Individual.KEY_IndiName
                 + " FROM " + Individual.TABLE
                 + " WHERE " + Individual.TABLE + "." + Individual.KEY_ID_Indi + " IN "
                 + "(" + getIndiIDBookMark(B_type_id) + ")";
