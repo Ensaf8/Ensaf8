@@ -43,7 +43,7 @@ public class EnsafQueryExport {
             do  {
                 XMLall0000.append(
                         "   \n <"+Cons_Phase.TABLE+">  \n" +
-                                "        <"+Cons_Phase.KEY_ID_Cons_Phase+">" + phaseCursor.getString(0) + "<"+Cons_Phase.KEY_ID_Cons_Phase+">  \n" +
+                                "        <"+Cons_Phase.KEY_ID_Cons_Phase+">" + phaseCursor.getString(0) + "</"+Cons_Phase.KEY_ID_Cons_Phase+">  \n" +
                                 "        <"+Cons_Phase.KEY_IndID+">" + phaseCursor.getString(1) + "</"+Cons_Phase.KEY_IndID+">  \n" +
                                 "        <"+Cons_Phase.KEY_Phase+">" + phaseCursor.getString(2) + "</"+Cons_Phase.KEY_Phase+"> \n" +
                                 "        <"+Cons_Phase.KEY_PhaseDate+">" + phaseCursor.getString(3) + "</"+Cons_Phase.KEY_PhaseDate+"> \n" +
@@ -54,10 +54,10 @@ public class EnsafQueryExport {
             do  {
                 XMLall0000.append(
                         "   \n <"+GPoint.TABLE+">  \n" +
-                                "        <"+Indi_Geop.KEY_IndiID+">" + gPointCursor.getString(0) + "<"+Indi_Geop.KEY_IndiID+">  \n" +
-                                "        <"+GPoint.KEY_IDGeop+">" + gPointCursor.getString(1) + "<"+GPoint.KEY_IDGeop+">  \n" +
-                                "        <"+GPoint.KEY_Lat+">" + gPointCursor.getString(2) + "<"+GPoint.KEY_Lat+">  \n" +
-                                "        <"+GPoint.KEY_Lon+">" + gPointCursor.getString(3) + "<"+GPoint.KEY_Lon+">  \n" +
+                                "        <"+Indi_Geop.KEY_IndiID+">" + gPointCursor.getString(0) + "</"+Indi_Geop.KEY_IndiID+">  \n" +
+                                "        <"+GPoint.KEY_IDGeop+">" + gPointCursor.getString(1) + "</"+GPoint.KEY_IDGeop+">  \n" +
+                                "        <"+GPoint.KEY_Lat+">" + gPointCursor.getString(2) + "</"+GPoint.KEY_Lat+">  \n" +
+                                "        <"+GPoint.KEY_Lon+">" + gPointCursor.getString(3) + "</"+GPoint.KEY_Lon+">  \n" +
                                 "    </" + GPoint.TABLE + ">  \n");
             } while (gPointCursor.moveToNext());
         }
@@ -65,8 +65,9 @@ public class EnsafQueryExport {
             do  {
                 XMLall0000.append(
                         "   \n <"+Individual.TABLE+">  \n" +
-                                "        <"+Individual.KEY_ID_Indi+">" + indiCursor.getString(0) + "<"+Individual.KEY_ID_Indi+">  \n" +
-                                "        <"+Individual.KEY_IndiName+">" + indiCursor.getString(1) + "<"+Individual.KEY_IndiName+">  \n" +
+                                "        <"+Individual.KEY_ID_Indi+">" + indiCursor.getString(0) + "</"+Individual.KEY_ID_Indi+">  \n" +
+                                "        <"+Individual.KEY_IndiName+">" + indiCursor.getString(1) + "</"+Individual.KEY_IndiName+">  \n" +
+                                "        <"+Individual.KEY_IsCons+">" + indiCursor.getString(2) + "</"+Individual.KEY_IsCons+">  \n" +
                                 "    </" + Individual.TABLE + ">  \n");
             } while (indiCursor.moveToNext());
         }
@@ -74,10 +75,10 @@ public class EnsafQueryExport {
             do  {
                 XMLall0000.append(
                         "   \n <"+Indi_Coop.TABLE+">  \n" +
-                                "        <"+Indi_Coop.KEY_FirstPartID+">" + indiCoopCursor.getString(0) + "<"+Indi_Coop.KEY_FirstPartID+">  \n" +
-                                "        <"+Indi_Coop.KEY_SecondPartID+">" + indiCoopCursor.getString(1) + "<"+Indi_Coop.KEY_SecondPartID+">  \n" +
-                                "        <"+Indi_Coop.KEY_Title+">" + indiCoopCursor.getString(2) + "<"+Indi_Coop.KEY_Title+">  \n" +
-                                "        <"+Individual.KEY_IndiName+">" + indiCoopCursor.getString(3) + "<"+Individual.KEY_IndiName+">  \n" +
+                                "        <"+Indi_Coop.KEY_FirstPartID+">" + indiCoopCursor.getString(0) + "</"+Indi_Coop.KEY_FirstPartID+">  \n" +
+                                "        <"+Indi_Coop.KEY_SecondPartID+">" + indiCoopCursor.getString(1) + "</"+Indi_Coop.KEY_SecondPartID+">  \n" +
+                                "        <"+Indi_Coop.KEY_Title+">" + indiCoopCursor.getString(2) + "</"+Indi_Coop.KEY_Title+">  \n" +
+                                "        <"+Individual.KEY_IndiName+">" + indiCoopCursor.getString(3) + "</"+Individual.KEY_IndiName+">  \n" +
                                 "    </" + Indi_Coop.TABLE + ">  \n");
             } while (indiCoopCursor.moveToNext());
         }
