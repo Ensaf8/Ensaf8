@@ -103,7 +103,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
     }
 
     public static String ID_CONNECT_Indi1;
-    public String ID_CONNECT_Customer;
+    public static String ID_CONNECT_Customer;
     public static String mimeType = "text/txt";
     ProgressDialog progressDialog;
     String Filename;

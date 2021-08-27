@@ -13,7 +13,9 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
 import com.parandak.ensaf8.dataBase.model_Indivi.PhoneNum;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
+import com.parandak.ensaf8.homePage.HomePageActivity;
 import com.parandak.ensaf8.homePage.HomePageQuery;
+import com.parandak.ensaf8.mapPage.MapActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,6 +41,9 @@ public class EnsafQueryExport {
         Cursor gPointCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getGPointBookMark(bTypeID));
         Cursor indiCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getIndiBookMark(bTypeID));
         Cursor indiCoopCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getIndiCoopBookMark(bTypeID));
+        XMLall0000.append("   \n <info>  \n" +
+                "        <customerID>" + HomePageActivity.ID_CONNECT_Customer + "</customerID> \n" +
+                "    </info>  \n");
         if (phaseCursor.moveToFirst()) {
             do  {
                 XMLall0000.append(
