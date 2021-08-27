@@ -103,6 +103,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
     }
 
     public static String ID_CONNECT_Indi1;
+    public String ID_CONNECT_Customer;
     public static String mimeType = "text/txt";
     ProgressDialog progressDialog;
     String Filename;
@@ -231,6 +232,9 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                     if (password.equals(connectSQLite.getPassWord(name))){
                         txtProfileName.setText(name + " " + connectSQLite.getID_UserName(name));
                         ID_CONNECT_Indi1 = connectSQLite.getID_UserName(name);
+                        ID_CONNECT_Customer = connectSQLite.getID_Customer(name);
+                        Log.d("ensaf::::::::", TAG + "> sessionManaging ID_CONNECT_Indi1 : " + ID_CONNECT_Indi1 +
+                                " ID_CONNECT_Customer : " + ID_CONNECT_Customer);
                         loginbtn.setText("LOG OUT");
                         isConnected = true;
                         initViewPager();
@@ -313,9 +317,11 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                             txtProfileName.setText("* * *");
                             loginbtn.setText("LOG IN");
                             ID_CONNECT_Indi1 = null ;
+                            ID_CONNECT_Customer = null;
                             isConnected = false;
                             sessionManager.logoutUser();
                             Toast.makeText(getApplicationContext(), "LogingOut ! ! !", Toast.LENGTH_SHORT).show();
+                            Log.d("ensaf::::::::", TAG + " > LogingOut ! ! !");
                             initViewPager();
                         }
                     });
@@ -357,6 +363,9 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                                             txtProfileName.setText(username + " " + connectSQLite.getID_UserName(username));
                                             //ID_CONNECT_Indi1 = cursor.getString(2);
                                             ID_CONNECT_Indi1 = connectSQLite.getID_UserName(username);
+                                            ID_CONNECT_Customer = connectSQLite.getID_Customer(username);
+                                            Log.d("ensaf::::::::", TAG + "> accountManage ID_CONNECT_Indi1 : " + ID_CONNECT_Indi1 +
+                                                    " ID_CONNECT_Customer : " + ID_CONNECT_Customer);
                                             loginbtn.setText("LOG OUT");
                                             isConnected = true;
                                             initViewPager();

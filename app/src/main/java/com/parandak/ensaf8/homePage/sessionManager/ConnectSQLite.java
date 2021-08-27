@@ -39,6 +39,15 @@ public class ConnectSQLite {
         }
     }
 
+    public String getID_Customer(String username){
+        Cursor cursor = homePageQuery.checkUserName(username);
+        if (cursor.moveToFirst()){
+            return cursor.getString(3);
+        }else {
+            return "error!";
+        }
+    }
+
     public int checkUserNameCount(String username){
         Cursor cursor = homePageQuery.checkUserName(username);
         return cursor.getCount();

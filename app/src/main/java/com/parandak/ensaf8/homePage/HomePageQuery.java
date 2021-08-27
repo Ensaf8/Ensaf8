@@ -95,7 +95,8 @@ public class HomePageQuery {
         String selectQuery = " SELECT "
                 + CusAccount.TABLE + "." + CusAccount.KEY_AccountName + " , "
                 + CusAccount.TABLE + "." + CusAccount.KEY_PassWord + " , "
-                + CusAccount.TABLE + "." + CusAccount.KEY_IndID
+                + CusAccount.TABLE + "." + CusAccount.KEY_IndID + " , "
+                + CusAccount.TABLE + "." +CusAccount.KEY_ID_Cus
                 + " FROM "
                 + CusAccount.TABLE
                 + " WHERE " + CusAccount.TABLE + "." + CusAccount.KEY_AccountName + " = "+" '" + accountName + "' ;" ;
