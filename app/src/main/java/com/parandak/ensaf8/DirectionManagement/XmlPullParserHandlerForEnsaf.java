@@ -1,5 +1,7 @@
 package com.parandak.ensaf8.DirectionManagement;
 
+import android.util.Log;
+
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.CusAccount;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XmlPullParserHandlerForEnsaf {
-
+    private final String TAG = this.getClass().getSimpleName();
 
     private Cons_Phase cons_phase;
     private CusAccount cusAccount;
@@ -88,7 +90,8 @@ public class XmlPullParserHandlerForEnsaf {
                             this.indi_geop = new Indi_Geop();
                         }else if (tagname.equalsIgnoreCase(Individual.TABLE)){
                             // create a new instance of PhoneNumber
-                            this.individual = new Individual();
+                            //this.individual = new Individual();
+                            Log.d("ensaf::::::::", TAG + "> initiate : " + Individual.TABLE);
                         }else if (tagname.equalsIgnoreCase(PhoneNum.TABLE)){
                             // create a new instance of Points
                             phoneNum = new PhoneNum();
@@ -170,14 +173,17 @@ public class XmlPullParserHandlerForEnsaf {
 
                         }else if (tagname.equalsIgnoreCase(Individual.TABLE)) {
                             // insert indi_geop
-                            individualRepo.insert(this.individual);
+                            //individualRepo.insert(this.individual);
+                            Log.d("ensaf::::::::", TAG + "> insert data to  : " + Individual.TABLE);
                         }else if (tagname.equalsIgnoreCase(Individual.KEY_ID_Indi)) {
-                            this.individual.setID_Indi(text);
+                            Log.d("ensaf::::::::", TAG + "> insert " + text + " to : " + Individual.KEY_ID_Indi);
+                            //this.individual.setID_Indi(text);
                         }else if (tagname.equalsIgnoreCase(Individual.KEY_IndiName)) {
-                            this.individual.setIndiName(text);
+                            Log.d("ensaf::::::::", TAG + "> insert " + text + " to : " + Individual.KEY_IndiName);
+                            //this.individual.setIndiName(text);
                         }else if (tagname.equalsIgnoreCase(Individual.KEY_IsCons)) {
-                            this.individual.setIsCons(text);
-
+                            Log.d("ensaf::::::::", TAG + "> insert " + text + " to : " + Individual.KEY_IsCons);
+                            //this.individual.setIsCons(text);
                         }else if (tagname.equalsIgnoreCase(PhoneNum.TABLE)) {
                             // insert phoneNum
                             phoneNumRepo.insert(phoneNum);
