@@ -41,7 +41,8 @@ public class EnsafQueryExport {
         Cursor gPointCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getGPointBookMark(bTypeID));
         Cursor indiCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getIndiBookMark(bTypeID));
         Cursor indiCoopCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getIndiCoopBookMark(bTypeID));
-        XMLall0000.append("   \n <info>  \n" +
+        XMLall0000.append(
+                "   \n <info>  \n" +
                 "        <customerID>" + HomePageActivity.ID_CONNECT_Customer + "</customerID> \n" +
                 "    </info>  \n");
         if (phaseCursor.moveToFirst()) {
