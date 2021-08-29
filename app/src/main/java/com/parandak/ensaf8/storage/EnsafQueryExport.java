@@ -27,7 +27,7 @@ import static com.parandak.ensaf8.homePage.HomePageActivity.ID_CONNECT_Indi1;
 
 
 public class EnsafQueryExport {
-
+    public static String customerID = "customerID";
     public EnsafQueryExport(){
 
     }
@@ -43,7 +43,7 @@ public class EnsafQueryExport {
         Cursor indiCoopCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getIndiCoopBookMark(bTypeID));
         XMLall0000.append(
                 "   \n <info>  \n" +
-                "        <customerID>" + HomePageActivity.ID_CONNECT_Customer + "</customerID> \n" +
+                "        <" + customerID + ">" + HomePageActivity.ID_CONNECT_Customer + "</" + customerID + "> \n" +
                 "    </info>  \n");
         if (phaseCursor.moveToFirst()) {
             do  {

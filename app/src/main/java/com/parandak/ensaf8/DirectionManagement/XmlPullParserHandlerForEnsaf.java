@@ -18,6 +18,8 @@ import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Indi_GeopRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.IndividualRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.PhoneNumRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.TendRepo;
+import com.parandak.ensaf8.homePage.HomePageActivity;
+import com.parandak.ensaf8.storage.EnsafQueryExport;
 
 
 import org.xmlpull.v1.XmlPullParser;
@@ -62,6 +64,7 @@ public class XmlPullParserHandlerForEnsaf {
         PhoneNumRepo phoneNumRepo = new PhoneNumRepo();
         TendRepo tendRepo = new TendRepo();
         try{
+            String cusID = null;
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             XmlPullParser parser = factory.newPullParser();
@@ -73,7 +76,10 @@ public class XmlPullParserHandlerForEnsaf {
                 String tagname = parser.getName();
                 switch (eventType){
                     case XmlPullParser.START_TAG:
-                        if (tagname.equalsIgnoreCase(Cons_Phase.TABLE)) {
+                        if (tagname.equalsIgnoreCase(EnsafQueryExport.customerID)) {
+                            // initiate
+
+                        }else if (tagname.equalsIgnoreCase(Cons_Phase.TABLE)) {
                             // create a new instance of ConstructionCustomer
                             cons_phase = new Cons_Phase();
                         }else if (tagname.equalsIgnoreCase(CusAccount.TABLE)){
@@ -111,7 +117,12 @@ public class XmlPullParserHandlerForEnsaf {
                         break;
 
                     case XmlPullParser.END_TAG:
-                        if (tagname.equalsIgnoreCase(Cons_Phase.TABLE)) {
+                        if (tagname.equalsIgnoreCase(EnsafQueryExport.customerID)) {
+                            // initiate
+                            cusID = text;
+                            Log.d("ensaf::::::::", TAG + " >CustomerID : " + EnsafQueryExport.customerID +  " : " +
+                                text);
+                        }else if (tagname.equalsIgnoreCase(Cons_Phase.TABLE)) {
                             // insert cons_phase
                             cons_phaseRepo.insert(cons_phase);
                         } else if (tagname.equalsIgnoreCase(Cons_Phase.KEY_ID_Cons_Phase)) {
@@ -174,7 +185,14 @@ public class XmlPullParserHandlerForEnsaf {
                         }else if (tagname.equalsIgnoreCase(Individual.TABLE)) {
                             // insert indi_geop
                             //individualRepo.insert(this.individual);
-                            Log.d("ensaf::::::::", TAG + "> insert data to  : " + Individual.TABLE);
+                            if (cusID != null){
+                                if (!cusID.equals(HomePageActivity.ID_CONNECT_Customer)){
+                                    Log.d("ensaf::::::::", TAG + "> insert data to  : " + Individual.TABLE);
+                                }else{
+                                    Log.d("ensaf::::::::", TAG + "> Not insert data to  : " + Individual.TABLE);
+                                }
+                            }
+
                         }else if (tagname.equalsIgnoreCase(Individual.KEY_ID_Indi)) {
                             Log.d("ensaf::::::::", TAG + "> insert " + text + " to : " + Individual.KEY_ID_Indi);
                             //this.individual.setID_Indi(text);
