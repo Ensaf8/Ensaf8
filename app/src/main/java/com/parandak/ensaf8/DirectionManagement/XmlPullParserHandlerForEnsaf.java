@@ -84,7 +84,7 @@ public class XmlPullParserHandlerForEnsaf {
                             cons_phase = new Cons_Phase();
                         }else if (tagname.equalsIgnoreCase(CusAccount.TABLE)){
                             // create a new instance of ConstructionPhase
-                            //cusAccount = new CusAccount();
+                            cusAccount = new CusAccount();
                             Log.d("ensaf::::::::", TAG + "> initiate : " + CusAccount.TABLE);
                         }else if (tagname.equalsIgnoreCase(GPoint.TABLE)){
                             // create a new instance of Constructions
@@ -137,22 +137,22 @@ public class XmlPullParserHandlerForEnsaf {
                         //#############
                         }else if (tagname.equalsIgnoreCase(CusAccount.TABLE)) {
                             // insert cusAccount
-                            //constructionPhaseRepo.insert(cusAccount);
+                            constructionPhaseRepo.insert(cusAccount);
                             Log.d("ensaf::::::::", TAG + "> insert data to  : " + CusAccount.TABLE);
                         }else if (tagname.equalsIgnoreCase(CusAccount.KEY_ID_Cus)) {
-                            //cusAccount.setID_Cus(text);
+                            cusAccount.setID_Cus(text);
                             Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + CusAccount.KEY_ID_Cus);
                         }else if (tagname.equalsIgnoreCase(CusAccount.KEY_IndID)) {
-                            //cusAccount.setIndID(text);
+                            cusAccount.setIndID(text);
                             Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + CusAccount.KEY_IndID);
                         }else if (tagname.equalsIgnoreCase(CusAccount.KEY_AccountName)) {
-                            //cusAccount.setAccountName(text);
+                            cusAccount.setAccountName(text);
                             Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + CusAccount.KEY_AccountName);
                         }else if (tagname.equalsIgnoreCase(CusAccount.KEY_PassWord)) {
-                            //cusAccount.setPassWord(text);
+                            cusAccount.setPassWord(text);
                             Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + CusAccount.KEY_PassWord);
                         }else if (tagname.equalsIgnoreCase(CusAccount.KEY_IsAct)) {
-                            //cusAccount.setIsAct(text);
+                            cusAccount.setIsAct(text);
                             Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + CusAccount.KEY_IsAct);
                         //#############
                         }else if (tagname.equalsIgnoreCase(GPoint.TABLE)) {
