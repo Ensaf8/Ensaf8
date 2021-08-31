@@ -253,17 +253,10 @@ public class SearchPageActivity extends BaseActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Individual individual = new Individual();
-                        CusAccount cusAccount = new CusAccount();
                         IndividualRepo individualRepo = new IndividualRepo();
-                        CusAccountRepo cusAccountRepo = new CusAccountRepo();
                         individual.setIndiName(editText_customer_name.getText().toString());
                         individual.setIsCons("0");
                         individualRepo.insert(individual);
-                        cusAccount.setIndID(individualRepo.lastIndividual());
-                        cusAccount.setAccountName(null);
-                        cusAccount.setPassWord(null);
-                        cusAccount.setIsAct("0");
-                        cusAccountRepo.insert(cusAccount);
                         getCustomer();
                         //adapter2.notifyDataSetChanged();
 
