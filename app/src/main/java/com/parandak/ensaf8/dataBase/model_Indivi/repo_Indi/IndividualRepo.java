@@ -28,6 +28,9 @@ public class IndividualRepo {
         int individualId;
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
+        if (individual.getID_Indi()!=null){
+            values.put(Individual.KEY_ID_Indi,individual.getID_Indi());
+        }
         values.put(Individual.KEY_IndiName,individual.getIndiName());
         values.put(Individual.KEY_IsCons,individual.getIsCons());
         individualId = (int) db.insert(Individual.TABLE,null,values);

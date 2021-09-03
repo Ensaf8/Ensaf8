@@ -97,7 +97,7 @@ public class XmlPullParserHandlerForEnsaf {
                             this.indi_geop = new Indi_Geop();
                         }else if (tagname.equalsIgnoreCase(Individual.TABLE)){
                             // create a new instance of PhoneNumber
-                            //this.individual = new Individual();
+                            this.individual = new Individual();
                             Log.d("ensaf::::::::", TAG + "> initiate : " + Individual.TABLE);
                         }else if (tagname.equalsIgnoreCase(PhoneNum.TABLE)){
                             // create a new instance of Points
@@ -192,23 +192,26 @@ public class XmlPullParserHandlerForEnsaf {
                         }else if (tagname.equalsIgnoreCase(Individual.TABLE)) {
                             // insert indi_geop
                             //individualRepo.insert(this.individual);
-                            if (cusID != null){
-                                if (!cusID.equals(HomePageActivity.ID_CONNECT_Customer)){
-                                    Log.d("ensaf::::::::", TAG + "> insert data to  : " + Individual.TABLE);
-                                }else{
-                                    Log.d("ensaf::::::::", TAG + "> Not insert data to  : " + Individual.TABLE);
-                                }
-                            }
+                            //if (cusID != null){
+                                //if (!cusID.equals(HomePageActivity.ID_CONNECT_Customer)){
+
+                                    if (individualRepo.insert(individual)>0){
+                                        Log.d("ensaf::::::::", TAG + "> insert data to  : " + Individual.TABLE);
+                                    }
+                                //}else{
+                                    //Log.d("ensaf::::::::", TAG + "> Not insert data to  : " + Individual.TABLE);
+                                //}
+                            //}
 
                         }else if (tagname.equalsIgnoreCase(Individual.KEY_ID_Indi)) {
-                            Log.d("ensaf::::::::", TAG + "> insert " + text + " to : " + Individual.KEY_ID_Indi);
-                            //this.individual.setID_Indi(text);
+                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Individual.KEY_ID_Indi);
+                            individual.setID_Indi(text);
                         }else if (tagname.equalsIgnoreCase(Individual.KEY_IndiName)) {
-                            Log.d("ensaf::::::::", TAG + "> insert " + text + " to : " + Individual.KEY_IndiName);
-                            //this.individual.setIndiName(text);
+                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Individual.KEY_IndiName);
+                            individual.setIndiName(text);
                         }else if (tagname.equalsIgnoreCase(Individual.KEY_IsCons)) {
-                            Log.d("ensaf::::::::", TAG + "> insert " + text + " to : " + Individual.KEY_IsCons);
-                            //this.individual.setIsCons(text);
+                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Individual.KEY_IsCons);
+                            individual.setIsCons(text);
                         }else if (tagname.equalsIgnoreCase(PhoneNum.TABLE)) {
                             // insert phoneNum
                             phoneNumRepo.insert(phoneNum);
