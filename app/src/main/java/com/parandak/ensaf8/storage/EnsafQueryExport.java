@@ -45,6 +45,17 @@ public class EnsafQueryExport {
                 "   \n <info>  \n" +
                 "        <" + customerID + ">" + HomePageActivity.ID_CONNECT_Customer + "</" + customerID + "> \n" +
                 "    </info>  \n");
+        if (indiCursor.moveToFirst()) {
+            do  {
+                XMLall0000.append(
+                        "   \n <"+Individual.TABLE+">  \n" +
+                                "        <"+Individual.KEY_ID_Indi+">" + indiCursor.getString(0) + "</"+Individual.KEY_ID_Indi+">  \n" +
+                                "        <"+Individual.KEY_IndiName+">" + indiCursor.getString(1) + "</"+Individual.KEY_IndiName+">  \n" +
+                                "        <"+Individual.KEY_IsCons+">" + indiCursor.getString(2) + "</"+Individual.KEY_IsCons+">  \n" +
+                                "    </" + Individual.TABLE + ">  \n");
+            } while (indiCursor.moveToNext());
+        }
+
         if (phaseCursor.moveToFirst()) {
             do  {
                 XMLall0000.append(
@@ -67,16 +78,7 @@ public class EnsafQueryExport {
                                 "    </" + GPoint.TABLE + ">  \n");
             } while (gPointCursor.moveToNext());
         }
-        if (indiCursor.moveToFirst()) {
-            do  {
-                XMLall0000.append(
-                        "   \n <"+Individual.TABLE+">  \n" +
-                                "        <"+Individual.KEY_ID_Indi+">" + indiCursor.getString(0) + "</"+Individual.KEY_ID_Indi+">  \n" +
-                                "        <"+Individual.KEY_IndiName+">" + indiCursor.getString(1) + "</"+Individual.KEY_IndiName+">  \n" +
-                                "        <"+Individual.KEY_IsCons+">" + indiCursor.getString(2) + "</"+Individual.KEY_IsCons+">  \n" +
-                                "    </" + Individual.TABLE + ">  \n");
-            } while (indiCursor.moveToNext());
-        }
+
         if (indiCoopCursor.moveToFirst()){
             do  {
                 XMLall0000.append(
