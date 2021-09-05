@@ -66,8 +66,8 @@ public class BookMarkPageQuery {
     }
 
     public String getPhaseBookMark(String B_type_id){
-        return "SELECT " + Cons_Phase.TABLE + "." + Cons_Phase.KEY_IndID + ","
-                + Cons_Phase.TABLE + "." + Cons_Phase.KEY_ID_Cons_Phase + ","
+        return "SELECT " + Cons_Phase.TABLE + "." + Cons_Phase.KEY_ID_Cons_Phase + ","
+                + Cons_Phase.TABLE + "." + Cons_Phase.KEY_IndID + ","
                 + Cons_Phase.TABLE + "." + Cons_Phase.KEY_Phase + ","
                 + Cons_Phase.TABLE + "." + Cons_Phase.KEY_PhaseDate
                 + " FROM " + Cons_Phase.TABLE
