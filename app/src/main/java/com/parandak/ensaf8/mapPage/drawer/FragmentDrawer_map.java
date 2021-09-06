@@ -190,7 +190,11 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         checkBox03.setChecked(isCheck03);
         checkBox04 = view.findViewById(R.id.checkBoxFilter04);
         checkBox04.setChecked(isCheck04);
-        initSpinner(view);
+        List<BookMarkType> bookMarkTypeList = new MapPageQuery().getBookMarkTypeList();
+        if (bookMarkTypeList.size()!=0){
+            initSpinner(view);
+        }
+
         map_drawer_container = view.findViewById(R.id.map_drawer_container);
         map_drawer_container.setOnClickListener(new View.OnClickListener() {
             @Override
