@@ -39,7 +39,8 @@ public class CreateViews {
                 + Cons_Phase.KEY_Phase + " AS " + LastUpConsInd.KEY_lastPhase+ ","
                 + " MAX(" + Cons_Phase.KEY_PhaseDate + " )" + " AS " + LastUpConsInd.KEY_lastPhaseDate
                 + " FROM "
-                + Cons_Phase.TABLE + ";";
+                + Cons_Phase.TABLE
+                + " GROUP BY " + Cons_Phase.KEY_IndID;
     }
 
     public static class LastUpConsInd{
