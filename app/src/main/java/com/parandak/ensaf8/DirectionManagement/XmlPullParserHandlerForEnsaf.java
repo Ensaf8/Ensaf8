@@ -82,6 +82,7 @@ public class XmlPullParserHandlerForEnsaf {
                         }else if (tagname.equalsIgnoreCase(Cons_Phase.TABLE)) {
                             // create a new instance of ConstructionCustomer
                             cons_phase = new Cons_Phase();
+                            Log.d("ensaf::::::::", TAG + "> initiate : " + Cons_Phase.TABLE);
                         }else if (tagname.equalsIgnoreCase(CusAccount.TABLE)){
                             // create a new instance of ConstructionPhase
                             cusAccount = new CusAccount();
@@ -89,6 +90,9 @@ public class XmlPullParserHandlerForEnsaf {
                         }else if (tagname.equalsIgnoreCase(GPoint.TABLE)){
                             // create a new instance of Constructions
                             gPoint = new GPoint();
+                            Log.d("ensaf::::::::", TAG + "> initiate : " + GPoint.TABLE);
+                            indi_geop = new Indi_Geop();
+                            Log.d("ensaf::::::::", TAG + "> initiate : " + Indi_Geop.TABLE);
                         }else if (tagname.equalsIgnoreCase(Indi_Coop.TABLE)){
                             // create a new instance of Customers
                             indi_coop = new Indi_Coop();
@@ -125,15 +129,24 @@ public class XmlPullParserHandlerForEnsaf {
                                 text);
                         }else if (tagname.equalsIgnoreCase(Cons_Phase.TABLE)&&cons_phase!=null) {
                             // insert cons_phase
-                            cons_phaseRepo.insert(cons_phase);
+                            if (cons_phaseRepo.insert(cons_phase)>0){
+                                Log.d("ensaf::::::::", TAG + "> insert data to  : " + Cons_Phase.TABLE);
+                            }else {
+                                Log.d("ensaf::::::::", TAG + "> NOT insert data to  : " + Cons_Phase.TABLE);
+                            }
+
                         } else if (tagname.equalsIgnoreCase(Cons_Phase.KEY_ID_Cons_Phase)&&cons_phase!=null) {
                             cons_phase.setID_Cons_Phase(text);
+                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Cons_Phase.KEY_ID_Cons_Phase);
                         } else if (tagname.equalsIgnoreCase(Cons_Phase.KEY_IndID)&&cons_phase!=null) {
                             cons_phase.setIndID(text);
+                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Cons_Phase.KEY_IndID);
                         }else if (tagname.equalsIgnoreCase(Cons_Phase.KEY_Phase)&&cons_phase!=null) {
                             cons_phase.setPhase(text);
+                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Cons_Phase.KEY_Phase);
                         }else if (tagname.equalsIgnoreCase(Cons_Phase.KEY_PhaseDate)&&cons_phase!=null) {
                             cons_phase.setPhaseDate(text);
+                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Cons_Phase.KEY_PhaseDate);
                         //#############
                         }else if (tagname.equalsIgnoreCase(CusAccount.TABLE)) {
                             // insert cusAccount
@@ -158,14 +171,30 @@ public class XmlPullParserHandlerForEnsaf {
                         }else if (tagname.equalsIgnoreCase(GPoint.TABLE)) {
                             // insert gPoint
                             gPointRepo.insert(gPoint);
+                            Log.d("ensaf::::::::", TAG + "> insert data to  : " + GPoint.TABLE);
+                            if (indi_geop!=null){
+                                indi_geopRepo.insert(indi_geop);
+                                Log.d("ensaf::::::::", TAG + "> insert data to  : " + Indi_Geop.TABLE);
+                            }
                         }else if (tagname.equalsIgnoreCase(GPoint.KEY_IDGeop)) {
                             gPoint.setIDGeop(text);
+                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + GPoint.KEY_IDGeop);
+                            if (indi_geop!=null){
+                                indi_geop.setGeopID(text);
+                                Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Indi_Geop.KEY_GeopID);
+                            }
+                        }else if (tagname.equalsIgnoreCase(Indi_Geop.KEY_IndiID)) {
+                            indi_geop.setIndiID(text);
+                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Indi_Geop.KEY_IndiID);
                         }else if (tagname.equalsIgnoreCase(GPoint.KEY_Lat)) {
                             gPoint.setLat(text);
+                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + GPoint.KEY_Lat);
                         }else if (tagname.equalsIgnoreCase(GPoint.KEY_Lon)) {
                             gPoint.setLon(text);
+                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + GPoint.KEY_Lon);
                         }else if (tagname.equalsIgnoreCase(GPoint.KEY_IsSolo)) {
                             gPoint.setIsSolo(text);
+                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + GPoint.KEY_IsSolo);
 
                         }else if (tagname.equalsIgnoreCase(Indi_Coop.TABLE)) {
                             // insert indi_coop
@@ -196,7 +225,9 @@ public class XmlPullParserHandlerForEnsaf {
                                 //if (!cusID.equals(HomePageActivity.ID_CONNECT_Customer)){
 
                                     if (individualRepo.insert(individual)>0){
-                                        Log.d("ensaf::::::::", TAG + "> insert data to  : " + Individual.TABLE);
+                                        Log.d("ensaf::::::::", TAG + "> inserted data to  : " + Individual.TABLE);
+                                    }else{
+                                        Log.d("ensaf::::::::", TAG + "> NOT inserted data to  : " + Individual.TABLE);
                                     }
                                 //}else{
                                     //Log.d("ensaf::::::::", TAG + "> Not insert data to  : " + Individual.TABLE);
