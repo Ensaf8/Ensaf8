@@ -30,6 +30,7 @@ public class GPointRepo {
         int gPointId;
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
+        values.put(GPoint.KEY_IDGeop,gPoint.getIDGeop());
         values.put(GPoint.KEY_Lat,gPoint.getLat());
         values.put(GPoint.KEY_Lon,gPoint.getLon());
         values.put(GPoint.KEY_IsSolo,gPoint.getIsSolo());
