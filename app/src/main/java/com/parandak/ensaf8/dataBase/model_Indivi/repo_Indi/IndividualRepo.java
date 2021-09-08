@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.parandak.ensaf8.dataBase.DatabaseManager;
+import com.parandak.ensaf8.dataBase.model_Indivi.CusAccount;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
 
 public class IndividualRepo {
@@ -75,5 +76,46 @@ public class IndividualRepo {
             ss = cursor.getString(0);
         }
         return ss;
+    }
+
+    public static class syncLink{
+        String tableName;
+
+        public syncLink(boolean isF){
+            if (isF){
+                tableName = Individual.syncLink.TABLE_F;
+            }else {
+                tableName = Individual.syncLink.TABLE_T;
+            };
+        }
+
+        public String createTable(){
+            return "CREATE TABLE IF NOT EXISTS "+ tableName +" ("
+                    + Individual.syncLink.KEY_ID + " INTEGER "+" , "
+                    + Individual.syncLink.KEY_IndiID + " INTEGER "+" , "
+                    + Individual.syncLink.KEY_CusId +" INTEGER "+" , "
+                    + " PRIMARY KEY(" + Individual.syncLink.KEY_ID + ")"
+                    + " FOREIGN KEY(" + Individual.syncLink.KEY_IndiID + ")"
+                    + " REFERENCES " + Individual.TABLE + " ( " + Individual.KEY_ID_Indi + ") ON DELETE CASCADE " + ","
+                    + " FOREIGN KEY(" + Individual.syncLink.KEY_CusId + ")"
+                    + " REFERENCES " + CusAccount.TABLE + " ( " + CusAccount.KEY_ID_Cus + ") ON DELETE CASCADE "
+                    +");";
+
+        }
+
+        public int insert (Individual.syncLink syncLink){
+            int syncLinkId;
+            SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+            ContentValues values = new ContentValues();
+            if (syncLink.get_id()!=null){
+                values.put(Individual.syncLink.KEY_ID,syncLink.get_id());
+            }
+            values.put(Individual.syncLink.KEY_IndiID,syncLink.getIndiID());
+            values.put(Individual.syncLink.KEY_CusId,syncLink.getCusID());
+            syncLinkId = (int) db.insert(Individual.TABLE,null,values);
+            DatabaseManager.getInstance().closeDatabase();
+            return syncLinkId;
+        }
+
     }
 }
