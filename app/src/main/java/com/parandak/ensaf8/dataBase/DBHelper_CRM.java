@@ -23,7 +23,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.TendRepo;
 
 public class DBHelper_CRM extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION =32;
+    private static final int DATABASE_VERSION =33;
     // Database Name
     private static final String DATABASE_NAME = "ensaf8.db";
     private static final String TAG = DBHelper_CRM.class.getSimpleName();
@@ -44,14 +44,20 @@ public class DBHelper_CRM extends SQLiteOpenHelper {
         db.execSQL(IndividualRepo.createTable());
         db.execSQL(PhoneNumRepo.createNewTable());
         db.execSQL(TendRepo.createTable());
-        db.execSQL(BookMarkRepo.createTable());
+        //db.execSQL(BookMarkRepo.createTable());
         db.execSQL(RatingRepo.createTable());
         db.execSQL(BookMarkTypeRepo.createTable());
+        IndividualRepo.syncLink syncLinkF = new IndividualRepo.syncLink(true);
+        db.execSQL(syncLinkF.createTable());
+        Log.d("ensaf::::::::", TAG + "> syncLinkF : " + syncLinkF.createTable());
+        IndividualRepo.syncLink syncLinkT = new IndividualRepo.syncLink(false);
+        db.execSQL(syncLinkT.createTable());
+        Log.d("ensaf::::::::", TAG + "> syncLinkT : " + syncLinkT.createTable());
         //db.execSQL(BookMarkRepo.updateBookMarkTable());
-        db.execSQL(BookMarkRepo.alterTable());
+        //db.execSQL(BookMarkRepo.alterTable());
         db.execSQL(BookMarkRepo.createTableFK());
-        db.execSQL(BookMarkRepo.insertToBookMarkNew());
-        db.execSQL(BookMarkRepo.dropOldTable());
+        //db.execSQL(BookMarkRepo.insertToBookMarkNew());
+        //db.execSQL(BookMarkRepo.dropOldTable());
         Log.d("ensaf::::::::", TAG + "> initTable : " + BookMarkTypeRepo.initTable());
         //db.execSQL(Cons_Phase_IntRepo.createTable() );
         //db.execSQL("DROP TABLE IF EXISTS Cons_Phase" );
