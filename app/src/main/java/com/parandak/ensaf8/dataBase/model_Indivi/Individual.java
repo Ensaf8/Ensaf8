@@ -37,7 +37,7 @@ public class Individual {
         this.isCons = isCons;
     }
 
-    public class syncLink{
+    public static class syncLink{
         public static final String TABLE_F = "Indi_f";
         public static final String TABLE_T = "Indi_t";
 

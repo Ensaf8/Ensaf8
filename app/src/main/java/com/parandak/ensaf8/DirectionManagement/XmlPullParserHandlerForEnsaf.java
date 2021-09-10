@@ -40,6 +40,7 @@ public class XmlPullParserHandlerForEnsaf {
     private Indi_Coop indi_coop;
     private Indi_Geop indi_geop;
     private Individual individual;
+    private Individual.syncLink indSyncLinkF,indSyncLinkT;
     private PhoneNum phoneNum;
     private Tend tend;
 
@@ -102,6 +103,7 @@ public class XmlPullParserHandlerForEnsaf {
                         }else if (tagname.equalsIgnoreCase(Individual.TABLE)){
                             // create a new instance of PhoneNumber
                             this.individual = new Individual();
+                            this.indSyncLinkF = new Individual.syncLink();
                             Log.d("ensaf::::::::", TAG + "> initiate : " + Individual.TABLE);
                         }else if (tagname.equalsIgnoreCase(PhoneNum.TABLE)){
                             // create a new instance of Points
@@ -219,21 +221,12 @@ public class XmlPullParserHandlerForEnsaf {
                             this.indi_geop.setGeopID(text);
 
                         }else if (tagname.equalsIgnoreCase(Individual.TABLE)) {
-                            // insert indi_geop
-                            //individualRepo.insert(this.individual);
-                            //if (cusID != null){
-                                //if (!cusID.equals(HomePageActivity.ID_CONNECT_Customer)){
-
-                                    if (individualRepo.insert(individual)>0){
-                                        Log.d("ensaf::::::::", TAG + "> inserted data to  : " + Individual.TABLE);
-                                    }else{
-                                        Log.d("ensaf::::::::", TAG + "> NOT inserted data to  : " + Individual.TABLE);
-                                    }
-                                //}else{
-                                    //Log.d("ensaf::::::::", TAG + "> Not insert data to  : " + Individual.TABLE);
-                                //}
-                            //}
-
+                            int id = individualRepo.insert(individual);
+                            if (id > 0){
+                                Log.d("ensaf::::::::", TAG + " : " + id + " > is inserted  : " + Individual.TABLE);
+                            }else{
+                                Log.d("ensaf::::::::", TAG + "> NOT inserted data to  : " + Individual.TABLE);
+                            }
                         }else if (tagname.equalsIgnoreCase(Individual.KEY_ID_Indi)) {
                             Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Individual.KEY_ID_Indi);
                             individual.setID_Indi(text);
