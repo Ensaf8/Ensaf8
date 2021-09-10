@@ -92,6 +92,7 @@ public class IndividualRepo {
         public String createTable(){
             return "CREATE TABLE IF NOT EXISTS "+ tableName +" ("
                     + Individual.syncLink.KEY_ID + " INTEGER "+" , "
+                    + Individual.syncLink.KEY_IndiFID + " INTEGER "+" , "
                     + Individual.syncLink.KEY_IndiID + " INTEGER "+" , "
                     + Individual.syncLink.KEY_CusId +" INTEGER "+" , "
                     + " PRIMARY KEY(" + Individual.syncLink.KEY_ID + ")"
@@ -110,6 +111,7 @@ public class IndividualRepo {
             if (syncLink.get_id()!=null){
                 values.put(Individual.syncLink.KEY_ID,syncLink.get_id());
             }
+            values.put(Individual.syncLink.KEY_IndiFID,syncLink.getIndiFID());
             values.put(Individual.syncLink.KEY_IndiID,syncLink.getIndiID());
             values.put(Individual.syncLink.KEY_CusId,syncLink.getCusID());
             syncLinkId = (int) db.insert(Individual.TABLE,null,values);

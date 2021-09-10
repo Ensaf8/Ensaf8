@@ -44,10 +44,12 @@ public class Individual {
         public static final String KEY_ID = "_id";
         public static final String KEY_IndiID = "IndiID";
         public static final String KEY_CusId = "CusID";
+        public static final String KEY_IndiFID = "IndiFID";
 
         private String _id;
         private String IndiID ;
         private String CusID ;
+        private String IndiFID ;
 
         public String get_id() {
             return _id;
@@ -55,6 +57,14 @@ public class Individual {
 
         public void set_id(String _id) {
             this._id = _id;
+        }
+
+        public String getIndiFID() {
+            return IndiFID;
+        }
+
+        public void setIndiFID(String indiFID) {
+            IndiFID = indiFID;
         }
 
         public String getIndiID() {
