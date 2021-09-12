@@ -114,7 +114,7 @@ public class IndividualRepo {
             values.put(Individual.syncLink.KEY_IndiFID,syncLink.getIndiFID());
             values.put(Individual.syncLink.KEY_IndiID,syncLink.getIndiID());
             values.put(Individual.syncLink.KEY_CusId,syncLink.getCusID());
-            syncLinkId = (int) db.insert(Individual.TABLE,null,values);
+            syncLinkId = (int) db.insert(tableName,null,values);
             DatabaseManager.getInstance().closeDatabase();
             return syncLinkId;
         }

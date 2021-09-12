@@ -40,7 +40,7 @@ public class XmlPullParserHandlerForEnsaf {
     private Indi_Coop indi_coop;
     private Indi_Geop indi_geop;
     private Individual individual;
-    private Individual.syncLink indSyncLinkF,indSyncLinkT;
+    private Individual.syncLink indSyncLinkF;
     private PhoneNum phoneNum;
     private Tend tend;
 
@@ -62,6 +62,7 @@ public class XmlPullParserHandlerForEnsaf {
         Indi_CoopRepo indi_coopRepo = new Indi_CoopRepo();
         Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
         IndividualRepo individualRepo = new IndividualRepo();
+        IndividualRepo.syncLink syncLinkRepo = new IndividualRepo.syncLink(true);
         PhoneNumRepo phoneNumRepo = new PhoneNumRepo();
         TendRepo tendRepo = new TendRepo();
         try{
@@ -224,12 +225,18 @@ public class XmlPullParserHandlerForEnsaf {
                             int id = individualRepo.insert(individual);
                             if (id > 0){
                                 Log.d("ensaf::::::::", TAG + " : " + id + " > is inserted  : " + Individual.TABLE);
+                                indSyncLinkF.setIndiID(String.valueOf(id));
+                                if (syncLinkRepo.insert(indSyncLinkF)>0){
+                                    Log.d("ensaf::::::::", TAG + "> inserted data to  : " + Individual.syncLink.TABLE_F);
+                                }
                             }else{
                                 Log.d("ensaf::::::::", TAG + "> NOT inserted data to  : " + Individual.TABLE);
                             }
                         }else if (tagname.equalsIgnoreCase(Individual.KEY_ID_Indi)) {
                             Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Individual.KEY_ID_Indi);
-                            individual.setID_Indi(text);
+                            //individual.setID_Indi(text);
+                            indSyncLinkF.setIndiFID(text);
+                            indSyncLinkF.setCusID(cusID);
                         }else if (tagname.equalsIgnoreCase(Individual.KEY_IndiName)) {
                             Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Individual.KEY_IndiName);
                             individual.setIndiName(text);
