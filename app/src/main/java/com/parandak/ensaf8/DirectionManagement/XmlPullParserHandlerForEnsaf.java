@@ -65,6 +65,7 @@ public class XmlPullParserHandlerForEnsaf {
         IndividualRepo.syncLink syncLinkRepo = new IndividualRepo.syncLink(true);
         PhoneNumRepo phoneNumRepo = new PhoneNumRepo();
         TendRepo tendRepo = new TendRepo();
+        EnsafQueryExport ensafQueryExport = new EnsafQueryExport();
         try{
             String cusID = null;
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -142,8 +143,9 @@ public class XmlPullParserHandlerForEnsaf {
                             cons_phase.setID_Cons_Phase(text);
                             Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Cons_Phase.KEY_ID_Cons_Phase);
                         } else if (tagname.equalsIgnoreCase(Cons_Phase.KEY_IndID)&&cons_phase!=null) {
-                            cons_phase.setIndID(text);
-                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Cons_Phase.KEY_IndID);
+                            //cons_phase.setIndID(text);
+                            cons_phase.setIndID(ensafQueryExport.indiFromIndiF(text));
+                            Log.d("ensaf::::::::", TAG + "> add " + ensafQueryExport.indiFromIndiF(text) + " to : " + Cons_Phase.KEY_IndID);
                         }else if (tagname.equalsIgnoreCase(Cons_Phase.KEY_Phase)&&cons_phase!=null) {
                             cons_phase.setPhase(text);
                             Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Cons_Phase.KEY_Phase);
@@ -187,7 +189,8 @@ public class XmlPullParserHandlerForEnsaf {
                                 Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Indi_Geop.KEY_GeopID);
                             }
                         }else if (tagname.equalsIgnoreCase(Indi_Geop.KEY_IndiID)) {
-                            indi_geop.setIndiID(text);
+                            ///indi_geop.setIndiID(text);
+                            indi_geop.setIndiID(ensafQueryExport.indiFromIndiF(text));
                             Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Indi_Geop.KEY_IndiID);
                         }else if (tagname.equalsIgnoreCase(GPoint.KEY_Lat)) {
                             gPoint.setLat(text);
@@ -217,7 +220,8 @@ public class XmlPullParserHandlerForEnsaf {
                         }else if (tagname.equalsIgnoreCase(Indi_Geop.KEY_ID_Indi_Geop)) {
                             this.indi_geop.setID_Indi_geop(text);
                         }else if (tagname.equalsIgnoreCase(Indi_Geop.KEY_IndiID)) {
-                            this.indi_geop.setIndiID(text);
+                            //this.indi_geop.setIndiID(text);
+                            this.indi_geop.setIndiID(ensafQueryExport.indiFromIndiF(text));
                         }else if (tagname.equalsIgnoreCase(Indi_Geop.KEY_GeopID)) {
                             this.indi_geop.setGeopID(text);
 

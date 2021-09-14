@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.parandak.ensaf8.bookMarkPage.BookMarkPageQuery;
 import com.parandak.ensaf8.dataBase.DatabaseManager;
+import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.CusAccount;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
@@ -93,6 +94,22 @@ public class EnsafQueryExport {
         Ensaf.insert(7,XMLall0000);
         XMLensaf0.append(Ensaf);
         return XMLensaf0.toString();
+    }
+    public String indiFromIndiF(String indiID){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = " SELECT "
+                + Individual.syncLink.KEY_IndiID
+                + " FROM " + Individual.syncLink.TABLE_F
+                + " WHERE " + Individual.syncLink.KEY_IndiFID + " = " + indiID;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()){
+            return cursor.getString(0);
+        }else {
+            return null;
+        }
+        //cursor.close();
+        //DatabaseManager.getInstance().closeDatabase();
+
     }
     public String exportQuery(){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
