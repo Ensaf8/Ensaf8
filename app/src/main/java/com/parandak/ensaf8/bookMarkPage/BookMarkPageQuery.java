@@ -42,6 +42,22 @@ public class BookMarkPageQuery {
     public String getIndiBookMark(String B_type_id){
         return "SELECT " + Individual.TABLE + "." + Individual.KEY_ID_Indi + ","
                 + Individual.TABLE + "." + Individual.KEY_IndiName + ","
+                + Individual.TABLE + "." + Individual.KEY_IsCons + ","
+                + Individual.syncLink.TABLE_F + "." + Individual.syncLink.KEY_IndiFID + ","
+                + Individual.syncLink.TABLE_F + "." + Individual.syncLink.KEY_CusId
+                + " FROM " + Individual.TABLE
+                + " LEFT JOIN " + Individual.syncLink.TABLE_F
+                + " ON " + Individual.TABLE + "." + Individual.KEY_ID_Indi + " = "
+                + Individual.syncLink.TABLE_F + "." + Individual.syncLink.KEY_IndiID
+                + " WHERE " + Individual.TABLE + "." + Individual.KEY_ID_Indi + " IN "
+                + "(" + getIndiIDBookMark(B_type_id) + ")";
+        //        + " ORDER BY " + Individual.TABLE + "." + Individual.KEY_ID_Indi + " ASC";
+        //        + " ORDER BY " + BookMark.KEY_IndID + " ASC";
+    }
+
+    public String getIndiBookMarkIndiF(String B_type_id){
+        return "SELECT " + Individual.TABLE + "." + Individual.KEY_ID_Indi + ","
+                + Individual.TABLE + "." + Individual.KEY_IndiName + ","
                 + Individual.TABLE + "." + Individual.KEY_IsCons
                 + " FROM " + Individual.TABLE
                 + " WHERE " + Individual.TABLE + "." + Individual.KEY_ID_Indi + " IN "

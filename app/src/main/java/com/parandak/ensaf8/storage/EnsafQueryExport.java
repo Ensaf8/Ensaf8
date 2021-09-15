@@ -48,11 +48,19 @@ public class EnsafQueryExport {
                 "    </info>  \n");
         if (indiCursor.moveToFirst()) {
             do  {
+                String indiFIdCusId = "";
+                String indiFIdIndi = "indiFIdIndi" ,cusIdIndi = "cusIdIndi" ;
+                if (indiCursor.getString(3) != null && indiCursor.getString(4) != null){
+                    indiFIdCusId =
+                            "        <"+indiFIdIndi+">" + indiCursor.getString(3) + "</"+indiFIdIndi+">  \n" +
+                            "        <"+cusIdIndi+">" + indiCursor.getString(4) + "</"+cusIdIndi+">  \n" ;
+                }
                 XMLall0000.append(
                         "   \n <"+Individual.TABLE+">  \n" +
                                 "        <"+Individual.KEY_ID_Indi+">" + indiCursor.getString(0) + "</"+Individual.KEY_ID_Indi+">  \n" +
                                 "        <"+Individual.KEY_IndiName+">" + indiCursor.getString(1) + "</"+Individual.KEY_IndiName+">  \n" +
                                 "        <"+Individual.KEY_IsCons+">" + indiCursor.getString(2) + "</"+Individual.KEY_IsCons+">  \n" +
+                                indiFIdCusId +
                                 "    </" + Individual.TABLE + ">  \n");
             } while (indiCursor.moveToNext());
         }
