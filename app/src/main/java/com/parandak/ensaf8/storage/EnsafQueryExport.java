@@ -49,11 +49,11 @@ public class EnsafQueryExport {
         if (indiCursor.moveToFirst()) {
             do  {
                 String indiFIdCusId = "";
-                String indiFIdIndi = "indiFIdIndi" ,cusIdIndi = "cusIdIndi" ;
+
                 if (indiCursor.getString(3) != null && indiCursor.getString(4) != null){
                     indiFIdCusId =
-                            "        <"+indiFIdIndi+">" + indiCursor.getString(3) + "</"+indiFIdIndi+">  \n" +
-                            "        <"+cusIdIndi+">" + indiCursor.getString(4) + "</"+cusIdIndi+">  \n" ;
+                            "        <"+ExImportContract.indiFIdIndi+">" + indiCursor.getString(3) + "</"+ExImportContract.indiFIdIndi+">  \n" +
+                            "        <"+ExImportContract.cusIdIndi+">" + indiCursor.getString(4) + "</"+ExImportContract.cusIdIndi+">  \n" ;
                 }
                 XMLall0000.append(
                         "   \n <"+Individual.TABLE+">  \n" +
