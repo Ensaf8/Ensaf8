@@ -33,10 +33,10 @@
                 android:id="@+id/btn_add_folder_bookmark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="255dp"
-                android:layout_marginTop="517dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="38dp"
                 android:text="ADD Folder + " />
 
             <androidx.recyclerview.widget.RecyclerView
