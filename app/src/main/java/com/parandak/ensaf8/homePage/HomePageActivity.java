@@ -18,6 +18,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,6 +42,7 @@ import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.app.BaseActivity;
 import com.parandak.ensaf8.bookMarkPage.BookMarkPage;
 import com.parandak.ensaf8.broadCast.ConnectivityReceiver;
+import com.parandak.ensaf8.dataBase.DatabaseManager;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
@@ -500,22 +503,25 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                 bookMarkPage.displayBookMarkFolder(getSupportFragmentManager());
                 break;
             case 2:
-                AlertDialog.Builder builderInner02 = new AlertDialog.Builder(context);
-                builderInner02.setTitle("Clear Date Base? ");
-                builderInner02.setMessage("This Delete data ! ! !");
-                builderInner02.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                /*AlertDialog.Builder builderInner = new AlertDialog.Builder(context);
+                builderInner.setTitle("Clear Date Base? ");
+                builderInner.setMessage("This Delete data ! ! !");
+                builderInner.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         clearDataBase();
                     }
                 });
-                builderInner02.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                builderInner.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
-                builderInner02.show();
+                builderInner.show();*/
+                dbCheck(Individual.TABLE);
+                dbCheck(Individual.syncLink.TABLE_T);
+                dbCheck(Individual.syncLink.TABLE_F);
                 break;
             case 3:
                 toExportData();
@@ -534,6 +540,25 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                 break;
         }
     }
+    private void dbCheck(String tableName){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = " SELECT *"
+                + " FROM " + tableName;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        Log.d("ensaf::::::::", TAG + "> dbCheck / " + tableName + " :\n");
+        if (cursor.moveToFirst()){
+            do {
+                int i = 0;
+                StringBuilder s = new StringBuilder();
+                do {
+                    s.append(" * *  ").append(cursor.getColumnName(i)).append(" : \"").append(cursor.getString(i)).append("\"");
+                    i++;
+                }while (i<cursor.getColumnCount());
+                Log.d("ensaf::::::::", TAG + " > " + tableName + " > " + s + "\"\n");
+            }while (cursor.moveToNext());
+        }
+    }
+
     private void toExportData(){
         //BookMarkPage.display(getSupportFragmentManager());
         BookMarkPage bookMarkPage = new BookMarkPage();
