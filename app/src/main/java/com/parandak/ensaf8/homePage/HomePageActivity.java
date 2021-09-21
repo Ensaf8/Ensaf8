@@ -498,11 +498,6 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
             case 1:
                 BookMarkPage bookMarkPage = new BookMarkPage();
                 bookMarkPage.displayBookMarkFolder(getSupportFragmentManager());
-                //BookMarkPage.display(getSupportFragmentManager());
-                /*HomePageQuery homePageQuery = new HomePageQuery();
-                Cursor cursor = homePageQuery.getBookMark();
-                Toast.makeText(getApplicationContext(), "BookMarks : " + cursor.getCount(), Toast.LENGTH_SHORT).show();
-                Log.d("ensaf::::::::", TAG + "> transaction : " + BookMarkRepo.updateBookMarkTable());*/
                 break;
             case 2:
                 AlertDialog.Builder builderInner02 = new AlertDialog.Builder(context);
