@@ -20,6 +20,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.PhoneNumRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.TendRepo;
 import com.parandak.ensaf8.homePage.HomePageActivity;
 import com.parandak.ensaf8.storage.EnsafQueryExport;
+import com.parandak.ensaf8.storage.ExImportContract;
 
 
 import org.xmlpull.v1.XmlPullParser;
@@ -40,10 +41,10 @@ public class XmlPullParserHandlerForEnsaf {
     private Indi_Coop indi_coop;
     private Indi_Geop indi_geop;
     private Individual individual;
+    private List<Individual.syncLink> indSyncLinkFlist = new ArrayList<>();
     private Individual.syncLink indSyncLinkF;
     private PhoneNum phoneNum;
     private Tend tend;
-
     private String text;
 
     private List<wpt> wpts= new ArrayList<wpt>();
@@ -66,6 +67,7 @@ public class XmlPullParserHandlerForEnsaf {
         PhoneNumRepo phoneNumRepo = new PhoneNumRepo();
         TendRepo tendRepo = new TendRepo();
         EnsafQueryExport ensafQueryExport = new EnsafQueryExport();
+        int insertedIndiId = 0;
         try{
             String cusID = null;
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -104,6 +106,7 @@ public class XmlPullParserHandlerForEnsaf {
                             this.indi_geop = new Indi_Geop();
                         }else if (tagname.equalsIgnoreCase(Individual.TABLE)){
                             // create a new instance of PhoneNumber
+                            indSyncLinkFlist.clear();
                             this.individual = new Individual();
                             this.indSyncLinkF = new Individual.syncLink();
                             Log.d("ensaf::::::::", TAG + "> initiate : " + Individual.TABLE);
@@ -119,7 +122,6 @@ public class XmlPullParserHandlerForEnsaf {
                             wpt.setLat(parser.getAttributeValue(null, "lat"));
                             wpt.setLon(parser.getAttributeValue(null, "lon"));
                         }
-
                         break;
                     case XmlPullParser.TEXT:
                         text = parser.getText();
@@ -226,12 +228,19 @@ public class XmlPullParserHandlerForEnsaf {
                             this.indi_geop.setGeopID(text);
 
                         }else if (tagname.equalsIgnoreCase(Individual.TABLE)) {
-                            int id = individualRepo.insert(individual);
-                            if (id > 0){
-                                Log.d("ensaf::::::::", TAG + " : " + id + " > is inserted  : " + Individual.TABLE);
-                                indSyncLinkF.setIndiID(String.valueOf(id));
-                                if (syncLinkRepo.insert(indSyncLinkF)>0){
-                                    Log.d("ensaf::::::::", TAG + "> inserted data to  : " + Individual.syncLink.TABLE_F);
+                            insertedIndiId = individualRepo.insert(individual);
+                            if (insertedIndiId > 0){
+                                Log.d("ensaf::::::::", TAG + " : " + insertedIndiId + " > is inserted  : " + Individual.TABLE);
+                                String insertedIndividualId = String.valueOf(insertedIndiId);
+                                Log.d("ensaf::::::::", TAG + "> setIndiID " + insertedIndividualId + " to : " + "indSyncLinkF");
+                                indSyncLinkF.setIndiID(insertedIndividualId);
+
+                                for (int i = 0 ; i< indSyncLinkFlist.size() ; i++){
+                                    indSyncLinkFlist.get(i).setIndiID(insertedIndividualId);
+                                    if (syncLinkRepo.insert(indSyncLinkFlist.get(i))>0){
+                                        Log.d("ensaf::::::::", TAG + "> inserted data to  : " + Individual.syncLink.TABLE_F +
+                                                " id : " + indSyncLinkFlist.get(i).getIndiID());
+                                    }
                                 }
                             }else{
                                 Log.d("ensaf::::::::", TAG + "> NOT inserted data to  : " + Individual.TABLE);
@@ -241,9 +250,18 @@ public class XmlPullParserHandlerForEnsaf {
                             //individual.setID_Indi(text);
                             indSyncLinkF.setIndiFID(text);
                             indSyncLinkF.setCusID(cusID);
+                            indSyncLinkFlist.add(indSyncLinkF);
                         }else if (tagname.equalsIgnoreCase(Individual.KEY_IndiName)) {
                             Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Individual.KEY_IndiName);
                             individual.setIndiName(text);
+                        }else if (tagname.equalsIgnoreCase(ExImportContract.indiFIdIndi)) {
+                            indSyncLinkF = new Individual.syncLink();
+                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + ExImportContract.indiFIdIndi);
+                            indSyncLinkF.setIndiFID(text);
+                        }else if (tagname.equalsIgnoreCase(ExImportContract.cusIdIndi)) {
+                            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + ExImportContract.cusIdIndi);
+                            indSyncLinkF.setCusID(text);
+                            indSyncLinkFlist.add(indSyncLinkF);
                         }else if (tagname.equalsIgnoreCase(Individual.KEY_IsCons)) {
                             Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Individual.KEY_IsCons);
                             individual.setIsCons(text);
