@@ -28,6 +28,7 @@ public class CusAccountRepo {
         int customerId;
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
+        values.put(CusAccount.KEY_ID_Cus, cusAccount.getID_Cus());
         values.put(CusAccount.KEY_IndID, cusAccount.getIndID());
         values.put(CusAccount.KEY_AccountName, cusAccount.getAccountName());
         values.put(CusAccount.KEY_PassWord, cusAccount.getPassWord());
