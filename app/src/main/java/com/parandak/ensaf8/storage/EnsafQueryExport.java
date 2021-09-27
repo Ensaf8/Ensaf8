@@ -48,13 +48,24 @@ public class EnsafQueryExport {
                 "    </info>  \n");
         if (indiCursor.moveToFirst()) {
             do  {
+                Cursor indiFCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getIndiF(indiCursor.getString(0)));
                 String indiFIdCusId = "";
+                if (indiFCursor.moveToFirst()) {
+                    do {
+                        if (indiFCursor.getString(0) != null && indiFCursor.getString(1) != null) {
+                            indiFIdCusId = indiFIdCusId +
+                                    "        <" + ExImportContract.indiFIdIndi + ">" + indiFCursor.getString(0) + "</" + ExImportContract.indiFIdIndi + ">  \n" +
+                                    "        <" + ExImportContract.cusIdIndi + ">" + indiFCursor.getString(1) + "</" + ExImportContract.cusIdIndi + ">  \n";
+                        }
+                    }while (indiFCursor.moveToNext());
+                }
 
-                if (indiCursor.getString(3) != null && indiCursor.getString(4) != null){
+
+                /*if (indiCursor.getString(3) != null && indiCursor.getString(4) != null){
                     indiFIdCusId =
                             "        <"+ExImportContract.indiFIdIndi+">" + indiCursor.getString(3) + "</"+ExImportContract.indiFIdIndi+">  \n" +
                             "        <"+ExImportContract.cusIdIndi+">" + indiCursor.getString(4) + "</"+ExImportContract.cusIdIndi+">  \n" ;
-                }
+                }*/
                 XMLall0000.append(
                         "   \n <"+Individual.TABLE+">  \n" +
                                 "        <"+Individual.KEY_ID_Indi+">" + indiCursor.getString(0) + "</"+Individual.KEY_ID_Indi+">  \n" +
