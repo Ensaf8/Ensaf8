@@ -28,6 +28,7 @@ public class Cons_PhaseRepo {
         int cons_phaseId;
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
+        values.put(Cons_Phase.KEY_ID_Cons_Phase,cons_phase.getID_Cons_Phase());
         values.put(Cons_Phase.KEY_IndID,cons_phase.getIndID());
         values.put(Cons_Phase.KEY_Phase,cons_phase.getPhase());
         values.put(Cons_Phase.KEY_PhaseDate,cons_phase.getPhaseDate());
