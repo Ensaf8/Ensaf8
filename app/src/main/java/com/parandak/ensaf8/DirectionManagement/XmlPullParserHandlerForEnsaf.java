@@ -47,6 +47,9 @@ public class XmlPullParserHandlerForEnsaf {
     private Tend tend;
     private String text;
 
+    private String cusIdIndi;
+    private String cusID;
+
     private List<wpt> wpts= new ArrayList<wpt>();
     private wpt wpt;
 
@@ -54,11 +57,270 @@ public class XmlPullParserHandlerForEnsaf {
         return wpts;
     }
 
+    public void importFile (InputStream is){
+        try{
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            XmlPullParser parser = factory.newPullParser();
+
+            parser.setInput(is, null);
+            int eventType = parser.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT){
+                String tagname = parser.getName();
+                switch (eventType) {
+                    case XmlPullParser.START_TAG:
+                        //////
+                        if(HomePageActivity.isConnected) {
+                            Log.d("ensaf::::::::", TAG + " startTagSyncFile> will RUN : ");
+                        }else {
+                            startTagSyncFile_AUTH(tagname);
+                        }
+                        break;
+                    case XmlPullParser.TEXT:
+                        text = parser.getText();
+                        break;
+                    case XmlPullParser.END_TAG:
+                        /////
+                        initiateImport(tagname);///init cusID
+                        if(HomePageActivity.isConnected) {
+                            Log.d("ensaf::::::::", TAG + " endTagSyncFile> will RUN : ");
+                        }else {
+                            endTagSyncFile_AUTH(tagname);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                eventType = parser.next();
+            }
+        }catch (XmlPullParserException | IOException e) {e.printStackTrace();}
+    }
+
+    private void initiateImport(String tagname){
+        if (tagname.equalsIgnoreCase(EnsafQueryExport.customerID)) {
+            // initiate
+            cusID = text;
+            Log.d("ensaf::::::::", TAG + " >CustomerID : " + EnsafQueryExport.customerID +  " : " +
+                    text);
+        }
+    }
+
+    private void startTagSyncFile(String tagname){
+        if (tagname.equalsIgnoreCase(Individual.TABLE)){
+            cusIdIndi = null;
+            indSyncLinkFlist.clear();
+            this.individual = new Individual();
+            this.indSyncLinkF = new Individual.syncLink();
+            Log.d("ensaf::::::::", TAG + "> initiate : " + Individual.TABLE);
+        }else if (tagname.equalsIgnoreCase(Cons_Phase.TABLE)) {
+            // create a new instance of ConstructionCustomer
+            cons_phase = new Cons_Phase();
+            Log.d("ensaf::::::::", TAG + "> initiate : " + Cons_Phase.TABLE);
+        }else if (tagname.equalsIgnoreCase(GPoint.TABLE)){
+            // create a new instance of Constructions
+            gPoint = new GPoint();
+            Log.d("ensaf::::::::", TAG + "> initiate : " + GPoint.TABLE);
+            indi_geop = new Indi_Geop();
+            Log.d("ensaf::::::::", TAG + "> initiate : " + Indi_Geop.TABLE);
+        }
+    }
+
+    private void startTagSyncFile_AUTH(String tagname){
+        if (tagname.equalsIgnoreCase(CusAccount.TABLE)){
+            // create a new instance of ConstructionPhase
+            cusAccount = new CusAccount();
+            Log.d("ensaf::::::::", TAG + " startTagSyncFile_AUTH> initiate : " + CusAccount.TABLE);
+        }else if (tagname.equalsIgnoreCase(Individual.TABLE + ExImportContract.auth)){
+            // create a new instance of PhoneNumber
+            cusIdIndi = null;
+            indSyncLinkFlist.clear();
+            this.individual = new Individual();
+            this.indSyncLinkF = new Individual.syncLink();
+            Log.d("ensaf::::::::", TAG + " startTagSyncFile_AUTH> initiate : " + Individual.TABLE);
+        }
+    }
+
+    private void endTagSyncFile(String tagname){
+        IndividualRepo individualRepo = new IndividualRepo();
+        IndividualRepo.syncLink syncFLinkRepo = new IndividualRepo.syncLink(true);
+        IndividualRepo.syncLink syncTLinkRepo = new IndividualRepo.syncLink(false);
+        Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
+        GPointRepo gPointRepo = new GPointRepo();
+        Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
+        EnsafQueryExport ensafQueryExport = new EnsafQueryExport();
+        int insertedIndiId = 0;
+        if (tagname.equalsIgnoreCase(EnsafQueryExport.customerID)) {
+            // initiate
+            cusID = text;
+            Log.d("ensaf::::::::", TAG + " >CustomerID : " + EnsafQueryExport.customerID +  " : " +
+                    text);
+        }if (tagname.equalsIgnoreCase(Individual.TABLE)) {
+            insertedIndiId = individualRepo.insert(individual);
+            if (insertedIndiId > 0){
+                Log.d("ensaf::::::::", TAG + " : " + insertedIndiId + " > is inserted  : " + Individual.TABLE);
+                String insertedIndividualId = String.valueOf(insertedIndiId);
+                Log.d("ensaf::::::::", TAG + "> setIndiID " + insertedIndividualId + " to : " + "indSyncLinkF");
+                indSyncLinkF.setIndiID(insertedIndividualId);
+
+                for (int i = 0 ; i< indSyncLinkFlist.size() ; i++){
+                    indSyncLinkFlist.get(i).setIndiID(insertedIndividualId);
+                    if (syncFLinkRepo.insert(indSyncLinkFlist.get(i))>0){
+                        Log.d("ensaf::::::::", TAG + "> inserted data to  : " + Individual.syncLink.TABLE_F +
+                                " id : " + indSyncLinkFlist.get(i).getIndiID());
+                    }
+                }
+            }else{
+                Log.d("ensaf::::::::", TAG + "> NOT inserted data to  : " + Individual.TABLE);
+            }
+        }else if (tagname.equalsIgnoreCase(Individual.KEY_ID_Indi)) {
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Individual.KEY_ID_Indi);
+            //individual.setID_Indi(text);
+            indSyncLinkF.setIndiFID(text);
+            indSyncLinkF.setCusID(cusID);
+            indSyncLinkFlist.add(indSyncLinkF);
+        }else if (tagname.equalsIgnoreCase(Individual.KEY_IndiName)) {
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Individual.KEY_IndiName);
+            individual.setIndiName(text);
+        }else if (tagname.equalsIgnoreCase(ExImportContract.indiFIdIndi)) {
+            indSyncLinkF = new Individual.syncLink();
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + ExImportContract.indiFIdIndi);
+            indSyncLinkF.setIndiFID(text);
+        }else if (tagname.equalsIgnoreCase(ExImportContract.cusIdIndi)) {
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + ExImportContract.cusIdIndi);
+            indSyncLinkF.setCusID(text);
+            indSyncLinkFlist.add(indSyncLinkF);
+        }else if (tagname.equalsIgnoreCase(Individual.KEY_IsCons)) {
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Individual.KEY_IsCons);
+            individual.setIsCons(text);
+        }else if (tagname.equalsIgnoreCase(Cons_Phase.TABLE)&&cons_phase!=null) {
+            // insert cons_phase
+            if (cons_phaseRepo.insert(cons_phase)>0){
+                Log.d("ensaf::::::::", TAG + "> insert data to  : " + Cons_Phase.TABLE);
+            }else {
+                Log.d("ensaf::::::::", TAG + "> NOT insert data to  : " + Cons_Phase.TABLE);
+            }
+
+        } else if (tagname.equalsIgnoreCase(Cons_Phase.KEY_ID_Cons_Phase)&&cons_phase!=null) {
+            cons_phase.setID_Cons_Phase(text);
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Cons_Phase.KEY_ID_Cons_Phase);
+        } else if (tagname.equalsIgnoreCase(Cons_Phase.KEY_IndID)&&cons_phase!=null) {
+            //cons_phase.setIndID(text);
+            cons_phase.setIndID(ensafQueryExport.indiFromIndiF(text));
+            Log.d("ensaf::::::::", TAG + "> add " + ensafQueryExport.indiFromIndiF(text) + " to : " + Cons_Phase.KEY_IndID);
+        }else if (tagname.equalsIgnoreCase(Cons_Phase.KEY_Phase)&&cons_phase!=null) {
+            cons_phase.setPhase(text);
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Cons_Phase.KEY_Phase);
+        }else if (tagname.equalsIgnoreCase(Cons_Phase.KEY_PhaseDate)&&cons_phase!=null) {
+            cons_phase.setPhaseDate(text);
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Cons_Phase.KEY_PhaseDate);
+            //#############
+        }else if (tagname.equalsIgnoreCase(GPoint.TABLE)) {
+            // insert gPoint
+            gPointRepo.insert(gPoint);
+            Log.d("ensaf::::::::", TAG + "> insert data to  : " + GPoint.TABLE);
+            if (indi_geop!=null){
+                indi_geopRepo.insert(indi_geop);
+                Log.d("ensaf::::::::", TAG + "> insert data to  : " + Indi_Geop.TABLE);
+            }
+        }else if (tagname.equalsIgnoreCase(GPoint.KEY_IDGeop)) {
+            gPoint.setIDGeop(text);
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + GPoint.KEY_IDGeop);
+            if (indi_geop!=null){
+                indi_geop.setGeopID(text);
+                Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Indi_Geop.KEY_GeopID);
+            }
+        }else if (tagname.equalsIgnoreCase(Indi_Geop.KEY_IndiID)) {
+            ///indi_geop.setIndiID(text);
+            indi_geop.setIndiID(ensafQueryExport.indiFromIndiF(text));
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + Indi_Geop.KEY_IndiID);
+        }else if (tagname.equalsIgnoreCase(GPoint.KEY_Lat)) {
+            gPoint.setLat(text);
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + GPoint.KEY_Lat);
+        }else if (tagname.equalsIgnoreCase(GPoint.KEY_Lon)) {
+            gPoint.setLon(text);
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + GPoint.KEY_Lon);
+        }else if (tagname.equalsIgnoreCase(GPoint.KEY_IsSolo)) {
+            gPoint.setIsSolo(text);
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + GPoint.KEY_IsSolo);
+        }
+    }
+
+    private void endTagSyncFile_AUTH(String tagname){
+        IndividualRepo individualRepo = new IndividualRepo();
+        CusAccountRepo cusAccountRepo = new CusAccountRepo();
+        //IndividualRepo.syncLink syncFLinkRepo = new IndividualRepo.syncLink(true);
+        int insertedIndiId = 0;
+        if (tagname.equalsIgnoreCase(CusAccount.TABLE)) {
+            // insert cusAccount
+            if (cusAccountRepo.insert(cusAccount)>0){
+                Log.d("ensaf::::::::", TAG + " endTagSyncFile_AUTH> insert data to  : " + CusAccount.TABLE);
+            }else {
+                Log.d("ensaf::::::::", TAG + " endTagSyncFile_AUTH> NOT insert data to  : " + CusAccount.TABLE);
+            }
+
+        }else if (tagname.equalsIgnoreCase(CusAccount.KEY_ID_Cus)) {
+            cusAccount.setID_Cus(text);
+            Log.d("ensaf::::::::", TAG + " endTagSyncFile_AUTH> add " + text + " to : " + CusAccount.KEY_ID_Cus);
+        }else if (tagname.equalsIgnoreCase(CusAccount.KEY_IndID)) {
+            cusAccount.setIndID(text);
+            Log.d("ensaf::::::::", TAG + " endTagSyncFile_AUTH> add " + text + " to : " + CusAccount.KEY_IndID);
+        }else if (tagname.equalsIgnoreCase(CusAccount.KEY_AccountName)) {
+            cusAccount.setAccountName(text);
+            Log.d("ensaf::::::::", TAG + " endTagSyncFile_AUTH> add " + text + " to : " + CusAccount.KEY_AccountName);
+        }else if (tagname.equalsIgnoreCase(CusAccount.KEY_PassWord)) {
+            cusAccount.setPassWord(text);
+            Log.d("ensaf::::::::", TAG + " endTagSyncFile_AUTH> add " + text + " to : " + CusAccount.KEY_PassWord);
+        }else if (tagname.equalsIgnoreCase(CusAccount.KEY_IsAct)) {
+            cusAccount.setIsAct(text);
+            Log.d("ensaf::::::::", TAG + " endTagSyncFile_AUTH> add " + text + " to : " + CusAccount.KEY_IsAct);
+            //#############
+        }else if (tagname.equalsIgnoreCase(Individual.TABLE + ExImportContract.auth)) {
+            insertedIndiId = individualRepo.insert(individual);
+            if (insertedIndiId > 0){
+                Log.d("ensaf::::::::", TAG + " endTagSyncFile_AUTH> " + insertedIndiId + " is inserted  : " + Individual.TABLE + ExImportContract.auth);
+                //String insertedIndividualId = String.valueOf(insertedIndiId);
+                //Log.d("ensaf::::::::", TAG + "> setIndiID " + insertedIndividualId + " to : " + "indSyncLinkF");
+                //indSyncLinkF.setIndiID(insertedIndividualId);
+
+                /*for (int i = 0 ; i< indSyncLinkFlist.size() ; i++){
+                    indSyncLinkFlist.get(i).setIndiID(insertedIndividualId);
+                    if (syncLinkRepo.insert(indSyncLinkFlist.get(i))>0){
+                        Log.d("ensaf::::::::", TAG + "> inserted data to  : " + Individual.syncLink.TABLE_F +
+                                " id : " + indSyncLinkFlist.get(i).getIndiID());
+                    }
+                }*/
+            }else{
+                Log.d("ensaf::::::::", TAG + " endTagSyncFile_AUTH> NOT inserted data to  : " + Individual.TABLE);
+            }
+        }else if (tagname.equalsIgnoreCase(Individual.KEY_ID_Indi)) {
+            Log.d("ensaf::::::::", TAG + " endTagSyncFile_AUTH> add " + text + " to : " + Individual.KEY_ID_Indi);
+            individual.setID_Indi(text);
+            //indSyncLinkF.setIndiFID(text);
+            //indSyncLinkF.setCusID(cusID);
+            //indSyncLinkFlist.add(indSyncLinkF);
+        }else if (tagname.equalsIgnoreCase(Individual.KEY_IndiName)) {
+            Log.d("ensaf::::::::", TAG + " endTagSyncFile_AUTH> add " + text + " to : " + Individual.KEY_IndiName);
+            individual.setIndiName(text);
+        }/*else if (tagname.equalsIgnoreCase(ExImportContract.indiFIdIndi)) {
+            indSyncLinkF = new Individual.syncLink();
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + ExImportContract.indiFIdIndi);
+            indSyncLinkF.setIndiFID(text);
+        }else if (tagname.equalsIgnoreCase(ExImportContract.cusIdIndi)) {
+            Log.d("ensaf::::::::", TAG + "> add " + text + " to : " + ExImportContract.cusIdIndi);
+            indSyncLinkF.setCusID(text);
+            indSyncLinkFlist.add(indSyncLinkF);
+        }*/else if (tagname.equalsIgnoreCase(Individual.KEY_IsCons)) {
+            Log.d("ensaf::::::::", TAG + " endTagSyncFile_AUTH> add " + text + " to : " + Individual.KEY_IsCons);
+            individual.setIsCons(text);
+        }
+
+    }
+
 
 
     public List<wpt> parse(InputStream is){
         Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
-        CusAccountRepo constructionPhaseRepo = new CusAccountRepo();
+        CusAccountRepo cusAccountRepo = new CusAccountRepo();
         GPointRepo gPointRepo = new GPointRepo();
         Indi_CoopRepo indi_coopRepo = new Indi_CoopRepo();
         Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
@@ -157,7 +419,7 @@ public class XmlPullParserHandlerForEnsaf {
                         //#############
                         }else if (tagname.equalsIgnoreCase(CusAccount.TABLE)) {
                             // insert cusAccount
-                            constructionPhaseRepo.insert(cusAccount);
+                            cusAccountRepo.insert(cusAccount);
                             Log.d("ensaf::::::::", TAG + "> insert data to  : " + CusAccount.TABLE);
                         }else if (tagname.equalsIgnoreCase(CusAccount.KEY_ID_Cus)) {
                             cusAccount.setID_Cus(text);

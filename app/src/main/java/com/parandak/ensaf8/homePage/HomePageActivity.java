@@ -1,5 +1,6 @@
 package com.parandak.ensaf8.homePage;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -44,6 +45,7 @@ import com.parandak.ensaf8.bookMarkPage.BookMarkPage;
 import com.parandak.ensaf8.broadCast.ConnectivityReceiver;
 import com.parandak.ensaf8.dataBase.DatabaseManager;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
+import com.parandak.ensaf8.dataBase.model_Indivi.CusAccount;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
@@ -519,6 +521,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                     }
                 });
                 builderInner.show();*/
+                dbCheck(CusAccount.TABLE);
                 dbCheck(Individual.TABLE);
                 dbCheck(Individual.syncLink.TABLE_T);
                 dbCheck(Individual.syncLink.TABLE_F);
@@ -619,6 +622,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
             //alterDocument(treeUri,ensafQueryExport.dailyReport());
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class AsyncTaskExample extends AsyncTask<Uri, String, List<wpt>> {
         @Override
         protected void onPreExecute() {
@@ -634,47 +638,8 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
             try {
                 InputStream inputStream = context.getContentResolver().openInputStream(uri[0]);
                 XmlPullParserHandlerForEnsaf parserHandlerForEnsaf = new XmlPullParserHandlerForEnsaf();
-                wpts = parserHandlerForEnsaf.parse(inputStream);
-
-                //XmlPullParserHandlerForWpt parserHandlerForWpt = new XmlPullParserHandlerForWpt();
-                //wpts = parserHandlerForWpt.parse(inputStream);
-
-
-                Individual individual = new Individual();
-                IndividualRepo individualRepo = new IndividualRepo();
-
-                GPoint gPoint = new GPoint();
-                GPointRepo gPointRepo = new GPointRepo();
-
-                Indi_Geop indi_geop = new Indi_Geop();
-                Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
-
-                Cons_Phase cons_phase = new Cons_Phase();
-                Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
-
-                for (int i = 0; i < wpts.size(); i++){
-                    wpt wpt;
-
-                    wpt = wpts.get(i);
-                    individual.setIndiName(wpt.getName());
-                    individual.setIsCons("1");
-                    individualRepo.insert(individual);
-
-                    gPoint.setLat(wpt.getLat());
-                    gPoint.setLon(wpt.getLon());
-                    gPoint.setIsSolo("1");
-                    gPointRepo.insert(gPoint);
-
-                    indi_geop.setIndiID(individualRepo.lastIndividual());
-                    indi_geop.setGeopID(gPointRepo.lastGPoint());
-                    indi_geopRepo.insert(indi_geop);
-
-                    cons_phase.setIndID(individualRepo.lastIndividual());
-                    cons_phase.setPhase("11");
-                    cons_phase.setPhaseDate(wpt.getDate());
-                    cons_phaseRepo.insert(cons_phase);
-
-                }
+                //wpts = parserHandlerForEnsaf.parse(inputStream);
+                parserHandlerForEnsaf.importFile(inputStream);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -688,7 +653,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                 wpts = wptss;
             }else {
                 progressDialog.hide();
-                Toast.makeText(getBaseContext(),"Ensaf file has been loaded",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),"Ensaf Sync File has been loaded",Toast.LENGTH_SHORT).show();
             }
         }
     }
