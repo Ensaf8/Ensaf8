@@ -114,12 +114,12 @@ public class EnsafQueryExport {
         XMLensaf0.append(Ensaf);
         return XMLensaf0.toString();
     }
-    public String indiFromIndiF(String indiID){
+    public String indiFromIndiF(String indiID, String cusID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = " SELECT "
                 + Individual.syncLink.KEY_IndiID
                 + " FROM " + Individual.syncLink.TABLE_F
-                + " WHERE " + Individual.syncLink.KEY_IndiFID + " = " + indiID;
+                + " WHERE " + Individual.syncLink.KEY_IndiFID + " = " + indiID +  " AND " + Individual.syncLink.KEY_CusId + " = " + cusID;
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()){
             return cursor.getString(0);
