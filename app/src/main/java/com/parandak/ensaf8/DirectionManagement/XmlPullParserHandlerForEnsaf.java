@@ -156,6 +156,7 @@ public class XmlPullParserHandlerForEnsaf {
         Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
         EnsafQueryExport ensafQueryExport = new EnsafQueryExport();
         int insertedIndiId;
+        int insertedGpointId;
         if (tagname.equalsIgnoreCase(Individual.TABLE)) {
             if (isMyData){
                 Log.d("ensaf::::::::", TAG + " endTagSyncFile : this is my data ");
@@ -248,14 +249,17 @@ public class XmlPullParserHandlerForEnsaf {
             //#############
         }else if (tagname.equalsIgnoreCase(GPoint.TABLE)) {
             // insert gPoint
-            gPointRepo.insert(gPoint);
-            Log.d("ensaf::::::::", TAG + " endTagSyncFile> insert data to  : " + GPoint.TABLE);
-            if (indi_geop!=null){
-                indi_geopRepo.insert(indi_geop);
-                Log.d("ensaf::::::::", TAG + " endTagSyncFile> insert data to  : " + Indi_Geop.TABLE);
+            insertedGpointId = gPointRepo.insert(gPoint);
+            if (insertedGpointId>0){
+                Log.d("ensaf::::::::", TAG + " endTagSyncFile> insert data to  : " + GPoint.TABLE);
+                if (indi_geop!=null){
+                    indi_geop.setGeopID(String.valueOf(insertedGpointId));
+                    indi_geopRepo.insert(indi_geop);
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> insert data to  : " + Indi_Geop.TABLE);
+                }
             }
         }else if (tagname.equalsIgnoreCase(GPoint.KEY_IDGeop)) {
-            gPoint.setIDGeop(text);
+            //gPoint.setIDGeop(text);
             Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " to : " + GPoint.KEY_IDGeop);
             if (indi_geop!=null){
                 indi_geop.setGeopID(text);
