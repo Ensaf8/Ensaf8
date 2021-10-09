@@ -130,6 +130,22 @@ public class EnsafQueryExport {
         //DatabaseManager.getInstance().closeDatabase();
 
     }
+    public String indiFromIndiT(String indiID, String cusID){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = " SELECT "
+                + Individual.syncLink.KEY_IndiID
+                + " FROM " + Individual.syncLink.TABLE_T
+                + " WHERE " + Individual.syncLink.KEY_IndiFID + " = " + indiID +  " AND " + Individual.syncLink.KEY_CusId + " = " + cusID;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()){
+            return cursor.getString(0);
+        }else {
+            return null;
+        }
+        //cursor.close();
+        //DatabaseManager.getInstance().closeDatabase();
+
+    }
     public String exportQuery(){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         StringBuilder XMLensaf0 = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>  \n");
