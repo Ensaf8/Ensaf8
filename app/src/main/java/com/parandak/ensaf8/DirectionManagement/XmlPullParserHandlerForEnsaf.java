@@ -272,8 +272,17 @@ public class XmlPullParserHandlerForEnsaf {
                 Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " directly to : " + Cons_Phase.KEY_IndID);
             }else {
                 //ensafQueryExport.indiFromIndiT(text ,cusID)
-                cons_phase.setIndID(ensafQueryExport.indiFromIndiF(text ,cusID));
-                Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + ensafQueryExport.indiFromIndiF(text, cusID) + " to : " + Cons_Phase.KEY_IndID);
+                if (ensafQueryExport.indiFromIndiF(text ,cusID)!=null){
+                    cons_phase.setIndID(ensafQueryExport.indiFromIndiF(text ,cusID));
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + ensafQueryExport.indiFromIndiF(text, cusID) + " to : " + Cons_Phase.KEY_IndID);
+                }else if(ensafQueryExport.indiFromIndiT(text ,cusID)!=null){
+                    cons_phase.setIndID(ensafQueryExport.indiFromIndiT(text ,cusID));
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + ensafQueryExport.indiFromIndiT(text, cusID) + " to : " + Cons_Phase.KEY_IndID);
+                }else {
+                    cons_phase.setIndID(text);
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " to : " + Cons_Phase.KEY_IndID);
+                }
+
             }
         }else if (tagname.equalsIgnoreCase(Cons_Phase.KEY_Phase)&&cons_phase!=null) {
             cons_phase.setPhase(text);
