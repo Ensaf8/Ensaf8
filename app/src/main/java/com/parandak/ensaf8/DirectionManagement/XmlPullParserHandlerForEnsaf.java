@@ -255,10 +255,14 @@ public class XmlPullParserHandlerForEnsaf {
             individual.setIsCons(text);
         }else if (tagname.equalsIgnoreCase(Cons_Phase.TABLE)&&cons_phase!=null) {
             // insert cons_phase
-            if (cons_phaseRepo.insert(cons_phase)>0){
-                Log.d("ensaf::::::::", TAG + " endTagSyncFile> insert data to  : " + Cons_Phase.TABLE);
+            if (ensafQueryExport.isConsNotExist(cons_phase.getIndID(),cons_phase.getPhase(),cons_phase.getPhaseDate())){
+                if (cons_phaseRepo.insert(cons_phase)>0){
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> insert data to  : " + Cons_Phase.TABLE);
+                }else {
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> NOT insert data to  : " + Cons_Phase.TABLE);
+                }
             }else {
-                Log.d("ensaf::::::::", TAG + " endTagSyncFile> NOT insert data to  : " + Cons_Phase.TABLE);
+                Log.d("ensaf::::::::", TAG + " endTagSyncFile> the data is EXIST in  : " + Cons_Phase.TABLE);
             }
 
         } else if (tagname.equalsIgnoreCase(Cons_Phase.KEY_ID_Cons_Phase)&&cons_phase!=null) {

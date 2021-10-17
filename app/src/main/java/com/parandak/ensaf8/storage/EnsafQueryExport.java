@@ -146,6 +146,23 @@ public class EnsafQueryExport {
         //DatabaseManager.getInstance().closeDatabase();
 
     }
+    public boolean isConsNotExist(String indID, String phase, String phaseDate){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        boolean is = true;
+        String selectQuery = " SELECT "
+                + Cons_Phase.KEY_ID_Cons_Phase
+                + " FROM " + Cons_Phase.TABLE
+                + " WHERE " + Cons_Phase.KEY_IndID + " = " + indID
+                + " AND " + Cons_Phase.KEY_Phase + " = " + phase
+                + " AND " + Cons_Phase.KEY_PhaseDate + " = '" + phaseDate + "'";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()){
+            if (cursor.getCount()>0){
+                is = false;
+            }
+        }
+        return is;
+    }
     public String exportQuery(){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         StringBuilder XMLensaf0 = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>  \n");
