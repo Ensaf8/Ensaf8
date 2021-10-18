@@ -190,10 +190,10 @@ public class BookMarkPage extends DialogFragment {
                 if (isEdit){
                     showDialogueEDITE(bookMarkFolderList.get(position).getId() ,bookMarkFolderList.get(position).getTitle());
                 }else {
-                    SimpleDateFormat df = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+                    SimpleDateFormat df = new SimpleDateFormat("dd-M-yyyy HH:mm:ss");
                     Date c = Calendar.getInstance().getTime();
                     String formattedDate = df.format(c);
-                    String Filename = "SyncFile : " + formattedDate +".txt";
+                    String Filename = "Sfile "+ bookMarkFolderList.get(position).getTitle() + " : " + formattedDate +".txt";
                     bTypeID = bookMarkFolderList.get(position).getId();
                     createFile(HomePageActivity.mimeType,Filename);
                     Toast.makeText(mcontext, "Item clicked !!!! " + bookMarkFolderList.get(position).getId(), Toast.LENGTH_SHORT).show();
