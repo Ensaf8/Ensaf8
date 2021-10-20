@@ -163,6 +163,19 @@ public class EnsafQueryExport {
         }
         return is;
     }
+    public int idBookTypeTitle (String bookTypeTitle){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        int id = -1;
+        String selectQuery = " SELECT "
+                + BookMarkType.KEY_ID
+                + " FROM " + BookMarkType.TABLE
+                + " WHERE " + BookMarkType.KEY_TITLE + " = '" + bookTypeTitle + "'";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()){
+            id = cursor.getInt(0);
+        }
+        return id;
+    }
     public String exportQuery(){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         StringBuilder XMLensaf0 = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>  \n");

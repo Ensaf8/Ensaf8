@@ -2,6 +2,8 @@ package com.parandak.ensaf8.DirectionManagement;
 
 import android.util.Log;
 
+import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
+import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.CusAccount;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
@@ -10,6 +12,8 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
 import com.parandak.ensaf8.dataBase.model_Indivi.PhoneNum;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
+import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkRepo;
+import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkTypeRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Cons_PhaseRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.CusAccountRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.GPointRepo;
@@ -65,7 +69,7 @@ public class XmlPullParserHandlerForEnsaf {
         return wpts;
     }
 
-    public void importFile (InputStream is){
+    public void importFile (InputStream is, String fileName){
         try{
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
@@ -93,7 +97,7 @@ public class XmlPullParserHandlerForEnsaf {
                         isMyFile = cusID.equals(HomePageActivity.ID_CONNECT_Customer);
                         //isMyData = false;
                         if(HomePageActivity.isConnected) {
-                            endTagSyncFile(tagname);
+                            endTagSyncFile(tagname,fileName);
                         }else {
                             endTagSyncFile_AUTH(tagname);
                         }
@@ -154,7 +158,7 @@ public class XmlPullParserHandlerForEnsaf {
         }
     }
 
-    private void endTagSyncFile(String tagname){
+    private void endTagSyncFile(String tagname, String fileName){
         IndividualRepo individualRepo = new IndividualRepo();
         IndividualRepo.syncLink syncFLinkRepo = new IndividualRepo.syncLink(true);
         IndividualRepo.syncLink syncTLinkRepo = new IndividualRepo.syncLink(false);
@@ -174,15 +178,37 @@ public class XmlPullParserHandlerForEnsaf {
                 //###########test
                 if (!isMyData){
                     if (indSyncLinkList.size()>0){
+                        if (ensafQueryExport.idBookTypeTitle(fileName)<0){
+                            BookMarkType bookMarkType = new BookMarkType();
+                            BookMarkTypeRepo bookMarkTypeRepo = new BookMarkTypeRepo();
+                            bookMarkType.setTitle(fileName);
+                            bookMarkTypeRepo.insert(bookMarkType);
+                        }
                         insertedIndiId = individualRepo.insert(individual);
                         if (insertedIndiId > 0){
                             Log.d("ensaf::::::::", TAG + " endTagSyncFile : " + insertedIndiId + " > is inserted  : " + Individual.TABLE);
                             String insertedIndividualId = String.valueOf(insertedIndiId);
+                            if (ensafQueryExport.idBookTypeTitle(fileName)>0){
+                                BookMark bookMark = new BookMark();
+                                BookMarkRepo bookMarkRepo = new BookMarkRepo();
+
+                                bookMark.setIndID(insertedIndividualId);
+                                bookMark.setB_type_id(String.valueOf(ensafQueryExport.idBookTypeTitle(fileName)));
+                                Log.d("ensaf::::::::", TAG + " endTagSyncFile> setBTypeID " + ensafQueryExport.idBookTypeTitle(fileName) + " to : " + "B_type_id");
+                                if (bookMarkRepo.insert(bookMark)>0){
+                                    Log.d("ensaf::::::::", TAG + " endTagSyncFile : " + BookMark.TABLE + " > is inserted ");
+                                }
+                            }
+                            BookMark bookMark = new BookMark();
+                            BookMarkRepo bookMarkRepo = new BookMarkRepo();
+                            bookMarkRepo.insert(bookMark);
+                            bookMark.setIndID(insertedIndividualId);
+                            bookMark.setB_type_id(String.valueOf(ensafQueryExport.idBookTypeTitle(fileName)));
                             Log.d("ensaf::::::::", TAG + " endTagSyncFile> setIndiID " + insertedIndividualId + " to : " + "indSyncLinkF");
                             for (int i = 0; i< indSyncLinkList.size() ; i++){
                                 indSyncLinkList.get(i).setIndiID(insertedIndividualId);
                                 if (syncFLinkRepo.insert(indSyncLinkList.get(i))>0){
-                                    Log.d("ensaf::::::::", TAG + " endTagSyncFile YAHOO!> inserted data to  : " + Individual.syncLink.TABLE_T +
+                                    Log.d("ensaf::::::::", TAG + " endTagSyncFile > inserted data to  : " + Individual.syncLink.TABLE_T +
                                             " id : " + indSyncLinkList.get(i).getIndiID());
                                 }
                             }

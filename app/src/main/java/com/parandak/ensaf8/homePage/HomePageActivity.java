@@ -27,6 +27,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.ParcelFileDescriptor;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -609,6 +610,10 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
             AsyncTaskExample asyncTask=new AsyncTaskExample();
             try {
                 asyncTask.execute(treeUri);
+                Log.d("ensaf::::::::", TAG + " > " + treeUri.getLastPathSegment() + " is Importing . . .");
+                Log.d("ensaf::::::::", TAG + " > " + treeUri.getPath() + " is Importing . . .");
+                Log.d("ensaf::::::::", TAG + " > " + getFileName(treeUri) + " is Importing file name . . .");
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -639,7 +644,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
                 InputStream inputStream = context.getContentResolver().openInputStream(uri[0]);
                 XmlPullParserHandlerForEnsaf parserHandlerForEnsaf = new XmlPullParserHandlerForEnsaf();
                 //wpts = parserHandlerForEnsaf.parse(inputStream);
-                parserHandlerForEnsaf.importFile(inputStream);
+                parserHandlerForEnsaf.importFile(inputStream, getFileName(uri[0]));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -674,5 +679,27 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
         }finally {
             Toast.makeText(getApplicationContext(), "Sync File Created !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 }
