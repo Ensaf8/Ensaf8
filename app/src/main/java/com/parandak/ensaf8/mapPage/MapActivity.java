@@ -165,6 +165,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
     Button button_edit,bottom_sheet_status_data,button_add_customer,bottom_sheet_delete_cons,bottom_sheet_add_reminder;
     CheckBox checkBoxBookmark;
+    TextView txt_consCount;
     TextView txt_bottom_book_type;
     RatingBar ratingBottom;
     ImageButton bottom_tend_history;
@@ -228,6 +229,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }////End of onCreate
     public void showOnMap(){
         MapPageQuery mapPageQuery = new MapPageQuery();
+        txt_consCount = (TextView) findViewById(R.id.consCountTxt);
         showCursor = mapPageQuery.showConsIndiWhereFilter02(drawerFragmentMap);
         drawerLayoutMap.closeDrawer(GravityCompat.START);
         showAllWaypoints(showCursor);
@@ -989,8 +991,10 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         map.getOverlays().remove(mOverlay);
         if (cursor.getCount()==0) {
             Toast.makeText(getBaseContext(),"No data in query",Toast.LENGTH_LONG).show();
+            txt_consCount.setText("No data in query");
             Log.d("ensaf::::::::", TAG + "> showAllWaypoints > No data in query");
         }else {
+            txt_consCount.setText("Cons : " + cursor.getCount());
             while (cursor.moveToNext()) {
                 String ID = cursor.getString(0);
                 String NAME = cursor.getString(1);
