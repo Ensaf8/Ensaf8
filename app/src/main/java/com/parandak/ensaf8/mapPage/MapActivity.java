@@ -53,6 +53,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.app.BaseActivity;
 import com.parandak.ensaf8.bookMarkPage.BookMarkPageQuery;
+import com.parandak.ensaf8.dataBase.DataContract;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
@@ -788,7 +789,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         if (!init_bottom_sheet_name.equals(bottom_sheet_name.getText().toString())) {
             Individual individual = new Individual();
             individual.setID_Indi(ID_CONS_SELECTED);
-            individual.setIsCons("1");
+            individual.setIsCons(String.valueOf(DataContract.CONS_UNI_INDI_TYPE_ID));
             individual.setIndiName(bottom_sheet_name.getText().toString());
             IndividualRepo individualRepo = new IndividualRepo();
             if (individualRepo.update(individual)) {
@@ -901,7 +902,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         Individual individual = new Individual();
         IndividualRepo individualRepo = new IndividualRepo();
         individual.setIndiName(bottom_sheet_name.getText().toString());
-        individual.setIsCons("1");
+        individual.setIsCons(String.valueOf(DataContract.CONS_UNI_INDI_TYPE_ID));
         individualRepo.insert(individual);
         GPoint gPoint = new GPoint();
         gPoint.setLon(String.valueOf(lon));
