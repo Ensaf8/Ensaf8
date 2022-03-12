@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.app.BaseActivity;
+import com.parandak.ensaf8.dataBase.DataContract;
 import com.parandak.ensaf8.dataBase.model_Indivi.CusAccount;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Coop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
@@ -255,7 +256,7 @@ public class SearchPageActivity extends BaseActivity {
                         Individual individual = new Individual();
                         IndividualRepo individualRepo = new IndividualRepo();
                         individual.setIndiName(editText_customer_name.getText().toString());
-                        individual.setIsCons("0");
+                        individual.setIsCons(String.valueOf(DataContract.PERSON_UNI_INDI_TYPE_ID));
                         individualRepo.insert(individual);
                         getCustomer();
                         //adapter2.notifyDataSetChanged();
