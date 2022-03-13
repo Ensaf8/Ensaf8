@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Environment;
@@ -88,6 +89,7 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.Polygon;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
@@ -199,6 +201,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     /////Filter
     String state01 = "2";
     String state02 = "6";
+    ///polygon
+    List<Polygon> regioList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState){
 
@@ -228,6 +232,45 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             showOnboarding();
         }
     }////End of onCreate
+    public void initPolygonList(){
+        regioList = getPolygonList();
+    }
+    public List<Polygon> getPolygonList(){
+        List<Polygon> polygonList = new ArrayList<>();
+
+        int color1 = Color.argb(75,255,255,0);
+        Polygon polygon = new Polygon();
+        polygon.setFillColor(color1);
+        polygon.setPoints(getGeoPointList());
+        polygon.setStrokeWidth(1);
+        polygon.setTitle("Test");
+        polygon.setId("0");
+        polygonList.add(polygon);
+        return polygonList;
+    }
+    public List<GeoPoint> getGeoPointList(){
+        List<GeoPoint> geoPointList = new ArrayList<>();
+        GeoPoint point;
+        //1
+        point = new GeoPoint(29.665005,52.476917);
+        geoPointList.add(point);
+        //2
+        point = new GeoPoint(29.654347,52.485015);
+        geoPointList.add(point);
+        //3
+        point = new GeoPoint(29.656721,52.490300);
+        geoPointList.add(point);
+        //4
+        point = new GeoPoint(29.662761,52.486626);
+        geoPointList.add(point);
+        //5
+        point = new GeoPoint(29.665654,52.486509);
+        geoPointList.add(point);
+        //6
+        point = new GeoPoint(29.666301,52.480922);
+        geoPointList.add(point);
+        return geoPointList;
+    }
     public void showOnMap(){
         MapPageQuery mapPageQuery = new MapPageQuery();
         txt_consCount = (TextView) findViewById(R.id.consCountTxt);
@@ -989,6 +1032,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }
     public void showAllWaypoints (Cursor cursor){///TODO replace cursor with overLayItemList
         mStartGoalItems.clear();
+        regioList.clear();
         map.getOverlays().remove(mOverlay);
         if (cursor.getCount()==0) {
             Toast.makeText(getBaseContext(),"No data in query",Toast.LENGTH_LONG).show();
@@ -1005,7 +1049,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 int STA = cursor.getInt(4);
                 GeoPoint point = new GeoPoint(LAT, LON);
                 OverlayItem Item = new OverlayItem(ID, NAME, DES, point);
-                if (STA<=consStateList.size()){
+                if (STA<consStateList.size()){
                     Item.setMarker(map.getContext().getResources().getDrawable(consStateList.get(STA).getDrawable()));
                 }else{
                     Item.setMarker(map.getContext().getResources().getDrawable(R.drawable.home30));
@@ -1015,6 +1059,13 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         }
         mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(mStartGoalItems,this,this);
         map.getOverlays().add(mOverlay);
+        initPolygonList();
+        for (int ii = 0;ii<regioList.size() ;ii++){
+            Polygon polygon ;
+            polygon = regioList.get(ii);
+            map.getOverlayManager().add(polygon);
+        }
+
     }//////end of showAllWaypoint
     private void checkAndroid6 (){
         // check permissions on Android 6 and higher
