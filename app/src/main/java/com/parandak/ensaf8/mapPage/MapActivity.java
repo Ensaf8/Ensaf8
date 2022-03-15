@@ -1004,7 +1004,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 int STA = cursor.getInt(4);
                 GeoPoint point = new GeoPoint(LAT, LON);
                 OverlayItem Item = new OverlayItem(ID, NAME, DES, point);
-                if (STA<=consStateList.size()){
+                if (STA<consStateList.size()){
                     Item.setMarker(map.getContext().getResources().getDrawable(consStateList.get(STA).getDrawable()));
                 }else{
                     Item.setMarker(map.getContext().getResources().getDrawable(R.drawable.home30));
