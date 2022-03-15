@@ -36,7 +36,6 @@ import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -276,7 +275,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         txt_consCount = (TextView) findViewById(R.id.consCountTxt);
         showCursor = mapPageQuery.showConsIndiWhereFilter02(drawerFragmentMap);
         drawerLayoutMap.closeDrawer(GravityCompat.START);
-        showAllWaypoints(showCursor);
+        showOnMap(showCursor);
     }
     public void imgFilter(){
         drawerFragmentMap.imgFilter.setOnClickListener(new View.OnClickListener() {
@@ -1030,7 +1029,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(getBaseContext(),mapEventsReceiver);
         map.getOverlays().add(mapEventsOverlay);
     }
-    public void showAllWaypoints (Cursor cursor){///TODO replace cursor with overLayItemList
+    public void showOnMap(Cursor cursor){
         mStartGoalItems.clear();
         regioList.clear();
         map.getOverlays().remove(mOverlay);
@@ -1061,9 +1060,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         map.getOverlays().add(mOverlay);
         initPolygonList();
         for (int ii = 0;ii<regioList.size() ;ii++){
-            Polygon polygon ;
-            polygon = regioList.get(ii);
-            map.getOverlayManager().add(polygon);
+            map.getOverlayManager().add(regioList.get(ii));
         }
 
     }//////end of showAllWaypoint
