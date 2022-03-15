@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 
 import com.parandak.ensaf8.app.App;
 
+import com.parandak.ensaf8.dataBase.model_Indivi.CreateViews;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 
@@ -38,19 +39,29 @@ public class DBQuery {
         Context context = App.getContext();
 
     }
-    public Cursor getConstruction (String ID){
+    public String getConsCoordination (String ID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-        String selectQuery = "SELECT"
-                + " Constructions.lat,"
-                + " Constructions.lon"
-                + " FROM"
-                + " Constructions"
-                + " WHERE"
-                + " Constructions.rowid =" + ID;
+        String selectQuery = "SELECT "
+                + CreateViews.Construction.KEY_lat + ","
+                //+ " Constructions.lat,"
+                + CreateViews.Construction.KEY_lon
+                //+ " Constructions.lon"
+                + " FROM "
+                + CreateViews.Construction.VIEW
+                //+ " Constructions"
+                + " WHERE "
+                + CreateViews.Construction.KEY_ID_cons + " = " + ID;
+                //+ " Constructions.rowid =" + ID;
         Cursor cursor = db.rawQuery(selectQuery, null);
+        String s;
+        if (cursor.moveToFirst()){
+            s = ID + " : " + cursor.getString(0) + " , " + cursor.getString(1);
+        }else {
+            s = " ERROR No Coordination!!! ";
+        }
         //cursor.close();
         //DatabaseManager.getInstance().closeDatabase();
-        return cursor;
+        return s;
     }
     public String getCustomerName(String ID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
