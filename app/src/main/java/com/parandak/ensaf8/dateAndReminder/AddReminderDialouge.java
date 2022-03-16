@@ -35,6 +35,8 @@ import java.util.Date;
 import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getPersianDate;
 import static com.parandak.ensaf8.homePage.HomePageActivity.ID_CONNECT_Indi1;
 
+import org.osmdroid.util.GeoPoint;
+
 public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     Context context;
     Activity activity;
@@ -53,6 +55,58 @@ public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, 
 
     @SuppressLint("SetTextI18n")
     public void showDialogueADD(final String ID_Indi2){
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View dialogueView = layoutInflater.inflate(R.layout.follow_dialogue_add,null);
+        btnAddDateToFollow = dialogueView.findViewById(R.id.buttonAddDateToFollow);
+        Date c = Calendar.getInstance().getTime();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat(DataContract.dateFormat);
+        btnAddDateToFollow.setText(getPersianDate(c)+" "+ sdf.format(c));
+        finalResult = df.format(c);
+        ediTxtTitle = dialogueView.findViewById(R.id.ediTxtTitle);
+        ediTxtMain = dialogueView.findViewById(R.id.ediTxtMain);
+        txtTitleDialogue = dialogueView.findViewById(R.id.txtNameIndi2);
+        txtTitleDialogue.setText(fullDialogQuery.getIndiName(ID_Indi2));
+
+        AlertDialog alertDialog = new AlertDialog.Builder(context)
+                .setPositiveButton("ADD",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                tend.setInd1ID(ID_CONNECT_Indi1);
+                                tend.setInd2ID(ID_Indi2);
+                                tend.setTitle(ediTxtTitle.getText().toString());
+                                tend.setDetail(ediTxtMain.getText().toString());
+                                tend.setTendDate(finalResult);
+                                tend.setIsChecked("0");
+                                if (tendRepo.insert(tend)>0)
+                                    Toast.makeText(context,"Tend Added"  , Toast.LENGTH_SHORT).show();
+
+                            }
+                        }).create();
+        alertDialog.setView(dialogueView);
+        alertDialog.show();
+
+        btnAddDateToFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                PersianCalendar persianCalendar = new PersianCalendar();
+                DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                        AddReminderDialouge.this,
+                        persianCalendar.getPersianYear(),
+                        persianCalendar.getPersianMonth(),
+                        persianCalendar.getPersianDay()
+                );
+                datePickerDialog.setThemeDark(true);
+                datePickerDialog.show(activity.getFragmentManager(), "Datepickerdialog");
+            }
+        });
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void showDialogueADD(final String ID_Indi2, GeoPoint geoPoint){
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         DBQuery dbQuery = new DBQuery();
         View dialogueView = layoutInflater.inflate(R.layout.follow_dialogue_add,null);
