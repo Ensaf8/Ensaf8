@@ -106,7 +106,7 @@ public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, 
     }
 
     @SuppressLint("SetTextI18n")
-    public void showDialogueADD(final String ID_Indi2, GeoPoint geoPoint){
+    public void showDialogueADD(final String ID_Indi2, GeoPoint geoPoint){////runForAttendance
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         DBQuery dbQuery = new DBQuery();
         View dialogueView = layoutInflater.inflate(R.layout.follow_dialogue_add,null);
@@ -119,6 +119,7 @@ public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, 
         ediTxtTitle = dialogueView.findViewById(R.id.ediTxtTitle);
         ediTxtTitle.setText(dbQuery.getConsCoordination(ID_Indi2));
         ediTxtMain = dialogueView.findViewById(R.id.ediTxtMain);
+        ediTxtMain.setText(geoPoint.toString());
         txtTitleDialogue = dialogueView.findViewById(R.id.txtNameIndi2);
         txtTitleDialogue.setText(fullDialogQuery.getIndiName(ID_Indi2));
 

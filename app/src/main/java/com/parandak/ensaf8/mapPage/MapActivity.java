@@ -372,6 +372,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         });
     }
     public void followDisableEnable(){
+        ///TODO NullException
         if (!mLocationOverlay.isFollowLocationEnabled()) {
             mLocationOverlay.enableFollowLocation();
         } else {
@@ -640,8 +641,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             public void onClick(View v) {
                 if (isConnected){
                     AddReminderDialouge addReminderDialouge = new AddReminderDialouge(context,activity);
-                    //mLocationOverlay.getMyLocation()
-                    addReminderDialouge.showDialogueADD(ID_CONS_SELECTED);
+                    ///TODO NullException
+                    addReminderDialouge.showDialogueADD(ID_CONS_SELECTED,mLocationOverlay.getMyLocation());
                 } else {
                     Toast.makeText(getApplicationContext(),"SignIn First !"  , Toast.LENGTH_SHORT).show();
                 }
