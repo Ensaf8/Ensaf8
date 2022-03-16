@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Environment;
@@ -35,7 +36,6 @@ import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -53,6 +53,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.app.BaseActivity;
 import com.parandak.ensaf8.bookMarkPage.BookMarkPageQuery;
+import com.parandak.ensaf8.dataBase.DataContract;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
@@ -87,6 +88,7 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.Polygon;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
@@ -198,6 +200,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     /////Filter
     String state01 = "2";
     String state02 = "6";
+    ///polygon
+    List<Polygon> regioList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState){
 
@@ -227,12 +231,51 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             showOnboarding();
         }
     }////End of onCreate
+    public void initPolygonList(){
+        regioList = getPolygonList();
+    }
+    public List<Polygon> getPolygonList(){
+        List<Polygon> polygonList = new ArrayList<>();
+
+        int color1 = Color.argb(75,255,255,0);
+        Polygon polygon = new Polygon();
+        polygon.setFillColor(color1);
+        polygon.setPoints(getGeoPointList());
+        polygon.setStrokeWidth(1);
+        polygon.setTitle("Test");
+        polygon.setId("0");
+        polygonList.add(polygon);
+        return polygonList;
+    }
+    public List<GeoPoint> getGeoPointList(){
+        List<GeoPoint> geoPointList = new ArrayList<>();
+        GeoPoint point;
+        //1
+        point = new GeoPoint(29.665005,52.476917);
+        geoPointList.add(point);
+        //2
+        point = new GeoPoint(29.654347,52.485015);
+        geoPointList.add(point);
+        //3
+        point = new GeoPoint(29.656721,52.490300);
+        geoPointList.add(point);
+        //4
+        point = new GeoPoint(29.662761,52.486626);
+        geoPointList.add(point);
+        //5
+        point = new GeoPoint(29.665654,52.486509);
+        geoPointList.add(point);
+        //6
+        point = new GeoPoint(29.666301,52.480922);
+        geoPointList.add(point);
+        return geoPointList;
+    }
     public void showOnMap(){
         MapPageQuery mapPageQuery = new MapPageQuery();
         txt_consCount = (TextView) findViewById(R.id.consCountTxt);
         showCursor = mapPageQuery.showConsIndiWhereFilter02(drawerFragmentMap);
         drawerLayoutMap.closeDrawer(GravityCompat.START);
-        showAllWaypoints(showCursor);
+        showOnMap(showCursor);
     }
     public void imgFilter(){
         drawerFragmentMap.imgFilter.setOnClickListener(new View.OnClickListener() {
@@ -789,7 +832,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         if (!init_bottom_sheet_name.equals(bottom_sheet_name.getText().toString())) {
             Individual individual = new Individual();
             individual.setID_Indi(ID_CONS_SELECTED);
-            individual.setIsCons("1");
+            individual.setIsCons(String.valueOf(DataContract.CONS_UNI_INDI_TYPE_ID));
             individual.setIndiName(bottom_sheet_name.getText().toString());
             IndividualRepo individualRepo = new IndividualRepo();
             if (individualRepo.update(individual)) {
@@ -902,7 +945,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         Individual individual = new Individual();
         IndividualRepo individualRepo = new IndividualRepo();
         individual.setIndiName(bottom_sheet_name.getText().toString());
-        individual.setIsCons("1");
+        individual.setIsCons(String.valueOf(DataContract.CONS_UNI_INDI_TYPE_ID));
         individualRepo.insert(individual);
         GPoint gPoint = new GPoint();
         gPoint.setLon(String.valueOf(lon));
@@ -987,8 +1030,9 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(getBaseContext(),mapEventsReceiver);
         map.getOverlays().add(mapEventsOverlay);
     }
-    public void showAllWaypoints (Cursor cursor){///TODO replace cursor with overLayItemList
+    public void showOnMap(Cursor cursor){
         mStartGoalItems.clear();
+        regioList.clear();
         map.getOverlays().remove(mOverlay);
         if (cursor.getCount()==0) {
             Toast.makeText(getBaseContext(),"No data in query",Toast.LENGTH_LONG).show();
@@ -1015,6 +1059,11 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         }
         mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(mStartGoalItems,this,this);
         map.getOverlays().add(mOverlay);
+        initPolygonList();
+        for (int ii = 0;ii<regioList.size() ;ii++){
+            map.getOverlayManager().add(regioList.get(ii));
+        }
+
     }//////end of showAllWaypoint
     private void checkAndroid6 (){
         // check permissions on Android 6 and higher
