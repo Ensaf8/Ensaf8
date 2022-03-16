@@ -117,9 +117,8 @@ public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, 
         btnAddDateToFollow.setText(getPersianDate(c)+" "+ sdf.format(c));
         finalResult = df.format(c);
         ediTxtTitle = dialogueView.findViewById(R.id.ediTxtTitle);
-        ediTxtTitle.setText(dbQuery.getConsCoordination(ID_Indi2));
+        ediTxtTitle.setText("Distance : " + distance(dbQuery.getConsGeoPoint(ID_Indi2),geoPoint) + " m ");
         ediTxtMain = dialogueView.findViewById(R.id.ediTxtMain);
-        ediTxtMain.setText(geoPoint.toString());
         txtTitleDialogue = dialogueView.findViewById(R.id.txtNameIndi2);
         txtTitleDialogue.setText(fullDialogQuery.getIndiName(ID_Indi2));
 
@@ -160,14 +159,15 @@ public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, 
 
     }
 
-    private double distance(double lat1, double lon1, double lat2, double lon2, char unit) {
+    private int distance(GeoPoint geoPoint01, GeoPoint geoPoint02) {
+        double lat1 = geoPoint01.getLatitude() , lon1 = geoPoint01.getLongitude();
+        double lat2 = geoPoint02.getLatitude() , lon2 = geoPoint02.getLongitude();
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
         dist = Math.acos(dist);
         dist = rad2deg(dist);
         dist = dist * 60 * 1.1515;
-        dist = dist * 1.609344;
-        return (dist);
+        return (int) (dist * 1609.344);
     }
     /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*::  This function converts decimal degrees to radians             :*/

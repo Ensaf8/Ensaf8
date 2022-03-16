@@ -39,7 +39,7 @@ public class DBQuery {
         Context context = App.getContext();
 
     }
-    public String getConsCoordination (String ID){
+    public GeoPoint getConsGeoPoint (String ID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = "SELECT "
                 + CreateViews.Construction.KEY_lat + ","
@@ -53,15 +53,13 @@ public class DBQuery {
                 + CreateViews.Construction.KEY_ID_cons + " = " + ID;
                 //+ " Constructions.rowid =" + ID;
         Cursor cursor = db.rawQuery(selectQuery, null);
-        String s;
+        GeoPoint geoPoint = null;
         if (cursor.moveToFirst()){
-            s = ID + " : " + cursor.getString(0) + " , " + cursor.getString(1);
-        }else {
-            s = " ERROR No Coordination!!! ";
+            geoPoint = new GeoPoint(cursor.getDouble(0),cursor.getDouble(1));
         }
         //cursor.close();
         //DatabaseManager.getInstance().closeDatabase();
-        return s;
+        return geoPoint;
     }
     public String getCustomerName(String ID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
