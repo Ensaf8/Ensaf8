@@ -1,5 +1,6 @@
 package com.parandak.ensaf8.dateAndReminder;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +20,7 @@ import com.mohamadamin.persianmaterialdatetimepicker.time.TimePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.dataBase.DBQuery;
+import com.parandak.ensaf8.dataBase.DataContract;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.TendRepo;
 import com.parandak.ensaf8.homePage.HomePageQuery;
@@ -49,17 +51,17 @@ public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, 
         this.activity = activity;
     }
 
+    @SuppressLint("SetTextI18n")
     public void showDialogueADD(final String ID_Indi2){
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         DBQuery dbQuery = new DBQuery();
         View dialogueView = layoutInflater.inflate(R.layout.follow_dialogue_add,null);
         btnAddDateToFollow = dialogueView.findViewById(R.id.buttonAddDateToFollow);
         Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat(DataContract.dateFormat);
         btnAddDateToFollow.setText(getPersianDate(c)+" "+ sdf.format(c));
-        String formattedDate = df.format(c);
-        finalResult = formattedDate;
+        finalResult = df.format(c);
         ediTxtTitle = dialogueView.findViewById(R.id.ediTxtTitle);
         ediTxtTitle.setText(dbQuery.getConsCoordination(ID_Indi2));
         ediTxtMain = dialogueView.findViewById(R.id.ediTxtMain);
