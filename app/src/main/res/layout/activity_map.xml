@@ -155,10 +155,10 @@
                             android:numStars="3"/>
 
                         <ImageButton
-                            android:id="@+id/imageButton"
+                            android:id="@+id/imgBtnBottom"
+                            android:background="@android:color/darker_gray"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/home30" />
+                            android:layout_height="wrap_content"/>
 
                         <androidx.viewpager2.widget.ViewPager2
                             android:id="@+id/viewPager2"

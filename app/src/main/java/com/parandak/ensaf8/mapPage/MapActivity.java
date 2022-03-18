@@ -195,6 +195,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     ////ViewPager
     ViewPager2 viewPager2;
     Dialog dialog;
+    ////
+    ImageButton imgBtnBottom;
     ////ConsSate
     List<ConsState> consStateList = new ArrayList<>();
     /////Filter
@@ -222,6 +224,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         if (mPermissionsGranted){
             initMap(savedInstanceState);
             viewPager();
+            imageBottomSheet();
             initDrawable ();
             initConsStateList();
             showOnMap();
@@ -467,9 +470,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }
     private void viewPager(){
         viewPager2 = findViewById(R.id.viewPager2);
-        //viewPager2.setAdapter(new ViewPagerAdapter(this, statuslist, viewPager2));
         viewPager2.setAdapter(new ViewPagerAdapter2(this, consStateList, viewPager2));
-        //viewPager2.setAdapter(new ImageViewAdapter(this, viewPager2));
         viewPager2.setOffscreenPageLimit(15);
         final float pageMargin= getResources().getDimensionPixelOffset(R.dimen.pageMargin);
         final float pageOffset = getResources().getDimensionPixelOffset(R.dimen.offset);
@@ -816,6 +817,16 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             @Override
             public void onSlide(@NonNull View view, float v) {
 
+            }
+        });
+    }
+    private void imageBottomSheet(){
+        imgBtnBottom = (ImageButton) findViewById(R.id.imgBtnBottom);
+        imgBtnBottom.setImageDrawable(context.getDrawable(R.drawable.home30));
+        imgBtnBottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getBaseContext(), "imgBtnBottom is Clicked!!! ", Toast.LENGTH_SHORT).show();
             }
         });
     }
