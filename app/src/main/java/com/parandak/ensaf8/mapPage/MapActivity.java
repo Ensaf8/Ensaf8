@@ -279,6 +279,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         showCursor = mapPageQuery.showConsIndiWhereFilter02(drawerFragmentMap);
         drawerLayoutMap.closeDrawer(GravityCompat.START);
         showOnMapCons(showCursor);
+        showOnMapPolygon();
     }
     public void imgFilter(){
         drawerFragmentMap.imgFilter.setOnClickListener(new View.OnClickListener() {
@@ -1063,7 +1064,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }
     public void showOnMapCons(Cursor cursor){
         mStartGoalItems.clear();
-        regioList.clear();
         map.getOverlays().remove(mOverlay);
         if (cursor.getCount()==0) {
             Toast.makeText(getBaseContext(),"No data in query",Toast.LENGTH_LONG).show();
@@ -1090,12 +1090,15 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         }
         mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(mStartGoalItems,this,this);
         map.getOverlays().add(mOverlay);
+
+    }//////end of showOnMapCons
+    private void showOnMapPolygon(){
+        regioList.clear();
         initPolygonList();
         for (int ii = 0;ii<regioList.size() ;ii++){
             map.getOverlayManager().add(regioList.get(ii));
         }
-
-    }//////end of showAllWaypoint
+    }
     private void checkAndroid6 (){
         // check permissions on Android 6 and higher
         mPermissionsGranted = false;
