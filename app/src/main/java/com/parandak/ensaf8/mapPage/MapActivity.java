@@ -278,7 +278,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         txt_consCount = (TextView) findViewById(R.id.consCountTxt);
         showCursor = mapPageQuery.showConsIndiWhereFilter02(drawerFragmentMap);
         drawerLayoutMap.closeDrawer(GravityCompat.START);
-        showOnMap(showCursor);
+        showOnMapCons(showCursor);
     }
     public void imgFilter(){
         drawerFragmentMap.imgFilter.setOnClickListener(new View.OnClickListener() {
@@ -1042,7 +1042,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(getBaseContext(),mapEventsReceiver);
         map.getOverlays().add(mapEventsOverlay);
     }
-    public void showOnMap(Cursor cursor){
+    public void showOnMapCons(Cursor cursor){
         mStartGoalItems.clear();
         regioList.clear();
         map.getOverlays().remove(mOverlay);
