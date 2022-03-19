@@ -652,6 +652,25 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bottom_sheet_status_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ///TODO organizing to better way
+                MapPageQuery mapPageQuery = new MapPageQuery();
+                Cursor cursorHistory = mapPageQuery.getHistoryConsPhase(ID_CONS_SELECTED);
+                if (cursorHistory.moveToFirst()){
+                    do {
+                        History history =new History();
+                        if (cursorHistory.getInt(1)<11){
+                            String [] arrOfFomattedDate1 = cursorHistory.getString(2).split(" ",2);
+                            String [] arrOfGreDate1 = arrOfFomattedDate1[0].split("-",3);
+                            history.setState(consStateList.get(cursorHistory.getInt(1)).getState());
+                            history.setDate(getPersianDate(Integer.valueOf(arrOfGreDate1[0]), Integer.valueOf(arrOfGreDate1[1]), Integer.valueOf(arrOfGreDate1[2]))+ " " + arrOfFomattedDate1[1]);
+                        }else {
+                            history.setState("ثبت شده");
+                            history.setDate(cursorHistory.getString(2));
+                        }
+
+                        historyList.add(history);
+                    }while (cursorHistory.moveToNext());
+                }
                 showDialog(MapActivity.this);
             }
         });
@@ -1284,25 +1303,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         statusdate = formattedDate;
 
         MapPageQuery mapPageQuery = new MapPageQuery();
-        Cursor cursorHistory = mapPageQuery.getHistoryConsPhase(ID_CONS_SELECTED);
-        if (cursorHistory.moveToFirst()){
-            do {
-                History history =new History();
-                if (cursorHistory.getInt(1)<11){
-                    String [] arrOfFomattedDate1 = cursorHistory.getString(2).split(" ",2);
-                    String [] arrOfGreDate1 = arrOfFomattedDate1[0].split("-",3);
-                    history.setState(consStateList.get(cursorHistory.getInt(1)).getState());
-                    history.setDate(getPersianDate(Integer.valueOf(arrOfGreDate1[0]), Integer.valueOf(arrOfGreDate1[1]), Integer.valueOf(arrOfGreDate1[2]))+ " " + arrOfFomattedDate1[1]);
-                }else {
-                    history.setState("ثبت شده");
-                    history.setDate(cursorHistory.getString(2));
-                }
 
-                historyList.add(history);
-            }while (cursorHistory.moveToNext());
-        }
-        ////////
-        //L_or_S = "single";
         mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         //Toast.makeText(getBaseContext(), "The Item ID is : " + item.getPoint().getLatitude(), Toast.LENGTH_SHORT).show();
@@ -1317,26 +1318,11 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             inisatatus =cursor.getInt(4);
             String [] arrOfFomattedDate = cursor.getString(5).split(" ",2);
             String [] arrOfGreDate = arrOfFomattedDate[0].split("-",3);
-            if (cursor.getInt(4)<10){
+            if (cursor.getInt(4)<consStateList.size()){
                 bottom_sheet_status_data.setText("آخرین بروز رسانی : " + getPersianDate(Integer.valueOf(arrOfGreDate[0]), Integer.valueOf(arrOfGreDate[1]), Integer.valueOf(arrOfGreDate[2]))+ " " + arrOfFomattedDate[1]);
             } else {
                 bottom_sheet_status_data.setText("Last UpDate : " + cursor.getString(5));
             }
-
-            /*if(cursor.getString(6)!=null){
-                checkBoxBookmark.setChecked(true);
-                txt_bottom_book_type.setText(mapPageQuery.getBookmarkTypeTitle(cursor.getString(6)));
-                txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
-                initBookedTypeID = cursor.getString(6);
-            }else {
-                checkBoxBookmark.setChecked(false);
-                txt_bottom_book_type.setEnabled(false);
-                txt_bottom_book_type.setText("* * *");
-                txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.darkGray));
-                initBookedTypeID = "0";
-            }
-
-            bookedTypeID = initBookedTypeID;*/
 
             if (cursor.getString(6)!=null){
                 ratingBottom.setRating(cursor.getFloat(6));
@@ -1345,6 +1331,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 ratingBottom.setRating(0);
                 initRating = 0;
             }
+
+
 
         }
         if (cursor1.moveToFirst()){
