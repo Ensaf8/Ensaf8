@@ -158,7 +158,9 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     private MyLocationNewOverlay mLocationOverlay;
     IMapController mController;
     List<OverlayItem> mStartGoalItems = new ArrayList<>();
+    List<OverlayItem> PlaceItems = new ArrayList<>();
     ItemizedOverlayWithFocus<OverlayItem> mOverlay;
+    ItemizedOverlayWithFocus<OverlayItem> placeOverlay;
     Cursor showCursor;
     Drawable marker_home,historyBlack,historyGrey;
     /////BottomSheet
@@ -280,6 +282,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         drawerLayoutMap.closeDrawer(GravityCompat.START);
         showOnMapCons(showCursor);
         showOnMapPolygon();
+        showOnMapPlace();
     }
     public void imgFilter(){
         drawerFragmentMap.imgFilter.setOnClickListener(new View.OnClickListener() {
@@ -1098,6 +1101,17 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         for (int ii = 0;ii<regioList.size() ;ii++){
             map.getOverlayManager().add(regioList.get(ii));
         }
+    }
+    private void showOnMapPlace(){
+        PlaceItems.clear();
+        map.getOverlays().remove(placeOverlay);
+        GeoPoint point = new GeoPoint(29.619848391444066, 52.526142260882494);
+        OverlayItem item = new OverlayItem("10000", "Place Project Test",
+                " this is for test !", point);
+        item.setMarker(map.getContext().getResources().getDrawable(R.drawable.home30));
+        PlaceItems.add(item);
+        placeOverlay = new ItemizedOverlayWithFocus<OverlayItem>(PlaceItems,this,this);
+        map.getOverlays().add(placeOverlay);
     }
     private void checkAndroid6 (){
         // check permissions on Android 6 and higher
