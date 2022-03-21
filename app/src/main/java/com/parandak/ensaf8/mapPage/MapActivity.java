@@ -1347,6 +1347,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             }
         }else {//TODO this is for test
             imageBottomSheet();
+            bottom_sheet_name.setText(item.getTitle());
         }
         if (cursor1.moveToFirst()){
             customerList.clear();
