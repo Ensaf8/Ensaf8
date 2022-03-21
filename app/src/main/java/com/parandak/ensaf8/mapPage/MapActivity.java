@@ -225,8 +225,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         filterButton();
         if (mPermissionsGranted){
             initMap(savedInstanceState);
-            viewPager();
-            imageBottomSheet();
+            //viewPager();
+            //imageBottomSheet();
             initDrawable ();
             initConsStateList();
             showOnMap();
@@ -657,6 +657,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             @Override
             public void onClick(View v) {
                 ///TODO organizing to better way
+                historyList.clear();
                 MapPageQuery mapPageQuery = new MapPageQuery();
                 Cursor cursorHistory = mapPageQuery.getHistoryConsPhase(ID_CONS_SELECTED);
                 if (cursorHistory.moveToFirst()){
@@ -1245,15 +1246,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             });*/
         }
     }
-    /*@Override
-    public void onSaveInstanceState(Bundle outState) {
-        if(map != null) {
-            outState.putDouble(INSTANCE_LATITUDE_MAIN_MAP, map.getMapCenter().getLatitude());
-            outState.putDouble(INSTANCE_LONGITUDE_MAIN_MAP, map.getMapCenter().getLongitude());
-            outState.putDouble(INSTANCE_ZOOM_LEVEL_MAIN_MAP, map.getZoomLevelDouble());
-        }
-        super.onSaveInstanceState(outState);
-    }*/
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -1309,7 +1301,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }
     @Override
     public boolean onItemSingleTapUp(int index, OverlayItem item) {
-        historyList.clear();
         ID_CONS_SELECTED = item.getUid();
         button_edit.setText("Edit");
         isSingle = true;
@@ -1329,6 +1320,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         Cursor cursor2 = mapPageQuery.singleTapOnConsIndThirdBook(ID_CONS_SELECTED);
 
         if (cursor.moveToFirst()) {
+            viewPager();
             bottom_sheet_name.setText(cursor.getString(1));
             init_bottom_sheet_name = cursor.getString(1);
             viewPager2.setCurrentItem(cursor.getInt(4));
@@ -1348,9 +1340,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 ratingBottom.setRating(0);
                 initRating = 0;
             }
-
-
-
+        }else {//TODO this is for test
+            imageBottomSheet();
         }
         if (cursor1.moveToFirst()){
             customerList.clear();
