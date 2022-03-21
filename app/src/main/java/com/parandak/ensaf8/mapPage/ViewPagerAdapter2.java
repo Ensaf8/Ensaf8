@@ -47,9 +47,14 @@ public class ViewPagerAdapter2 extends RecyclerView.Adapter<ViewPagerAdapter2.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewPagerAdapter2.ViewHolder holder, int position) {
-        String animal = mData.get(position).getState();
-        holder.myTextView.setText(animal);
-        holder.imageView.setImageDrawable(mContext.getResources().getDrawable(mData.get(position).getDrawable()));
+        if (mData.size() != 0){
+            holder.myTextView.setText(mData.get(position).getState());
+            holder.imageView.setImageDrawable(mContext.getResources().getDrawable(mData.get(position).getDrawable()));
+        }else {
+            holder.myTextView.setText(null);
+            holder.imageView.setImageDrawable(null);
+        }
+
     }
 
     @Override
