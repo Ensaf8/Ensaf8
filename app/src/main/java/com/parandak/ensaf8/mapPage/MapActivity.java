@@ -825,6 +825,11 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         bookMarkSelectedList.clear();
                         initRating = 0;
                         isBookTouch = false;
+                        List<ConsState> emtyList = new ArrayList<>();
+                        viewPager2 = findViewById(R.id.viewPager2);
+                        viewPager2.setAdapter(new ViewPagerAdapter2(context, emtyList, viewPager2));
+                        imgBtnBottom = (ImageButton) findViewById(R.id.imgBtnBottom);
+                        imgBtnBottom.setImageDrawable(null);
                         //Log.d("ensaf::::::::", TAG + "BottomSheetBehavior.STATE_HIDDEN isBookTouch is " + isBookTouch);
                         break;
                     }
