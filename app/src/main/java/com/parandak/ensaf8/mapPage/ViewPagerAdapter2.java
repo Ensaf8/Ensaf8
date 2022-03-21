@@ -24,16 +24,17 @@ import java.util.List;
 
 public class ViewPagerAdapter2 extends RecyclerView.Adapter<ViewPagerAdapter2.ViewHolder> {
 
-    private ArrayList<Drawable> drawableList = new ArrayList<>();
     private List<ConsState> mData;
     private LayoutInflater mInflater;
     private ViewPager2 viewPager2;
+    private Context mContext;
 
 
     public ViewPagerAdapter2(Context context, List<ConsState> data, ViewPager2 viewPager2) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.viewPager2 = viewPager2;
+        this.mContext = context;
     }
 
     @NonNull
@@ -48,7 +49,7 @@ public class ViewPagerAdapter2 extends RecyclerView.Adapter<ViewPagerAdapter2.Vi
     public void onBindViewHolder(@NonNull ViewPagerAdapter2.ViewHolder holder, int position) {
         String animal = mData.get(position).getState();
         holder.myTextView.setText(animal);
-        holder.imageView.setImageDrawable(drawableList.get(position));
+        holder.imageView.setImageDrawable(mContext.getResources().getDrawable(mData.get(position).getDrawable()));
     }
 
     @Override
@@ -61,16 +62,11 @@ public class ViewPagerAdapter2 extends RecyclerView.Adapter<ViewPagerAdapter2.Vi
         ImageView imageView;
         LinearLayout linearLayout;
 
-
         ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageview2);
             myTextView = itemView.findViewById(R.id.tvTitle);
             linearLayout = itemView.findViewById(R.id.container);
-            for (int i=0;i<mData.size();i++){
-                drawableList.add(itemView.getContext().getResources().getDrawable(mData.get(i).getDrawable()));
-            }
-
         }
     }
 
