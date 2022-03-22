@@ -161,7 +161,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     List<OverlayItem> PlaceItems = new ArrayList<>();
     ItemizedOverlayWithFocus<OverlayItem> mOverlay;
     ItemizedOverlayWithFocus<OverlayItem> placeOverlay;
-    Cursor showCursor;
     Drawable marker_home,historyBlack,historyGrey;
     /////BottomSheet
     LinearLayout bottom_container;
@@ -278,11 +277,12 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     public void showOnMap(){
         MapPageQuery mapPageQuery = new MapPageQuery();
         txt_consCount = (TextView) findViewById(R.id.consCountTxt);
-        showCursor = mapPageQuery.showConsIndiWhereFilter02(drawerFragmentMap);
+        Cursor showCursor = mapPageQuery.showConsIndiWhereFilter02(drawerFragmentMap);
         drawerLayoutMap.closeDrawer(GravityCompat.START);
         showOnMapCons(showCursor);
         showOnMapPolygon();
-        showOnMapPlace();
+        Cursor showPlaceCursor = mapPageQuery.showAllPlaceGPoint();
+        showOnMapPlace(showPlaceCursor);
     }
     public void imgFilter(){
         drawerFragmentMap.imgFilter.setOnClickListener(new View.OnClickListener() {
@@ -1108,14 +1108,27 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             map.getOverlayManager().add(regioList.get(ii));
         }
     }
-    private void showOnMapPlace(){
+    private void showOnMapPlace(Cursor cursor){
         PlaceItems.clear();
         map.getOverlays().remove(placeOverlay);
-        GeoPoint point = new GeoPoint(29.619848391444066, 52.526142260882494);
-        OverlayItem item = new OverlayItem("10000", "Place Project Test",
-                " this is for test !", point);
-        item.setMarker(map.getContext().getResources().getDrawable(R.drawable.home30));
-        PlaceItems.add(item);
+        if (cursor.getCount()==0) {
+            Toast.makeText(getBaseContext(),"No place in query",Toast.LENGTH_LONG).show();
+            Log.d("ensaf::::::::", TAG + "> showOnMapPlace > No data in query");
+        }else {
+            //txt_consCount.setText("Cons : " + cursor.getCount());
+            while (cursor.moveToNext()) {
+                String ID = cursor.getString(0);
+                String NAME = cursor.getString(1);
+                Double LAT = cursor.getDouble(2);
+                Double LON = cursor.getDouble(3);
+                int STA = cursor.getInt(4);
+                GeoPoint point = new GeoPoint(LAT, LON);
+                OverlayItem Item = new OverlayItem(ID, NAME, "Place", point);
+                ////TODO change Icon
+                Item.setMarker(map.getContext().getResources().getDrawable(R.drawable.home30));
+                PlaceItems.add(Item);
+            }/////
+        }
         placeOverlay = new ItemizedOverlayWithFocus<OverlayItem>(PlaceItems,this,this);
         map.getOverlays().add(placeOverlay);
     }

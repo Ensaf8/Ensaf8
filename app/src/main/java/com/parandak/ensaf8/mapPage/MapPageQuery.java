@@ -9,9 +9,11 @@ import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.CreateViews;
+import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Coop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
+import com.parandak.ensaf8.dataBase.model_Indivi.Place_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Rating;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 import com.parandak.ensaf8.mapPage.drawer.FragmentDrawer_map;
@@ -214,6 +216,21 @@ public class MapPageQuery {
         //Log.d("ensaf::::::::", TAG + ">showConsIndiWhereFilter02 >showQuery : " + showQuery );
         return db.rawQuery(showQuery, null);
     }//TODO use string builders for queries
+    public Cursor showAllPlaceGPoint(){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String showQuery = " SELECT "
+                + Individual.TABLE + "." + Individual.KEY_ID_Indi + ","
+                + Individual.TABLE + "." + Individual.KEY_IndiName + ","
+                + GPoint.TABLE + "." + GPoint.KEY_Lat + ","
+                + GPoint.TABLE + "." + GPoint.KEY_Lon + ","
+                + Place_Geop.TABLE + "." + Place_Geop.KEY_IconID
+                + " FROM " + Individual.TABLE
+                + " INNER JOIN " + Place_Geop.TABLE
+                + " ON " + Individual.TABLE + "." + Individual.KEY_ID_Indi + " = " + Place_Geop.TABLE + "." + Place_Geop.KEY_IndiID
+                + " INNER JOIN " + GPoint.TABLE
+                + " ON " +  Place_Geop.TABLE + "." + Place_Geop.KEY_GeopID + " = " + GPoint.TABLE + "." + GPoint.KEY_IDGeop;
+        return db.rawQuery(showQuery, null);
+    }
     public String getGeopID(String IndiID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = " SELECT "
