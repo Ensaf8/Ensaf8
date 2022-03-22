@@ -17,13 +17,14 @@ import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Indi_CoopRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Indi_GeopRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.IndividualRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.PhoneNumRepo;
+import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Place_GeopRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.RatingRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.TendRepo;
 
 
 public class DBHelper_CRM extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION =33;
+    private static final int DATABASE_VERSION =34;
     // Database Name
     private static final String DATABASE_NAME = "ensaf8.db";
     private static final String TAG = DBHelper_CRM.class.getSimpleName();
@@ -61,6 +62,7 @@ public class DBHelper_CRM extends SQLiteOpenHelper {
         Log.d("ensaf::::::::", TAG + "> initTable : " + BookMarkTypeRepo.initTable());
         //db.execSQL(Cons_Phase_IntRepo.createTable() );
         //db.execSQL("DROP TABLE IF EXISTS Cons_Phase" );
+        db.execSQL(Place_GeopRepo.createTable());
         db.execSQL(CreateViews.createConstruction());
         db.execSQL(CreateViews.createLastUpConsInd());
     }
