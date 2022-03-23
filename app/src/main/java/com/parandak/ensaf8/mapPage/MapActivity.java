@@ -169,7 +169,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     private BottomSheetBehavior mBottomSheetBehaviour;
 
     Button button_edit,bottom_sheet_status_data,button_add_customer;
-    ImageButton bottom_sheet_delete_cons,bottom_sheet_add_reminder;
+    ImageButton bottom_sheet_delete_cons,bottom_sheet_add_reminder,bottom_sheet_attendance;
     FloatingActionButton fab_map;
     CheckBox checkBoxBookmark;
     TextView txt_consCount;
@@ -531,6 +531,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bottom_sheet_status_data = (Button)findViewById(R.id.btn_date);
         bottom_sheet_delete_cons = (ImageButton) findViewById(R.id.bottom_sheet_delete_cons);
         bottom_sheet_add_reminder = (ImageButton) findViewById(R.id.bottom_sheet_add_reminder);
+        bottom_sheet_attendance = (ImageButton) findViewById(R.id.bottom_sheet_attendance);
         button_add_customer = (Button) findViewById(R.id.button_add_customer);
         bottom_tend_history = (ImageButton) findViewById(R.id.bottom_tend_history);
 
@@ -652,6 +653,20 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                     AddReminderDialouge addReminderDialouge = new AddReminderDialouge(context,activity);
                     ///TODO NullException
                     addReminderDialouge.showDialogueADD(ID_CONS_SELECTED,mLocationOverlay.getMyLocation());
+                } else {
+                    Toast.makeText(getApplicationContext(),"SignIn First !"  , Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        bottom_sheet_attendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isConnected){
+                    //TODO Add Attendance
+                    //AddReminderDialouge addReminderDialouge = new AddReminderDialouge(context,activity);
+                    ///TODO NullException
+                    //addReminderDialouge.showDialogueADD(ID_CONS_SELECTED,mLocationOverlay.getMyLocation());
+                    Toast.makeText(getApplicationContext(),"Add Attendance !! "  , Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(),"SignIn First !"  , Toast.LENGTH_SHORT).show();
                 }
