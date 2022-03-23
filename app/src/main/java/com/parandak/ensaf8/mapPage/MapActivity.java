@@ -860,9 +860,9 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     private void bottomSheetEdiButton(){
         mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
         if(isTapOn == 1 ){
-            editSelectedCons();
+            editSelectedCons(true);
         }else if (isTapOn == 2){
-            Toast.makeText(getBaseContext(), "Place Edit Not Ready!!!" , Toast.LENGTH_SHORT).show();
+            editSelectedCons(false);
         }else if (isTapOn == 0){
             insertNewPlace();
             //inseringNewCons();
@@ -870,29 +870,30 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         showOnMap();
         hideKeyboard();
     }
-    private void editSelectedCons(){
+    private void editSelectedCons(boolean isCons){
         if (!init_bottom_sheet_name.equals(bottom_sheet_name.getText().toString())) {
             Individual individual = new Individual();
             individual.setID_Indi(ID_CONS_SELECTED);
-            individual.setIsCons(String.valueOf(DataContract.CONS_UNI_INDI_TYPE_ID));
             individual.setIndiName(bottom_sheet_name.getText().toString());
             IndividualRepo individualRepo = new IndividualRepo();
             if (individualRepo.update(individual)) {
-                Toast.makeText(getBaseContext(), "CONS Name with ID : " + ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Individual Name with ID : " + ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
             }
         }
-        if (inisatatus != status){
-            Cons_Phase cons_phase = new Cons_Phase();
-            cons_phase.setIndID(ID_CONS_SELECTED);
-            cons_phase.setPhase(String.valueOf(status));
-            cons_phase.setPhaseDate(statusdate);
-            Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
-            if (cons_phaseRepo.insert(cons_phase)>0){
-                Toast.makeText(getBaseContext(), "CONS_phase with ID : "+ ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
+        if (isCons){
+            if (inisatatus != status){
+                Cons_Phase cons_phase = new Cons_Phase();
+                cons_phase.setIndID(ID_CONS_SELECTED);
+                cons_phase.setPhase(String.valueOf(status));
+                cons_phase.setPhaseDate(statusdate);
+                Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
+                if (cons_phaseRepo.insert(cons_phase)>0){
+                    Toast.makeText(getBaseContext(), "CONS_phase with ID : "+ ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
+                }
+                drawerFragmentMap.setCheckBox01(false);
             }
-            drawerFragmentMap.setCheckBox01(false);
-        }
-        //Log.d("ensaf::::::::", TAG + " isBookTouch is " + isBookTouch);
+            //Log.d("ensaf::::::::", TAG + " isBookTouch is " + isBookTouch);
+        }/////else if () TODO changing Place Icon
         if (isBookTouch){
             int bk = 0;
             while (bk < bookMarkSelectedList.size()) {
@@ -1391,6 +1392,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             isTapOn = 2;
             imageBottomSheet();
             bottom_sheet_name.setText(cursorPlace.getString(1));
+            init_bottom_sheet_name = cursorPlace.getString(1);
             bottom_sheet_status_data.setText("Place ID : " + cursorPlace.getString(0));
             if (cursorPlace.getString(5)!=null){
                 ratingBottom.setRating(cursorPlace.getFloat(5));
