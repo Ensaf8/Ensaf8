@@ -1334,6 +1334,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
         //Toast.makeText(getBaseContext(), "The Item ID is : " + item.getPoint().getLatitude(), Toast.LENGTH_SHORT).show();
         Cursor cursor = mapPageQuery.singleTapOnConsIndFirst(ID_CONS_SELECTED);
+        Cursor cursorPlace = mapPageQuery.singleTapOnPlaceIndFirst(ID_CONS_SELECTED);
         Cursor cursor1 = mapPageQuery.singleTapOnConsIndSecond(ID_CONS_SELECTED);
         Cursor cursor2 = mapPageQuery.singleTapOnConsIndThirdBook(ID_CONS_SELECTED);
 
@@ -1358,9 +1359,19 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 ratingBottom.setRating(0);
                 initRating = 0;
             }
-        }else {//TODO this is for test
+        }else if (cursorPlace.moveToFirst()){//TODO this is for test
             imageBottomSheet();
-            bottom_sheet_name.setText(item.getTitle());
+            bottom_sheet_name.setText(cursorPlace.getString(1));
+            bottom_sheet_status_data.setText("Place ID : " + cursorPlace.getString(0));
+            if (cursorPlace.getString(5)!=null){
+                ratingBottom.setRating(cursorPlace.getFloat(5));
+                initRating = cursorPlace.getFloat(5);
+            }else {
+                ratingBottom.setRating(0);
+                initRating = 0;
+            }
+        }else {
+            bottom_sheet_name.setText("Error !! !! ");
         }
         if (cursor1.moveToFirst()){
             customerList.clear();

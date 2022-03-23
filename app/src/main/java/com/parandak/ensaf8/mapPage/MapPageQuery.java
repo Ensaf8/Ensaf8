@@ -52,6 +52,30 @@ public class MapPageQuery {
         //DatabaseManager.getInstance().closeDatabase();
         return cursor;
     }
+    public Cursor singleTapOnPlaceIndFirst(String consID){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = " SELECT "
+                + Individual.TABLE + "." + Individual.KEY_ID_Indi + " , "
+                + Individual.TABLE + "." + Individual.KEY_IndiName + " , "
+                + GPoint.TABLE + "." + GPoint.KEY_Lat + " , "
+                + GPoint.TABLE + "." + GPoint.KEY_Lon + " , "
+                + Place_Geop.TABLE + "." + Place_Geop.KEY_IconID + " , "
+                + Rating.TABLE + "." + Rating.KEY_Rate
+                + " FROM "
+                + Individual.TABLE
+                + " INNER JOIN " + Place_Geop.TABLE
+                + " ON " +  Individual.TABLE + "." + Individual.KEY_ID_Indi + " = " + Place_Geop.TABLE + "." + Place_Geop.KEY_IndiID
+                + " INNER JOIN " + GPoint.TABLE
+                + " ON " +  Place_Geop.TABLE + "." + Place_Geop.KEY_GeopID + " = " + GPoint.TABLE + "." + GPoint.KEY_IDGeop
+                + " LEFT JOIN " + Rating.TABLE
+                + " ON " +  Individual.TABLE + "." + Individual.KEY_ID_Indi + " = " + Rating.TABLE + "." + Rating.KEY_IndID
+                + " WHERE " + Individual.TABLE + "." + Individual.KEY_ID_Indi + " = ' " + consID + " ';";
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //cursor.close();
+        //DatabaseManager.getInstance().closeDatabase();
+        return cursor;
+    }
     public Cursor singleTapOnConsIndSecond(String consID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = " SELECT "
