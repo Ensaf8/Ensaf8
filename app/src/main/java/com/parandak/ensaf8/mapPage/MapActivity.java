@@ -1,6 +1,7 @@
 package com.parandak.ensaf8.mapPage;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
@@ -34,6 +35,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -643,8 +645,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             @Override
             public void onClick(View v) {
                 Toast.makeText(getBaseContext(), "TEND HISTORY . . . . ." , Toast.LENGTH_SHORT).show();
-                TendHistoryDialog tendHistoryDialog = new TendHistoryDialog(context,activity,ID_CONS_SELECTED);
-                tendHistoryDialog.showDialogHistory();
             }
         });
         bottom_sheet_add_reminder.setOnClickListener(new View.OnClickListener() {
@@ -657,6 +657,14 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 } else {
                     Toast.makeText(getApplicationContext(),"SignIn First !"  , Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        bottom_sheet_add_reminder.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                TendHistoryDialog tendHistoryDialog = new TendHistoryDialog(context,activity,ID_CONS_SELECTED);
+                tendHistoryDialog.showDialogHistory();
+                return true;
             }
         });
         bottom_sheet_attendance.setOnClickListener(new View.OnClickListener() {
