@@ -53,6 +53,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.app.BaseActivity;
 import com.parandak.ensaf8.bookMarkPage.BookMarkPageQuery;
+import com.parandak.ensaf8.dataBase.DBQuery;
 import com.parandak.ensaf8.dataBase.DataContract;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
@@ -666,6 +667,24 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                     //AddReminderDialouge addReminderDialouge = new AddReminderDialouge(context,activity);
                     ///TODO NullException
                     //addReminderDialouge.showDialogueADD(ID_CONS_SELECTED,mLocationOverlay.getMyLocation());
+                    DBQuery dbQuery = new DBQuery();
+                    AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
+                    builderInner.setTitle("Your Distance is : " + distance(dbQuery.getConsGeoPoint(ID_CONS_SELECTED),mLocationOverlay.getMyLocation()) + " m");
+                    builderInner.setMessage("Wanna Submit Attendance?");
+                    builderInner.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(getApplicationContext(),"Attendance ! ! !"  , Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    builderInner.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builderInner.show();
                     Toast.makeText(getApplicationContext(),"Add Attendance !! "  , Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(),"SignIn First !"  , Toast.LENGTH_SHORT).show();
@@ -828,6 +847,28 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
             }
         });
+    }
+    private int distance(GeoPoint geoPoint01, GeoPoint geoPoint02) {
+        double lat1 = geoPoint01.getLatitude() , lon1 = geoPoint01.getLongitude();
+        double lat2 = geoPoint02.getLatitude() , lon2 = geoPoint02.getLongitude();
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        return (int) (dist * 1609.344);
+    }
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::  This function converts decimal degrees to radians             :*/
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::  This function converts radians to decimal degrees             :*/
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
     }
     private void deletePlace(){
         mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
