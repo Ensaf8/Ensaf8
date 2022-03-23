@@ -168,7 +168,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     LinearLayout bottom_container;
     private BottomSheetBehavior mBottomSheetBehaviour;
 
-    Button button_edit,bottom_sheet_status_data,button_add_customer,bottom_sheet_delete_cons,bottom_sheet_add_reminder;
+    Button button_edit,bottom_sheet_status_data,button_add_customer;
+    ImageButton bottom_sheet_delete_cons,bottom_sheet_add_reminder;
     CheckBox checkBoxBookmark;
     TextView txt_consCount;
     TextView txt_bottom_book_type;
@@ -528,8 +529,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bottom_container = (LinearLayout)findViewById(R.id.bottom_container);
 
         bottom_sheet_status_data = (Button)findViewById(R.id.btn_date);
-        bottom_sheet_delete_cons = (Button) findViewById(R.id.bottom_sheet_delete_cons);
-        bottom_sheet_add_reminder = (Button) findViewById(R.id.bottom_sheet_add_reminder);
+        bottom_sheet_delete_cons = (ImageButton) findViewById(R.id.bottom_sheet_delete_cons);
+        bottom_sheet_add_reminder = (ImageButton) findViewById(R.id.bottom_sheet_add_reminder);
         button_add_customer = (Button) findViewById(R.id.button_add_customer);
         bottom_tend_history = (ImageButton) findViewById(R.id.bottom_tend_history);
 

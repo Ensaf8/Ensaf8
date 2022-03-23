@@ -173,34 +173,38 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content">
 
-                            <Button
+                            <ImageButton
                                 android:id="@+id/bottom_sheet_delete_cons"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:textAlignment="center"
+                                app:srcCompat="@drawable/ic_baseline_delete_forever_55"
                                 android:layout_margin="10dp"
                                 android:layout_weight="1"
                                 android:layout_alignParentTop="true"
                                 android:alpha="0.8"
-                                android:text="DELETE"
-                                android:textStyle="bold"
-                                android:textSize="19sp"
                                 android:ems="10"/>
 
-                            <Button
+                            <ImageButton
+                                android:id="@+id/bottom_sheet_attendance"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/ic_baseline_assignment_ind_55"
+                                android:layout_margin="10dp"
+                                android:layout_weight="1"
+                                android:layout_alignParentTop="true"
+                                android:alpha="0.8"
+                                android:ems="10"/>
+
+                            <ImageButton
                                 android:id="@+id/bottom_sheet_add_reminder"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:textAlignment="center"
+                                app:srcCompat="@drawable/ic_baseline_assignment_55"
                                 android:layout_margin="10dp"
                                 android:layout_weight="1"
                                 android:layout_alignParentTop="true"
                                 android:alpha="0.8"
-                                android:text="ADD Tend"
-                                android:textStyle="bold"
-                                android:textSize="19sp"
                                 android:ems="10"/>
-
 
                         </LinearLayout>
 
