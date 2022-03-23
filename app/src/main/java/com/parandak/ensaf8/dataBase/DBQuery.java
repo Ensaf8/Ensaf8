@@ -12,6 +12,7 @@ import com.parandak.ensaf8.app.App;
 import com.parandak.ensaf8.dataBase.model_Indivi.CreateViews;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
+import com.parandak.ensaf8.dataBase.model_Indivi.Place_Geop;
 
 import org.osmdroid.util.GeoPoint;
 
@@ -56,6 +57,20 @@ public class DBQuery {
         GeoPoint geoPoint = null;
         if (cursor.moveToFirst()){
             geoPoint = new GeoPoint(cursor.getDouble(0),cursor.getDouble(1));
+        }else {
+            String selectQueryPlace = "SELECT "
+                    + GPoint.TABLE + "." + GPoint.KEY_Lat + ","
+                    + GPoint.TABLE + "." + GPoint.KEY_Lon
+                    + " FROM "
+                    + GPoint.TABLE
+                    + " INNER JOIN " + Place_Geop.TABLE
+                    + " ON " +  Place_Geop.TABLE + "." + Place_Geop.KEY_GeopID + " = " + GPoint.TABLE + "." + GPoint.KEY_IDGeop
+                    + " WHERE "
+                    + Place_Geop.TABLE + "." + Place_Geop.KEY_IndiID + " = " + ID;
+            Cursor cursorPlace = db.rawQuery(selectQueryPlace, null);
+            if (cursorPlace.moveToFirst()){
+                geoPoint = new GeoPoint(cursorPlace.getDouble(0),cursorPlace.getDouble(1));
+            }
         }
         //cursor.close();
         //DatabaseManager.getInstance().closeDatabase();
