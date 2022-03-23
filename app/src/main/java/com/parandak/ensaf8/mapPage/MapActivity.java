@@ -720,49 +720,12 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 builderInner.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String test = "nothing";
-                        mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
-                        IndividualRepo individualRepo = new IndividualRepo();
-                        Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
-                        Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
-                        BookMarkRepo bookMarkRepo = new BookMarkRepo();
-                        GPointRepo gPointRepo = new GPointRepo();
-                        MapPageQuery mapPageQuery = new MapPageQuery();
-                        boolean gpr = false,cpr,igr,ir,bm;
-                        if (mapPageQuery.getGeopID(ID_CONS_SELECTED)!="!solo"){
-                            gpr = gPointRepo.deleteIDGeop(mapPageQuery.getGeopID(ID_CONS_SELECTED)) ;
-                        }
-                        cpr = cons_phaseRepo.deleteIndiID(ID_CONS_SELECTED);
-                        igr = indi_geopRepo.deleteIndiID(ID_CONS_SELECTED);
-                        ir = individualRepo.deleteIndiID(ID_CONS_SELECTED);
-                        bm = bookMarkRepo.delete_indID_BookMark(ID_CONS_SELECTED);
-
-                        if (!gpr){
-                            test = test + " gPoint ";
+                        if (isTapOn == 1){
+                            deleteCons();
+                        }else if (isTapOn == 2){
+                            deletePlace();
                         }
 
-                        if (!cpr){
-                            test = test + " ConsPhase ";
-                        }
-
-                        if (!igr){
-                            test = test + " IndiGeop ";
-                        }
-
-                        if (!ir){
-                            test = test + " Individual ";
-                        }
-
-                        if(!bm){
-                            test = test + " bookMark ";
-                        }
-
-
-                        if (gpr && cpr && igr && ir && bm){
-                            Toast.makeText(getBaseContext(), "Successfully All Deleted!!!" , Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(getBaseContext(), test , Toast.LENGTH_LONG).show();
-                        }
                         showOnMap();
                     }
                 });
@@ -846,6 +809,63 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
             }
         });
+    }
+    private void deletePlace(){
+        mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
+        IndividualRepo individualRepo = new IndividualRepo();
+        GPointRepo gPointRepo = new GPointRepo();
+        MapPageQuery mapPageQuery = new MapPageQuery();
+        if(mapPageQuery.getGeopIDFromPlace(ID_CONS_SELECTED)!=null){
+            if (individualRepo.deleteIndiID(ID_CONS_SELECTED)&&gPointRepo.deleteIDGeop(mapPageQuery.getGeopIDFromPlace(ID_CONS_SELECTED))){
+                Toast.makeText(getBaseContext(), "Place Successfully Deleted!!!" , Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+    private void deleteCons(){
+        String test = "nothing";
+        mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
+        IndividualRepo individualRepo = new IndividualRepo();
+        Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
+        Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
+        BookMarkRepo bookMarkRepo = new BookMarkRepo();
+        GPointRepo gPointRepo = new GPointRepo();
+        MapPageQuery mapPageQuery = new MapPageQuery();
+        boolean gpr = false,cpr,igr,ir,bm;
+        if (mapPageQuery.getGeopID(ID_CONS_SELECTED)!="!solo"){
+            gpr = gPointRepo.deleteIDGeop(mapPageQuery.getGeopID(ID_CONS_SELECTED)) ;
+        }
+        cpr = cons_phaseRepo.deleteIndiID(ID_CONS_SELECTED);
+        igr = indi_geopRepo.deleteIndiID(ID_CONS_SELECTED);
+        ir = individualRepo.deleteIndiID(ID_CONS_SELECTED);
+        bm = bookMarkRepo.delete_indID_BookMark(ID_CONS_SELECTED);
+
+        if (!gpr){
+            test = test + " gPoint ";
+        }
+
+        if (!cpr){
+            test = test + " ConsPhase ";
+        }
+
+        if (!igr){
+            test = test + " IndiGeop ";
+        }
+
+        if (!ir){
+            test = test + " Individual ";
+        }
+
+        if(!bm){
+            test = test + " bookMark ";
+        }
+
+
+        if (gpr && cpr && igr && ir && bm){
+            Toast.makeText(getBaseContext(), "Successfully All Deleted!!!" , Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(getBaseContext(), test , Toast.LENGTH_LONG).show();
+        }
     }
     private void imageBottomSheet(){
         imgBtnBottom = (ImageButton) findViewById(R.id.imgBtnBottom);

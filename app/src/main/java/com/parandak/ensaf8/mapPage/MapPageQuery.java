@@ -273,6 +273,24 @@ public class MapPageQuery {
             return "!solo";
         }
     }
+    public String getGeopIDFromPlace(String IndiID){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = " SELECT "
+                + Place_Geop.KEY_GeopID
+                + " FROM "
+                + Place_Geop.TABLE
+                + " WHERE " + Place_Geop.KEY_IndiID + " = " + IndiID;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()){
+            if (cursor.getCount()== 1){
+                return cursor.getString(0);
+            }else {
+                return null;
+            }
+        }else{
+            return null;
+        }
+    }
     public String getBookmarkTypeTitle(String BookTypeID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = " SELECT "
