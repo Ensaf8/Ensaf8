@@ -170,6 +170,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
     Button button_edit,bottom_sheet_status_data,button_add_customer;
     ImageButton bottom_sheet_delete_cons,bottom_sheet_add_reminder;
+    FloatingActionButton fab_map;
     CheckBox checkBoxBookmark;
     TextView txt_consCount;
     TextView txt_bottom_book_type;
@@ -220,10 +221,10 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         checkExternalStorageState();
         checkAndroid6 ();
         osmInternal();
+        locationButton();
         bottomRecyclerView();
         bottomSheet();
         mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
-        locationButton();
         initDrawer();
         filterButton();
         if (mPermissionsGranted){
@@ -360,7 +361,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         osmConf.setOsmdroidTileCache(tileCache);
     }
     public void locationButton(){
-        FloatingActionButton fab_map;
         fab_map = findViewById(R.id.fab_map);
         fab_map.setAlpha(0.45f);
         fab_map.setOnClickListener(new View.OnClickListener() {
@@ -708,7 +708,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         ratingBottom.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Toast.makeText(getBaseContext(),"rating Bottom is : " + rating ,Toast.LENGTH_LONG).show();
                 isRatingBottomChange = true;
             }
         });
@@ -762,17 +761,20 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                     case BottomSheetBehavior.STATE_EXPANDED: {
                         state = "EXPANDED";
                         BOTTOM_SHEET_IS_HIDDEN = false;
+                        fab_map.hide();
                         break;
                     }
                     case BottomSheetBehavior.STATE_COLLAPSED: {
                         bottomRVAdapter.notifyDataSetChanged();
                         state = "COLLAPSED";
                         BOTTOM_SHEET_IS_HIDDEN = false;
+                        fab_map.hide();
                         break;
                     }
                     case BottomSheetBehavior.STATE_HIDDEN: {
                         state = "HIDDEN";
                         BOTTOM_SHEET_IS_HIDDEN = true;
+                        fab_map.show();
                         bottom_sheet_name.setText("");
                         bottom_sheet_status_data.setText("");
                         statusdate = "";
@@ -798,6 +800,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                     case BottomSheetBehavior.STATE_HALF_EXPANDED: {
                         //customerAdapter.notifyDataSetChanged();
                         bottomRVAdapter.notifyDataSetChanged();
+                        fab_map.hide();
                         state = "HALF";
                         break;
                     }
