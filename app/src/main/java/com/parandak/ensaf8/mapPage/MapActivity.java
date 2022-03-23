@@ -653,7 +653,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 if (isConnected){
                     AddReminderDialouge addReminderDialouge = new AddReminderDialouge(context,activity);
                     ///TODO NullException
-                    addReminderDialouge.showDialogueADD(ID_CONS_SELECTED,mLocationOverlay.getMyLocation());
+                    addReminderDialouge.showDialogueADD(ID_CONS_SELECTED);
                 } else {
                     Toast.makeText(getApplicationContext(),"SignIn First !"  , Toast.LENGTH_SHORT).show();
                 }
