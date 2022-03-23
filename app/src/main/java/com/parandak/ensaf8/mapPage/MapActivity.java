@@ -699,6 +699,13 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 }
             }
         });
+        bottom_sheet_attendance.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getApplicationContext(),"Long Attendance !! "  , Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
         bottom_sheet_status_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
