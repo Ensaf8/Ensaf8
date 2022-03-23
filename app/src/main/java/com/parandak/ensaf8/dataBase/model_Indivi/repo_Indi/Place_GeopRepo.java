@@ -14,8 +14,8 @@ public class Place_GeopRepo {
 
     Place_Geop place_geop;
 
-    public Place_GeopRepo(Place_Geop place_goop) {
-        this.place_geop = place_goop;
+    public Place_GeopRepo() {
+        this.place_geop = new Place_Geop();
     }
 
     public static String createTable() {

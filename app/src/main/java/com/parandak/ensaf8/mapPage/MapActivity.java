@@ -59,12 +59,14 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
+import com.parandak.ensaf8.dataBase.model_Indivi.Place_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Rating;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Cons_PhaseRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.GPointRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Indi_GeopRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.IndividualRepo;
+import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Place_GeopRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.RatingRepo;
 import com.parandak.ensaf8.dateAndReminder.AddReminderDialouge;
 import com.parandak.ensaf8.fullScreenDialog.FullDialog;
@@ -175,7 +177,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     EditText bottom_sheet_name;
     String init_bottom_sheet_name;
     boolean BOTTOM_SHEET_IS_HIDDEN = true;
-    boolean isSingle = true;
+    int isTapOn = 0;
+    //boolean isSingle = true;
     String ID_CONS_SELECTED;
     boolean isRatingBottomChange = false;
     boolean isBookTouch = true;
@@ -682,14 +685,9 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         button_add_customer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isSingle){
-                    Intent intent = new Intent(v.getContext(), SearchPageActivity.class);
-                    intent.putExtra("ID",ID_CONS_SELECTED);
-                    context.startActivity(intent);
-                }else {
-                    Toast.makeText(getBaseContext(), "First Insert Cons!!!!!!" , Toast.LENGTH_SHORT).show();
-                }
-
+                Intent intent = new Intent(v.getContext(), SearchPageActivity.class);
+                intent.putExtra("ID",ID_CONS_SELECTED);
+                context.startActivity(intent);
             }
         });
         button_edit.setOnClickListener(new View.OnClickListener() {
@@ -861,10 +859,13 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }
     private void bottomSheetEdiButton(){
         mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
-        if(isSingle){
+        if(isTapOn == 1 ){
             editSelectedCons();
-        }else {
-            inseringNewCons();
+        }else if (isTapOn == 2){
+            Toast.makeText(getBaseContext(), "Place Edit Not Ready!!!" , Toast.LENGTH_SHORT).show();
+        }else if (isTapOn == 0){
+            insertNewPlace();
+            //inseringNewCons();
         }
         showOnMap();
         hideKeyboard();
@@ -988,6 +989,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         individual.setIndiName(bottom_sheet_name.getText().toString());
         individual.setIsCons(String.valueOf(DataContract.CONS_UNI_INDI_TYPE_ID));
         individualRepo.insert(individual);
+        ID_CONS_SELECTED = individualRepo.lastIndividual();
         GPoint gPoint = new GPoint();
         gPoint.setLon(String.valueOf(lon));
         gPoint.setLat(String.valueOf(lat));
@@ -1006,6 +1008,32 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
         if (cons_phaseRepo.insert(cons_phase)>0){
             Toast.makeText(getBaseContext(), "New Cons ID : " + individualRepo.lastIndividual() + " in " + lat + " & " + lon , Toast.LENGTH_SHORT).show();
+        }
+        drawerFragmentMap.setCheckBox01(false);
+        drawerFragmentMap.setCheckBox02(false);
+        drawerFragmentMap.setCheckBox03(false);
+        drawerFragmentMap.setCheckBoxBook(false);
+    }
+    private void insertNewPlace(){
+        Individual individual = new Individual();
+        IndividualRepo individualRepo = new IndividualRepo();
+        individual.setIndiName(bottom_sheet_name.getText().toString());
+        individual.setIsCons(String.valueOf(DataContract.PLACE_UNI_INDI_TYPE_ID));
+        individualRepo.insert(individual);
+        ID_CONS_SELECTED = individualRepo.lastIndividual();
+        GPoint gPoint = new GPoint();
+        gPoint.setLon(String.valueOf(lon));
+        gPoint.setLat(String.valueOf(lat));
+        gPoint.setIsSolo("1");
+        GPointRepo gPointRepo = new GPointRepo();
+        gPointRepo.insert(gPoint);
+        Place_Geop place_geop =new Place_Geop();
+        place_geop.setIndiID(individualRepo.lastIndividual());
+        place_geop.setGeopID(gPointRepo.lastGPoint());
+        place_geop.setIconID("0");////TODO change placeIcon
+        Place_GeopRepo place_geopRepo = new Place_GeopRepo();        ;
+        if (place_geopRepo.insert(place_geop)>0){
+            Toast.makeText(getBaseContext(), "New Place ID : " + individualRepo.lastIndividual() + " in " + lat + " & " + lon , Toast.LENGTH_SHORT).show();
         }
         drawerFragmentMap.setCheckBox01(false);
         drawerFragmentMap.setCheckBox02(false);
@@ -1053,7 +1081,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             }
             @Override
             public boolean longPressHelper(GeoPoint p) {
-                isSingle = false;
+                isTapOn = 0 ;
                 button_edit.setText("Insert");
                 Date c = Calendar.getInstance().getTime();
                 SimpleDateFormat df = new SimpleDateFormat(dateFormat);
@@ -1321,7 +1349,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     public boolean onItemSingleTapUp(int index, OverlayItem item) {
         ID_CONS_SELECTED = item.getUid();
         button_edit.setText("Edit");
-        isSingle = true;
         /////////
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat(dateFormat);
@@ -1339,6 +1366,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         Cursor cursor2 = mapPageQuery.singleTapOnConsIndThirdBook(ID_CONS_SELECTED);
 
         if (cursor.moveToFirst()) {
+            isTapOn = 1;
             viewPager();
             bottom_sheet_name.setText(cursor.getString(1));
             init_bottom_sheet_name = cursor.getString(1);
@@ -1360,6 +1388,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 initRating = 0;
             }
         }else if (cursorPlace.moveToFirst()){//TODO this is for test
+            isTapOn = 2;
             imageBottomSheet();
             bottom_sheet_name.setText(cursorPlace.getString(1));
             bottom_sheet_status_data.setText("Place ID : " + cursorPlace.getString(0));
