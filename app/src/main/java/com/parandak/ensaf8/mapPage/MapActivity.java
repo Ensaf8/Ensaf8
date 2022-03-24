@@ -171,8 +171,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     LinearLayout bottom_container;
     private BottomSheetBehavior mBottomSheetBehaviour;
 
-    Button button_edit,bottom_sheet_status_data,button_add_customer;
-    ImageButton bottom_sheet_delete_cons,bottom_sheet_add_reminder,bottom_sheet_attendance;
+    Button button_edit,bottom_sheet_status_data;
+    ImageButton bottom_sheet_delete_cons,bottom_sheet_add_reminder,bottom_sheet_attendance,button_add_customer;
     FloatingActionButton fab_map;
     CheckBox checkBoxBookmark;
     TextView txt_consCount;
@@ -535,7 +535,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bottom_sheet_delete_cons = (ImageButton) findViewById(R.id.bottom_sheet_delete_cons);
         bottom_sheet_add_reminder = (ImageButton) findViewById(R.id.bottom_sheet_add_reminder);
         bottom_sheet_attendance = (ImageButton) findViewById(R.id.bottom_sheet_attendance);
-        button_add_customer = (Button) findViewById(R.id.button_add_customer);
+        button_add_customer = (ImageButton) findViewById(R.id.button_add_customer);
         bottom_tend_history = (ImageButton) findViewById(R.id.bottom_tend_history);
 
         checkBoxBookmark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
