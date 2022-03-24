@@ -62,7 +62,7 @@
                 android:layout_gravity="bottom"
                 app:behavior_hideable="true"
                 app:behavior_fitToContents="false"
-                app:behavior_peekHeight="255dp"
+                app:behavior_peekHeight="270dp"
                 app:layout_behavior="@string/bottom_sheet_behavior"
                 tools:ignore="MissingConstraints">
                 <LinearLayout
@@ -156,8 +156,8 @@
 
                         <ImageButton
                             android:id="@+id/imgBtnBottom"
-                            android:background="@android:color/darker_gray"
-                            android:layout_width="match_parent"
+                            android:layout_marginLeft="150dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
                         <androidx.viewpager2.widget.ViewPager2
