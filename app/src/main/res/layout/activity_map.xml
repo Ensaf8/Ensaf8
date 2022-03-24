@@ -174,17 +174,6 @@
                             android:layout_height="wrap_content">
 
                             <ImageButton
-                                android:id="@+id/bottom_sheet_delete_cons"
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/ic_baseline_delete_forever_55"
-                                android:layout_margin="10dp"
-                                android:layout_weight="1"
-                                android:layout_alignParentTop="true"
-                                android:alpha="0.8"
-                                android:ems="10"/>
-
-                            <ImageButton
                                 android:id="@+id/bottom_sheet_attendance"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
@@ -231,7 +220,7 @@
                             android:layout_weight="3.75"
                             android:alpha="0.8"
                             android:layout_margin="10dp"
-                            app:srcCompat="@drawable/ic_history_24dp"
+                            app:srcCompat="@drawable/ic_baseline_delete_24"
                             android:ems="10"/>
                     </LinearLayout>
                     <include layout="@layout/content_rvbottom"/>

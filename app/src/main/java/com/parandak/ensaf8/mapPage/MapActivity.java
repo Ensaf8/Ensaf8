@@ -172,7 +172,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     private BottomSheetBehavior mBottomSheetBehaviour;
 
     Button button_edit,bottom_sheet_status_data;
-    ImageButton bottom_sheet_delete_cons,bottom_sheet_add_reminder,bottom_sheet_attendance,button_add_customer;
+    ImageButton bottom_sheet_add_reminder,bottom_sheet_attendance,button_add_customer;
     FloatingActionButton fab_map;
     CheckBox checkBoxBookmark;
     TextView txt_consCount;
@@ -532,7 +532,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bottom_container = (LinearLayout)findViewById(R.id.bottom_container);
 
         bottom_sheet_status_data = (Button)findViewById(R.id.btn_date);
-        bottom_sheet_delete_cons = (ImageButton) findViewById(R.id.bottom_sheet_delete_cons);
         bottom_sheet_add_reminder = (ImageButton) findViewById(R.id.bottom_sheet_add_reminder);
         bottom_sheet_attendance = (ImageButton) findViewById(R.id.bottom_sheet_attendance);
         button_add_customer = (ImageButton) findViewById(R.id.button_add_customer);
@@ -644,7 +643,29 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bottom_tend_history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getBaseContext(), "TEND HISTORY . . . . ." , Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
+                builderInner.setMessage("Wanna DELETE : " + ID_CONS_SELECTED);
+                builderInner.setTitle("Are you Sure?");
+                builderInner.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (isTapOn == 1){
+                            deleteCons();
+                        }else if (isTapOn == 2){
+                            deletePlace();
+                        }
+
+                        showOnMap();
+                    }
+                });
+                builderInner.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builderInner.show();
             }
         });
         bottom_sheet_add_reminder.setOnClickListener(new View.OnClickListener() {
@@ -758,35 +779,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 isRatingBottomChange = true;
-            }
-        });
-        bottom_sheet_delete_cons.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
-                builderInner.setMessage("DELETE" + ID_CONS_SELECTED);
-                builderInner.setTitle("Are you Sure?");
-                builderInner.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (isTapOn == 1){
-                            deleteCons();
-                        }else if (isTapOn == 2){
-                            deletePlace();
-                        }
-
-                        showOnMap();
-                    }
-                });
-                builderInner.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                builderInner.show();
-
             }
         });
         View nestedScrollView = (View) findViewById(R.id.nestedScrollView);
