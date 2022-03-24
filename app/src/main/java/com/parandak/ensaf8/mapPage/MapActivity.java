@@ -704,6 +704,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                     LayoutInflater inflater = LayoutInflater.from(MapActivity.this);
                     View view = inflater.inflate(R.layout.attendance_promp,null);
                     ImageView imageViewAtten = view.findViewById(R.id.img_atten_promp);
+                    TextView txtAtten = view.findViewById(R.id.txt_atten_promp);
                     int distance = distance(dbQuery.getConsGeoPoint(ID_CONS_SELECTED),mLocationOverlay.getMyLocation());
                     String posBtn = "OK";
                     String Message = "You Are Out of Range";
@@ -716,7 +717,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                     }
                     builderInner.setView(view);
                     builderInner.setTitle("Your Distance is : " + distance + " m");
-                    builderInner.setMessage(Message);
+                    txtAtten.setText(Message);
                     final boolean finalIsInRange = isInRange;
                     builderInner.setPositiveButton(posBtn, new DialogInterface.OnClickListener() {
                         @Override
