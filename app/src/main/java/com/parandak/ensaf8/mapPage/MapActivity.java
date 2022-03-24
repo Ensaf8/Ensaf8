@@ -35,6 +35,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -44,6 +45,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -73,6 +75,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Place_GeopRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.RatingRepo;
 import com.parandak.ensaf8.dateAndReminder.AddReminderDialouge;
 import com.parandak.ensaf8.fullScreenDialog.FullDialog;
+import com.parandak.ensaf8.homePage.HomePageActivity;
 import com.parandak.ensaf8.mapPage.drawer.FragmentDrawer_map;
 import com.parandak.ensaf8.mapPage.model.BottomRVAdapter;
 import com.parandak.ensaf8.mapPage.model.ConsState;
@@ -698,23 +701,32 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                     //addReminderDialouge.showDialogueADD(ID_CONS_SELECTED,mLocationOverlay.getMyLocation());
                     DBQuery dbQuery = new DBQuery();
                     AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
-                    builderInner.setTitle("Your Distance is : " + distance(dbQuery.getConsGeoPoint(ID_CONS_SELECTED),mLocationOverlay.getMyLocation()) + " m");
-                    builderInner.setMessage("Wanna Submit Attendance?");
-                    builderInner.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    LayoutInflater inflater = LayoutInflater.from(MapActivity.this);
+                    View view = inflater.inflate(R.layout.attendance_promp,null);
+                    ImageView imageViewAtten = view.findViewById(R.id.img_atten_promp);
+                    int distance = distance(dbQuery.getConsGeoPoint(ID_CONS_SELECTED),mLocationOverlay.getMyLocation());
+                    String posBtn = "OK";
+                    String Message = "You Are Out of Range";
+                    boolean isInRange = false;
+                    if (distance<30){
+                        posBtn = "SUBMIT";
+                        Message = "Wanna Submit Attendance?";
+                        isInRange = true;
+                        imageViewAtten.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_event_available_50));
+                    }
+                    builderInner.setView(view);
+                    builderInner.setTitle("Your Distance is : " + distance + " m");
+                    builderInner.setMessage(Message);
+                    final boolean finalIsInRange = isInRange;
+                    builderInner.setPositiveButton(posBtn, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getApplicationContext(),"Attendance ! ! !"  , Toast.LENGTH_SHORT).show();
+                            if (finalIsInRange){
+                                Toast.makeText(getApplicationContext(),"Attendance ! ! !"  , Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
-                    builderInner.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-
                     builderInner.show();
-                    Toast.makeText(getApplicationContext(),"Add Attendance !! "  , Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(),"SignIn First !"  , Toast.LENGTH_SHORT).show();
                 }
@@ -723,7 +735,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bottom_sheet_attendance.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(getApplicationContext(),"Long Attendance !! "  , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Long Attendance List !! "  , Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
