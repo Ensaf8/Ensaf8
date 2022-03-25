@@ -201,7 +201,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     List<Customer> customerList =new ArrayList<>();
     RecyclerView recyclerView;
     List<History> historyList = new ArrayList<>();
-    List<History> attenHistoryList = new ArrayList<>();
     ////ViewPager
     ViewPager2 viewPager2;
     Dialog dialog;
@@ -734,7 +733,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bottom_sheet_attendance.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                attenHistoryList.clear();
+                historyList.clear();
                 MapPageQuery mapPageQuery = new MapPageQuery();
                 Cursor cursorAttenHistory = mapPageQuery.getAtten(ID_CONS_SELECTED);
                 if (cursorAttenHistory.moveToFirst()){
