@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.parandak.ensaf8.dataBase.DatabaseManager;
+import com.parandak.ensaf8.dataBase.model_Indivi.Atten;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
@@ -118,6 +119,20 @@ public class MapPageQuery {
                 + " FROM "
                 + Cons_Phase.TABLE
                 + " WHERE " + Cons_Phase.TABLE + "." + Cons_Phase.KEY_IndID + " = ' " + consID + " ';";
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //cursor.close();
+        //DatabaseManager.getInstance().closeDatabase();
+        return cursor;
+    }
+    public Cursor getAtten(String consID){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = " SELECT "
+                + Atten.TABLE + "." + Atten.KEY_Ind1ID + " , "
+                + Atten.TABLE + "." + Atten.KEY_AttenDate
+                + " FROM "
+                + Atten.TABLE
+                + " WHERE " + Atten.TABLE + "." + Atten.KEY_Ind2ID + " = ' " + consID + " ';";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         //cursor.close();

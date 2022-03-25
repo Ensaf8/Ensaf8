@@ -201,6 +201,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     List<Customer> customerList =new ArrayList<>();
     RecyclerView recyclerView;
     List<History> historyList = new ArrayList<>();
+    List<History> attenHistoryList = new ArrayList<>();
     ////ViewPager
     ViewPager2 viewPager2;
     Dialog dialog;
@@ -733,7 +734,20 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bottom_sheet_attendance.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(getApplicationContext(),"Long Attendance List !! "  , Toast.LENGTH_SHORT).show();
+                attenHistoryList.clear();
+                MapPageQuery mapPageQuery = new MapPageQuery();
+                Cursor cursorAttenHistory = mapPageQuery.getAtten(ID_CONS_SELECTED);
+                if (cursorAttenHistory.moveToFirst()){
+                    do {
+                        History history =new History();
+                        String [] arrOfFomattedDate1 = cursorAttenHistory.getString(1).split(" ",2);
+                        String [] arrOfGreDate1 = arrOfFomattedDate1[0].split("-",3);
+                        history.setDate(getPersianDate(Integer.valueOf(arrOfGreDate1[0]), Integer.valueOf(arrOfGreDate1[1]), Integer.valueOf(arrOfGreDate1[2]))+ " " + arrOfFomattedDate1[1]);
+                        history.setState(cursorAttenHistory.getString(0));
+                        historyList.add(history);
+                    }while (cursorAttenHistory.moveToNext());
+                }
+                showDialog(MapActivity.this);
                 return true;
             }
         });
