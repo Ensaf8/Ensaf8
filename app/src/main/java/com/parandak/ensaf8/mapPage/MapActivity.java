@@ -742,7 +742,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         String [] arrOfFomattedDate1 = cursorAttenHistory.getString(1).split(" ",2);
                         String [] arrOfGreDate1 = arrOfFomattedDate1[0].split("-",3);
                         history.setDate(getPersianDate(Integer.valueOf(arrOfGreDate1[0]), Integer.valueOf(arrOfGreDate1[1]), Integer.valueOf(arrOfGreDate1[2]))+ " " + arrOfFomattedDate1[1]);
-                        history.setState(cursorAttenHistory.getString(0));
+                        history.setState("ID : " + cursorAttenHistory.getString(0));
                         historyList.add(history);
                     }while (cursorAttenHistory.moveToNext());
                 }
@@ -1158,6 +1158,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         dialog.setContentView(R.layout.history_dialog_recycler);
 
         RecyclerView recyclerView = dialog.findViewById(R.id.history_recycler);
+        TextView txtHistoryName = dialog.findViewById(R.id.txtHistoryName);
+        txtHistoryName.setText("Attendance List");
         HistoryAdapter historyAdapter = new HistoryAdapter(MapActivity.this,historyList);
         recyclerView.setAdapter(historyAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
