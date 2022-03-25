@@ -1,7 +1,6 @@
 package com.parandak.ensaf8.mapPage;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
@@ -36,7 +35,6 @@ import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -75,7 +73,6 @@ import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Place_GeopRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.RatingRepo;
 import com.parandak.ensaf8.dateAndReminder.AddReminderDialouge;
 import com.parandak.ensaf8.fullScreenDialog.FullDialog;
-import com.parandak.ensaf8.homePage.HomePageActivity;
 import com.parandak.ensaf8.mapPage.drawer.FragmentDrawer_map;
 import com.parandak.ensaf8.mapPage.model.BottomRVAdapter;
 import com.parandak.ensaf8.mapPage.model.ConsState;
@@ -976,7 +973,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             individual.setID_Indi(ID_CONS_SELECTED);
             individual.setIndiName(bottom_sheet_name.getText().toString());
             IndividualRepo individualRepo = new IndividualRepo();
-            if (individualRepo.update(individual)) {
+            if (individualRepo.updateName(individual)) {
                 Toast.makeText(getBaseContext(), "Individual Name with ID : " + ID_CONS_SELECTED + " Edited ! ", Toast.LENGTH_SHORT).show();
             }
         }

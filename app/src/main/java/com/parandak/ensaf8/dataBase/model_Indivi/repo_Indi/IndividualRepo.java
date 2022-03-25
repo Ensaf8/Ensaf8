@@ -48,6 +48,13 @@ public class IndividualRepo {
         return db.update(Individual.TABLE,values,Individual.KEY_ID_Indi + "=?",new String[]{String.valueOf(individual.getID_Indi())}) > 0;
     }
 
+    public boolean updateName(Individual individual){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Individual.KEY_IndiName,individual.getIndiName());
+        return db.update(Individual.TABLE,values,Individual.KEY_ID_Indi + "=?",new String[]{String.valueOf(individual.getID_Indi())}) > 0;
+    }
+
     public void delete(){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         db.delete(Individual.TABLE,null,null);
