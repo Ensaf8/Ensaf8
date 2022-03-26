@@ -57,6 +57,7 @@ import com.parandak.ensaf8.app.BaseActivity;
 import com.parandak.ensaf8.bookMarkPage.BookMarkPageQuery;
 import com.parandak.ensaf8.dataBase.DBQuery;
 import com.parandak.ensaf8.dataBase.DataContract;
+import com.parandak.ensaf8.dataBase.model_Indivi.Atten;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
@@ -64,6 +65,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
 import com.parandak.ensaf8.dataBase.model_Indivi.Place_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Rating;
+import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.AttenRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Cons_PhaseRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.GPointRepo;
@@ -109,6 +111,7 @@ import java.util.Map;
 import static com.parandak.ensaf8.dataBase.DataContract.dateFormat;
 import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getPersianDate;
 import static com.parandak.ensaf8.homePage.HomePageActivity.isConnected;
+import static com.parandak.ensaf8.homePage.HomePageActivity.ID_CONNECT_Indi1;
 
 public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnItemGestureListener<OverlayItem> {
     public final String TAG = this.getClass().getSimpleName();
@@ -720,7 +723,25 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (finalIsInRange){
-                                Toast.makeText(getApplicationContext(),"Attendance ! ! !"  , Toast.LENGTH_SHORT).show();
+                                if (isConnected && ID_CONNECT_Indi1!=null){
+                                    Atten atten = new Atten();
+                                    AttenRepo attenRepo = new AttenRepo();
+                                    atten.setInd1ID(ID_CONNECT_Indi1);
+                                    atten.setInd2ID(ID_CONS_SELECTED);
+                                    Date c = Calendar.getInstance().getTime();
+                                    SimpleDateFormat df = new SimpleDateFormat(dateFormat);
+                                    String formattedDate = df.format(c);
+                                    atten.setAttenDate(formattedDate);
+                                    if (attenRepo.insert(atten)>0){
+                                        Toast.makeText(getApplicationContext(),"Atten Successfully Inserted"  , Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        Toast.makeText(getApplicationContext(),"Atten NOT Inserted !!!"  , Toast.LENGTH_SHORT).show();
+                                    }
+                                }else {
+                                    Toast.makeText(getApplicationContext(),"You Are Not Connected !!!"  , Toast.LENGTH_SHORT).show();
+                                }
+
+
                             }
                         }
                     });
@@ -992,6 +1013,9 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         }
         if (isCons){
             if (inisatatus != status){
+
+
+
                 Cons_Phase cons_phase = new Cons_Phase();
                 cons_phase.setIndID(ID_CONS_SELECTED);
                 cons_phase.setPhase(String.valueOf(status));

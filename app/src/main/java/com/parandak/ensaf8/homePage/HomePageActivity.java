@@ -108,7 +108,7 @@ public class HomePageActivity extends BaseActivity implements FragmentDrawer.
         return bundle;
     }
 
-    public static String ID_CONNECT_Indi1;
+    public static String ID_CONNECT_Indi1 = null;
     public static String ID_CONNECT_Customer;
     public static String mimeType = "text/txt";
     ProgressDialog progressDialog;
