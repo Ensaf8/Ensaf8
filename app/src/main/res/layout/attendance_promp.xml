@@ -5,14 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:padding="16dp">
-    <ImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/img_atten_promp"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:srcCompat="@drawable/ic_baseline_event_busy_50"
-        android:layout_weight="1">
-    </ImageView>
 
     <TextView
         android:id="@+id/txt_atten_promp"
@@ -23,4 +15,14 @@
         android:textStyle="bold"
         android:layout_weight="1"
         android:text="TextView" />
+    <ImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/img_atten_promp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:srcCompat="@drawable/ic_baseline_event_busy_50"
+        android:layout_weight="1">
+    </ImageView>
 </LinearLayout>

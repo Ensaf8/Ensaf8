@@ -700,23 +700,23 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                     ///TODO NullException
                     //addReminderDialouge.showDialogueADD(ID_CONS_SELECTED,mLocationOverlay.getMyLocation());
                     DBQuery dbQuery = new DBQuery();
-                    AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
+                    final AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
                     LayoutInflater inflater = LayoutInflater.from(MapActivity.this);
                     View view = inflater.inflate(R.layout.attendance_promp,null);
                     ImageView imageViewAtten = view.findViewById(R.id.img_atten_promp);
                     TextView txtAtten = view.findViewById(R.id.txt_atten_promp);
                     int distance = distance(dbQuery.getConsGeoPoint(ID_CONS_SELECTED),mLocationOverlay.getMyLocation());
-                    String posBtn = "OK";
-                    String Message = "You Are Out of Range";
+                    String posBtn = "ok";
+                    String Message = "ثبت حضور مقدور نیست.";
                     boolean isInRange = false;
                     if (distance<30){
-                        posBtn = "SUBMIT";
-                        Message = "Wanna Submit Attendance?";
+                        posBtn = "ثبت";
+                        Message = "ثبت حضور.";
                         isInRange = true;
                         imageViewAtten.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_event_available_50));
                     }
                     builderInner.setView(view);
-                    builderInner.setTitle("Your Distance is : " + distance + " m");
+                    builderInner.setTitle("فاصله شما : " + distance + " متر                   ");
                     txtAtten.setText(Message);
                     final boolean finalIsInRange = isInRange;
                     builderInner.setPositiveButton(posBtn, new DialogInterface.OnClickListener() {
@@ -733,6 +733,13 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                                     String formattedDate = df.format(c);
                                     atten.setAttenDate(formattedDate);
                                     if (attenRepo.insert(atten)>0){
+                                        AlertDialog.Builder builderInnerAtten = new AlertDialog.Builder(MapActivity.this);
+                                        builderInnerAtten.setTitle("حضور شما ثبت شد.                       ");
+                                        String [] arrOfFomattedDate1 = formattedDate.split(" ",2);
+                                        String [] arrOfGreDate1 = arrOfFomattedDate1[0].split("-",3);
+                                        builderInnerAtten.setMessage("                  " + getPersianDate(Integer.valueOf(arrOfGreDate1[0]), Integer.valueOf(arrOfGreDate1[1]), Integer.valueOf(arrOfGreDate1[2]))+ "         " + arrOfFomattedDate1[1]);
+                                        builderInnerAtten.setPositiveButton("ok",null);
+                                        builderInnerAtten.show();
                                         Toast.makeText(getApplicationContext(),"Atten Successfully Inserted"  , Toast.LENGTH_SHORT).show();
                                     }else {
                                         Toast.makeText(getApplicationContext(),"Atten NOT Inserted !!!"  , Toast.LENGTH_SHORT).show();
