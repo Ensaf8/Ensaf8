@@ -1,5 +1,6 @@
 package com.parandak.ensaf8.dateAndReminder;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +19,8 @@ import com.mohamadamin.persianmaterialdatetimepicker.time.RadialPickerLayout;
 import com.mohamadamin.persianmaterialdatetimepicker.time.TimePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 import com.parandak.ensaf8.R;
+import com.parandak.ensaf8.dataBase.DBQuery;
+import com.parandak.ensaf8.dataBase.DataContract;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.TendRepo;
 import com.parandak.ensaf8.homePage.HomePageQuery;
@@ -31,6 +34,8 @@ import java.util.Date;
 
 import static com.parandak.ensaf8.dateAndReminder.PersianCalendarAli.getPersianDate;
 import static com.parandak.ensaf8.homePage.HomePageActivity.ID_CONNECT_Indi1;
+
+import org.osmdroid.util.GeoPoint;
 
 public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     Context context;
@@ -48,16 +53,16 @@ public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, 
         this.activity = activity;
     }
 
+    @SuppressLint("SetTextI18n")
     public void showDialogueADD(final String ID_Indi2){
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View dialogueView = layoutInflater.inflate(R.layout.follow_dialogue_add,null);
         btnAddDateToFollow = dialogueView.findViewById(R.id.buttonAddDateToFollow);
         Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat(DataContract.dateFormat);
         btnAddDateToFollow.setText(getPersianDate(c)+" "+ sdf.format(c));
-        String formattedDate = df.format(c);
-        finalResult = formattedDate;
+        finalResult = df.format(c);
         ediTxtTitle = dialogueView.findViewById(R.id.ediTxtTitle);
         ediTxtMain = dialogueView.findViewById(R.id.ediTxtMain);
         txtTitleDialogue = dialogueView.findViewById(R.id.txtNameIndi2);
@@ -99,7 +104,6 @@ public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, 
         });
 
     }
-
     public boolean showDialogueEdit(final String tendID,String customerName){
         final boolean[] isChange = {false};
         LayoutInflater layoutInflater = LayoutInflater.from(context);

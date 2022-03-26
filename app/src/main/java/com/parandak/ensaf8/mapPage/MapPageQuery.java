@@ -5,13 +5,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.parandak.ensaf8.dataBase.DatabaseManager;
+import com.parandak.ensaf8.dataBase.model_Indivi.Atten;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.CreateViews;
+import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Coop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
+import com.parandak.ensaf8.dataBase.model_Indivi.Place_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Rating;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 import com.parandak.ensaf8.mapPage.drawer.FragmentDrawer_map;
@@ -44,6 +47,30 @@ public class MapPageQuery {
                 + " LEFT JOIN " + Rating.TABLE
                 + " ON " +  CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = " + Rating.TABLE + "." + Rating.KEY_IndID
                 + " WHERE " + CreateViews.Construction.VIEW + "." + CreateViews.Construction.KEY_ID_cons + " = ' " + consID + " ';";
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //cursor.close();
+        //DatabaseManager.getInstance().closeDatabase();
+        return cursor;
+    }
+    public Cursor singleTapOnPlaceIndFirst(String consID){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = " SELECT "
+                + Individual.TABLE + "." + Individual.KEY_ID_Indi + " , "
+                + Individual.TABLE + "." + Individual.KEY_IndiName + " , "
+                + GPoint.TABLE + "." + GPoint.KEY_Lat + " , "
+                + GPoint.TABLE + "." + GPoint.KEY_Lon + " , "
+                + Place_Geop.TABLE + "." + Place_Geop.KEY_IconID + " , "
+                + Rating.TABLE + "." + Rating.KEY_Rate
+                + " FROM "
+                + Individual.TABLE
+                + " INNER JOIN " + Place_Geop.TABLE
+                + " ON " +  Individual.TABLE + "." + Individual.KEY_ID_Indi + " = " + Place_Geop.TABLE + "." + Place_Geop.KEY_IndiID
+                + " INNER JOIN " + GPoint.TABLE
+                + " ON " +  Place_Geop.TABLE + "." + Place_Geop.KEY_GeopID + " = " + GPoint.TABLE + "." + GPoint.KEY_IDGeop
+                + " LEFT JOIN " + Rating.TABLE
+                + " ON " +  Individual.TABLE + "." + Individual.KEY_ID_Indi + " = " + Rating.TABLE + "." + Rating.KEY_IndID
+                + " WHERE " + Individual.TABLE + "." + Individual.KEY_ID_Indi + " = ' " + consID + " ';";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         //cursor.close();
@@ -92,6 +119,20 @@ public class MapPageQuery {
                 + " FROM "
                 + Cons_Phase.TABLE
                 + " WHERE " + Cons_Phase.TABLE + "." + Cons_Phase.KEY_IndID + " = ' " + consID + " ';";
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //cursor.close();
+        //DatabaseManager.getInstance().closeDatabase();
+        return cursor;
+    }
+    public Cursor getAtten(String consID){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = " SELECT "
+                + Atten.TABLE + "." + Atten.KEY_Ind1ID + " , "
+                + Atten.TABLE + "." + Atten.KEY_AttenDate
+                + " FROM "
+                + Atten.TABLE
+                + " WHERE " + Atten.TABLE + "." + Atten.KEY_Ind2ID + " = ' " + consID + " ';";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         //cursor.close();
@@ -214,6 +255,21 @@ public class MapPageQuery {
         //Log.d("ensaf::::::::", TAG + ">showConsIndiWhereFilter02 >showQuery : " + showQuery );
         return db.rawQuery(showQuery, null);
     }//TODO use string builders for queries
+    public Cursor showAllPlaceGPoint(){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String showQuery = " SELECT "
+                + Individual.TABLE + "." + Individual.KEY_ID_Indi + ","
+                + Individual.TABLE + "." + Individual.KEY_IndiName + ","
+                + GPoint.TABLE + "." + GPoint.KEY_Lat + ","
+                + GPoint.TABLE + "." + GPoint.KEY_Lon + ","
+                + Place_Geop.TABLE + "." + Place_Geop.KEY_IconID
+                + " FROM " + Individual.TABLE
+                + " INNER JOIN " + Place_Geop.TABLE
+                + " ON " + Individual.TABLE + "." + Individual.KEY_ID_Indi + " = " + Place_Geop.TABLE + "." + Place_Geop.KEY_IndiID
+                + " INNER JOIN " + GPoint.TABLE
+                + " ON " +  Place_Geop.TABLE + "." + Place_Geop.KEY_GeopID + " = " + GPoint.TABLE + "." + GPoint.KEY_IDGeop;
+        return db.rawQuery(showQuery, null);
+    }
     public String getGeopID(String IndiID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = " SELECT "
@@ -230,6 +286,24 @@ public class MapPageQuery {
             }
         }else{
             return "!solo";
+        }
+    }
+    public String getGeopIDFromPlace(String IndiID){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = " SELECT "
+                + Place_Geop.KEY_GeopID
+                + " FROM "
+                + Place_Geop.TABLE
+                + " WHERE " + Place_Geop.KEY_IndiID + " = " + IndiID;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()){
+            if (cursor.getCount()== 1){
+                return cursor.getString(0);
+            }else {
+                return null;
+            }
+        }else{
+            return null;
         }
     }
     public String getBookmarkTypeTitle(String BookTypeID){

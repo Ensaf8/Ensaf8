@@ -62,7 +62,7 @@
                 android:layout_gravity="bottom"
                 app:behavior_hideable="true"
                 app:behavior_fitToContents="false"
-                app:behavior_peekHeight="340dp"
+                app:behavior_peekHeight="270dp"
                 app:layout_behavior="@string/bottom_sheet_behavior"
                 tools:ignore="MissingConstraints">
                 <LinearLayout
@@ -154,6 +154,12 @@
                             android:saveEnabled="true"
                             android:numStars="3"/>
 
+                        <ImageButton
+                            android:id="@+id/imgBtnBottom"
+                            android:layout_marginLeft="150dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
                         <androidx.viewpager2.widget.ViewPager2
                             android:id="@+id/viewPager2"
                             android:layout_marginRight="50dp"
@@ -167,34 +173,27 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content">
 
-                            <Button
-                                android:id="@+id/bottom_sheet_delete_cons"
+                            <ImageButton
+                                android:id="@+id/bottom_sheet_attendance"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:textAlignment="center"
+                                app:srcCompat="@drawable/ic_baseline_assignment_ind_55"
                                 android:layout_margin="10dp"
                                 android:layout_weight="1"
                                 android:layout_alignParentTop="true"
                                 android:alpha="0.8"
-                                android:text="DELETE"
-                                android:textStyle="bold"
-                                android:textSize="19sp"
                                 android:ems="10"/>
 
-                            <Button
+                            <ImageButton
                                 android:id="@+id/bottom_sheet_add_reminder"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:textAlignment="center"
+                                app:srcCompat="@drawable/ic_baseline_assignment_55"
                                 android:layout_margin="10dp"
                                 android:layout_weight="1"
                                 android:layout_alignParentTop="true"
                                 android:alpha="0.8"
-                                android:text="ADD Tend"
-                                android:textStyle="bold"
-                                android:textSize="19sp"
                                 android:ems="10"/>
-
 
                         </LinearLayout>
 
@@ -204,16 +203,13 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content">
 
-                        <Button
+                        <ImageButton
                             android:id="@+id/button_add_customer"
+                            app:srcCompat="@drawable/ic_baseline_person_add_30"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:textAlignment="center"
                             android:layout_weight="1"
                             android:alpha="0.8"
-                            android:text="ADD Customer!"
-                            android:textStyle="bold"
-                            android:textSize="19sp"
                             android:layout_margin="10dp"
                             android:ems="10"/>
 
@@ -224,7 +220,7 @@
                             android:layout_weight="3.75"
                             android:alpha="0.8"
                             android:layout_margin="10dp"
-                            app:srcCompat="@drawable/ic_history_24dp"
+                            app:srcCompat="@drawable/ic_baseline_delete_24"
                             android:ems="10"/>
                     </LinearLayout>
                     <include layout="@layout/content_rvbottom"/>

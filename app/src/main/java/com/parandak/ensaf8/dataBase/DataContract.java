@@ -5,4 +5,5 @@ public class DataContract {
 
     public static int PERSON_UNI_INDI_TYPE_ID = 0;
     public static int CONS_UNI_INDI_TYPE_ID = 1;
+    public static int PLACE_UNI_INDI_TYPE_ID = 2;
 }

@@ -9,8 +9,10 @@ import android.graphics.drawable.Drawable;
 
 import com.parandak.ensaf8.app.App;
 
+import com.parandak.ensaf8.dataBase.model_Indivi.CreateViews;
 import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
+import com.parandak.ensaf8.dataBase.model_Indivi.Place_Geop;
 
 import org.osmdroid.util.GeoPoint;
 
@@ -38,19 +40,41 @@ public class DBQuery {
         Context context = App.getContext();
 
     }
-    public Cursor getConstruction (String ID){
+    public GeoPoint getConsGeoPoint (String ID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-        String selectQuery = "SELECT"
-                + " Constructions.lat,"
-                + " Constructions.lon"
-                + " FROM"
-                + " Constructions"
-                + " WHERE"
-                + " Constructions.rowid =" + ID;
+        String selectQuery = "SELECT "
+                + CreateViews.Construction.KEY_lat + ","
+                //+ " Constructions.lat,"
+                + CreateViews.Construction.KEY_lon
+                //+ " Constructions.lon"
+                + " FROM "
+                + CreateViews.Construction.VIEW
+                //+ " Constructions"
+                + " WHERE "
+                + CreateViews.Construction.KEY_ID_cons + " = " + ID;
+                //+ " Constructions.rowid =" + ID;
         Cursor cursor = db.rawQuery(selectQuery, null);
+        GeoPoint geoPoint = null;
+        if (cursor.moveToFirst()){
+            geoPoint = new GeoPoint(cursor.getDouble(0),cursor.getDouble(1));
+        }else {
+            String selectQueryPlace = "SELECT "
+                    + GPoint.TABLE + "." + GPoint.KEY_Lat + ","
+                    + GPoint.TABLE + "." + GPoint.KEY_Lon
+                    + " FROM "
+                    + GPoint.TABLE
+                    + " INNER JOIN " + Place_Geop.TABLE
+                    + " ON " +  Place_Geop.TABLE + "." + Place_Geop.KEY_GeopID + " = " + GPoint.TABLE + "." + GPoint.KEY_IDGeop
+                    + " WHERE "
+                    + Place_Geop.TABLE + "." + Place_Geop.KEY_IndiID + " = " + ID;
+            Cursor cursorPlace = db.rawQuery(selectQueryPlace, null);
+            if (cursorPlace.moveToFirst()){
+                geoPoint = new GeoPoint(cursorPlace.getDouble(0),cursorPlace.getDouble(1));
+            }
+        }
         //cursor.close();
         //DatabaseManager.getInstance().closeDatabase();
-        return cursor;
+        return geoPoint;
     }
     public String getCustomerName(String ID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
