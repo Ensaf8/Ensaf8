@@ -23,8 +23,8 @@ import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.IndividualRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.PhoneNumRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.TendRepo;
 import com.parandak.ensaf8.homePage.HomePageActivity;
-import com.parandak.ensaf8.storage.EnsafQueryExport;
-import com.parandak.ensaf8.storage.ExImportContract;
+import com.parandak.ensaf8.ExImport.EnsafQueryExport;
+import com.parandak.ensaf8.ExImport.ExImportContract;
 
 
 import org.xmlpull.v1.XmlPullParser;

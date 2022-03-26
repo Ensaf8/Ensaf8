@@ -36,7 +36,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkTypeRepo;
 import com.parandak.ensaf8.fullScreenDialog.MyDividerItemDecoration;
 import com.parandak.ensaf8.homePage.HomePageActivity;
-import com.parandak.ensaf8.storage.EnsafQueryExport;
+import com.parandak.ensaf8.ExImport.EnsafQueryExport;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

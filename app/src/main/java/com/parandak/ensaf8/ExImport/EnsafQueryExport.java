@@ -1,4 +1,4 @@
-package com.parandak.ensaf8.storage;
+package com.parandak.ensaf8.ExImport;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,7 +16,6 @@ import com.parandak.ensaf8.dataBase.model_Indivi.PhoneNum;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 import com.parandak.ensaf8.homePage.HomePageActivity;
 import com.parandak.ensaf8.homePage.HomePageQuery;
-import com.parandak.ensaf8.mapPage.MapActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
