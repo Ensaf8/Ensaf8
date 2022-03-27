@@ -13,6 +13,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Coop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
 import com.parandak.ensaf8.dataBase.model_Indivi.PhoneNum;
+import com.parandak.ensaf8.dataBase.model_Indivi.Place_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 import com.parandak.ensaf8.homePage.HomePageActivity;
 import com.parandak.ensaf8.homePage.HomePageQuery;
@@ -39,6 +40,7 @@ public class EnsafQueryExport {
         BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
         Cursor phaseCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getPhaseBookMark(bTypeID));
         Cursor gPointCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getGPointBookMark(bTypeID));
+        Cursor gPointPlaceCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getGPointPlaceBookMark(bTypeID));
         Cursor indiCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getIndiBookMark(bTypeID));
         Cursor indiCoopCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getIndiCoopBookMark(bTypeID));
         XMLall0000.append(
@@ -96,6 +98,19 @@ public class EnsafQueryExport {
                                 "        <"+GPoint.KEY_Lon+">" + gPointCursor.getString(3) + "</"+GPoint.KEY_Lon+">  \n" +
                                 "    </" + GPoint.TABLE + ">  \n");
             } while (gPointCursor.moveToNext());
+        }
+
+        if (gPointPlaceCursor.moveToFirst()) {
+            do  {
+                XMLall0000.append(
+                        "   \n <"+GPoint.TABLE+">  \n" +
+                                "        <"+ Place_Geop.KEY_IndiID+">" + gPointPlaceCursor.getString(0) + "</"+Place_Geop.KEY_IndiID+">  \n" +
+                                "        <"+GPoint.KEY_IDGeop+">" + gPointPlaceCursor.getString(1) + "</"+GPoint.KEY_IDGeop+">  \n" +
+                                "        <"+GPoint.KEY_Lat+">" + gPointPlaceCursor.getString(2) + "</"+GPoint.KEY_Lat+">  \n" +
+                                "        <"+GPoint.KEY_Lon+">" + gPointPlaceCursor.getString(3) + "</"+GPoint.KEY_Lon+">  \n" +
+                                "        <"+Place_Geop.KEY_IconID+">" + gPointPlaceCursor.getString(4) + "</"+Place_Geop.KEY_IconID+">  \n" +
+                                "    </" + GPoint.TABLE + ">  \n");
+            } while (gPointPlaceCursor.moveToNext());
         }
 
         if (indiCoopCursor.moveToFirst()){

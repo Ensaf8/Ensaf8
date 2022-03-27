@@ -12,6 +12,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.GPoint;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Coop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
+import com.parandak.ensaf8.dataBase.model_Indivi.Place_Geop;
 
 import java.util.ArrayList;
 
@@ -96,6 +97,22 @@ public class BookMarkPageQuery {
                 + " WHERE " + Indi_Geop.TABLE + "." + Indi_Geop.KEY_IndiID + " IN "
                 + "(" + getIndiIDBookMark(B_type_id) + ")";
                 //+ " ORDER BY " + Indi_Geop.TABLE + "." + Indi_Geop.KEY_IndiID + " ASC";
+
+    }
+
+    public String getGPointPlaceBookMark(String B_type_id){
+        return "SELECT " + Place_Geop.TABLE + "." + Place_Geop.KEY_IndiID + ","
+                + GPoint.TABLE + "." + GPoint.KEY_IDGeop + ","
+                + GPoint.TABLE + "." + GPoint.KEY_Lat + ","
+                + GPoint.TABLE + "." + GPoint.KEY_Lon + ","
+                + Place_Geop.TABLE + "." + Place_Geop.KEY_IconID
+                + " FROM " + GPoint.TABLE
+                + " INNER JOIN " + Place_Geop.TABLE
+                + " ON " + Place_Geop.TABLE + "." + Place_Geop.KEY_GeopID
+                + " = " + GPoint.TABLE + "." + GPoint.KEY_IDGeop
+                + " WHERE " + Place_Geop.TABLE + "." + Place_Geop.KEY_IndiID + " IN "
+                + "(" + getIndiIDBookMark(B_type_id) + ")";
+        //+ " ORDER BY " + Indi_Geop.TABLE + "." + Indi_Geop.KEY_IndiID + " ASC";
 
     }
 
