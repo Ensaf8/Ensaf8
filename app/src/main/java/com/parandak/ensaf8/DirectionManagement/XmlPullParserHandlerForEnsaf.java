@@ -11,6 +11,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Coop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Indi_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
 import com.parandak.ensaf8.dataBase.model_Indivi.PhoneNum;
+import com.parandak.ensaf8.dataBase.model_Indivi.Place_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkTypeRepo;
@@ -21,6 +22,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Indi_CoopRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Indi_GeopRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.IndividualRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.PhoneNumRepo;
+import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Place_GeopRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.TendRepo;
 import com.parandak.ensaf8.homePage.HomePageActivity;
 import com.parandak.ensaf8.ExImport.EnsafQueryExport;
@@ -44,6 +46,8 @@ public class XmlPullParserHandlerForEnsaf {
     private GPoint gPoint;
     private Indi_Coop indi_coop;
     private Indi_Geop indi_geop;
+    private Place_Geop place_geop;
+    boolean isPlace;
     private Individual individual;
     String indiFId = null;
     String indiIdFromIndiF = null;
@@ -136,10 +140,18 @@ public class XmlPullParserHandlerForEnsaf {
         }else if (tagname.equalsIgnoreCase(GPoint.TABLE)){
             // create a new instance of Constructions
             isMyIndi = false;
+            isPlace = false;
             gPoint = new GPoint();
             Log.d("ensaf::::::::", TAG + "> initiate : " + GPoint.TABLE);
             indi_geop = new Indi_Geop();
             Log.d("ensaf::::::::", TAG + "> initiate : " + Indi_Geop.TABLE);
+
+        }else if (tagname.equalsIgnoreCase(Place_Geop.KEY_IconID)){
+            // create a new instance of Constructions
+            isMyIndi = false;
+            isPlace = true;
+            place_geop = new Place_Geop();
+            Log.d("ensaf::::::::", TAG + "> initiate : " + Place_Geop.TABLE);
         }
     }
 
@@ -165,6 +177,7 @@ public class XmlPullParserHandlerForEnsaf {
         Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
         GPointRepo gPointRepo = new GPointRepo();
         Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
+        Place_GeopRepo place_geopRepo = new Place_GeopRepo();
         EnsafQueryExport ensafQueryExport = new EnsafQueryExport();
         int insertedIndiId;
         int insertedGpointId;
@@ -327,29 +340,54 @@ public class XmlPullParserHandlerForEnsaf {
                 insertedGpointId = gPointRepo.insert(gPoint);
                 if (insertedGpointId>0){
                     Log.d("ensaf::::::::", TAG + " endTagSyncFile> insert data to  : " + GPoint.TABLE);
-                    if (indi_geop!=null){
-                        indi_geop.setGeopID(String.valueOf(insertedGpointId));
-                        indi_geopRepo.insert(indi_geop);
-                        Log.d("ensaf::::::::", TAG + " endTagSyncFile> insert data to  : " + Indi_Geop.TABLE);
+                    if (isPlace){
+                        if (place_geop!=null){
+                            place_geop.setGeopID(String.valueOf(insertedGpointId));
+                            place_geopRepo.insert(place_geop);
+                            Log.d("ensaf::::::::", TAG + " endTagSyncFile> insert data to  : " + Place_Geop.TABLE);
+                        }
+                    }else {
+                        if (indi_geop!=null){
+                            indi_geop.setGeopID(String.valueOf(insertedGpointId));
+                            indi_geopRepo.insert(indi_geop);
+                            Log.d("ensaf::::::::", TAG + " endTagSyncFile> insert data to  : " + Indi_Geop.TABLE);
+                        }
                     }
                 }
             }
-        }else if (tagname.equalsIgnoreCase(GPoint.KEY_IDGeop)) {
+        }else if (tagname.equalsIgnoreCase(Place_Geop.KEY_IconID)) {
+            // insert gPoint
+            if (!isMyIndi){
+                if (place_geop!=null){
+                    place_geop.setIconID(text);
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " to : " + Place_Geop.KEY_IconID);
+                }
+            }
+        //}else if (tagname.equalsIgnoreCase(GPoint.KEY_IDGeop)) {
             //gPoint.setIDGeop(text);
-            Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " to : " + GPoint.KEY_IDGeop);
+            /*Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " to : " + GPoint.KEY_IDGeop);
             if (indi_geop!=null){
                 indi_geop.setGeopID(text);
                 Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " to : " + Indi_Geop.KEY_GeopID);
-            }
+            }*/
         }else if (tagname.equalsIgnoreCase(Indi_Geop.KEY_IndiID)) {
             if (isMyFile){
-                indi_geop.setIndiID(text);
+                if (isPlace){
+                    place_geop.setIndiID(text);
+                }else {
+                    indi_geop.setIndiID(text);
+                }
             }else {
                 if (ensafQueryExport.indiFromIndiT(text ,cusID)!=null){
                     isMyIndi = true;
                 }else {
-                    indi_geop.setIndiID(ensafQueryExport.indiFromIndiF(text, cusID));
-                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " to : " + Indi_Geop.KEY_IndiID);
+                    if (isPlace){
+                        place_geop.setIndiID(ensafQueryExport.indiFromIndiF(text, cusID));
+                        Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " to : " + Place_Geop.KEY_IndiID);
+                    }else {
+                        indi_geop.setIndiID(ensafQueryExport.indiFromIndiF(text, cusID));
+                        Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " to : " + Indi_Geop.KEY_IndiID);
+                    }
                 }
             }
         }else if (tagname.equalsIgnoreCase(GPoint.KEY_Lat)) {
