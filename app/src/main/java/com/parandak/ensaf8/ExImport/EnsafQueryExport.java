@@ -104,11 +104,11 @@ public class EnsafQueryExport {
             do  {
                 XMLall0000.append(
                         "   \n <"+GPoint.TABLE+">  \n" +
+                                "        <"+ Place_Geop.KEY_IconID+">" + gPointPlaceCursor.getString(4) + "</"+Place_Geop.KEY_IconID+">  \n" +
                                 "        <"+ Place_Geop.KEY_IndiID+">" + gPointPlaceCursor.getString(0) + "</"+Place_Geop.KEY_IndiID+">  \n" +
                                 "        <"+GPoint.KEY_IDGeop+">" + gPointPlaceCursor.getString(1) + "</"+GPoint.KEY_IDGeop+">  \n" +
                                 "        <"+GPoint.KEY_Lat+">" + gPointPlaceCursor.getString(2) + "</"+GPoint.KEY_Lat+">  \n" +
                                 "        <"+GPoint.KEY_Lon+">" + gPointPlaceCursor.getString(3) + "</"+GPoint.KEY_Lon+">  \n" +
-                                "        <"+Place_Geop.KEY_IconID+">" + gPointPlaceCursor.getString(4) + "</"+Place_Geop.KEY_IconID+">  \n" +
                                 "    </" + GPoint.TABLE + ">  \n");
             } while (gPointPlaceCursor.moveToNext());
         }
