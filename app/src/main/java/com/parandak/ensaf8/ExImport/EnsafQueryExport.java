@@ -192,6 +192,23 @@ public class EnsafQueryExport {
         }
         return is;
     }
+    public boolean isAttenNotExist(String ind1ID, String ind2ID, String attenDate){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        boolean is = true;
+        String selectQuery = " SELECT "
+                + Atten.KEY_ID_Atten
+                + " FROM " + Atten.TABLE
+                + " WHERE " + Atten.KEY_Ind1ID + " = " + ind1ID
+                + " AND " + Atten.KEY_Ind2ID + " = " + ind2ID
+                + " AND " + Atten.KEY_AttenDate + " = '" + attenDate + "'";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()){
+            if (cursor.getCount()>0){
+                is = false;
+            }
+        }
+        return is;
+    }
     public int idBookTypeTitle (String bookTypeTitle){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         int id = -1;

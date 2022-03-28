@@ -2,6 +2,7 @@ package com.parandak.ensaf8.DirectionManagement;
 
 import android.util.Log;
 
+import com.parandak.ensaf8.dataBase.model_Indivi.Atten;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
@@ -13,6 +14,7 @@ import com.parandak.ensaf8.dataBase.model_Indivi.Individual;
 import com.parandak.ensaf8.dataBase.model_Indivi.PhoneNum;
 import com.parandak.ensaf8.dataBase.model_Indivi.Place_Geop;
 import com.parandak.ensaf8.dataBase.model_Indivi.Tend;
+import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.AttenRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.BookMarkTypeRepo;
 import com.parandak.ensaf8.dataBase.model_Indivi.repo_Indi.Cons_PhaseRepo;
@@ -47,6 +49,7 @@ public class XmlPullParserHandlerForEnsaf {
     private Indi_Coop indi_coop;
     private Indi_Geop indi_geop;
     private Place_Geop place_geop;
+    private Atten atten;
     boolean isPlace;
     private Individual individual;
     String indiFId = null;
@@ -152,6 +155,9 @@ public class XmlPullParserHandlerForEnsaf {
             isPlace = true;
             place_geop = new Place_Geop();
             Log.d("ensaf::::::::", TAG + "> initiate : " + Place_Geop.TABLE);
+        }else if (tagname.equalsIgnoreCase(Atten.TABLE)){
+            atten = new Atten();
+            Log.d("ensaf::::::::", TAG + "> initiate : " + Atten.TABLE);
         }
     }
 
@@ -175,6 +181,7 @@ public class XmlPullParserHandlerForEnsaf {
         IndividualRepo.syncLink syncFLinkRepo = new IndividualRepo.syncLink(true);
         IndividualRepo.syncLink syncTLinkRepo = new IndividualRepo.syncLink(false);
         Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
+        AttenRepo attenRepo = new AttenRepo();
         GPointRepo gPointRepo = new GPointRepo();
         Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
         Place_GeopRepo place_geopRepo = new Place_GeopRepo();
@@ -333,6 +340,62 @@ public class XmlPullParserHandlerForEnsaf {
         }else if (tagname.equalsIgnoreCase(Cons_Phase.KEY_PhaseDate)&&cons_phase!=null) {
             cons_phase.setPhaseDate(text);
             Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " to : " + Cons_Phase.KEY_PhaseDate);
+            //#############
+        }else if (tagname.equalsIgnoreCase(Atten.TABLE)&&atten!=null) {
+            // insert atten
+            if (ensafQueryExport.isAttenNotExist(atten.getInd1ID(),atten.getInd1ID(),atten.getAttenDate())){
+                if (attenRepo.insert(atten)>0){
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> insert data to  : " + Atten.TABLE);
+                }else {
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> NOT insert data to  : " + Atten.TABLE);
+                }
+            }else {
+                Log.d("ensaf::::::::", TAG + " endTagSyncFile> the data is EXIST in  : " + Atten.TABLE);
+            }
+        }else if (tagname.equalsIgnoreCase(Atten.KEY_ID_Atten)&&atten!=null) {
+            if(isMyFile){
+                cons_phase.setID_Cons_Phase(text);
+                Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " to : " + Atten.KEY_ID_Atten);
+            }
+        }else if (tagname.equalsIgnoreCase(Atten.KEY_Ind1ID)&&atten!=null) {
+            if (isMyFile){
+                atten.setInd1ID(text);
+                Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " directly to : " + Atten.KEY_Ind1ID);
+            }else {
+                //ensafQueryExport.indiFromIndiT(text ,cusID)
+                if (ensafQueryExport.indiFromIndiF(text ,cusID)!=null){
+                    atten.setInd1ID(ensafQueryExport.indiFromIndiF(text ,cusID));
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + ensafQueryExport.indiFromIndiF(text, cusID) + " to : " + Atten.KEY_Ind1ID);
+                }else if(ensafQueryExport.indiFromIndiT(text ,cusID)!=null){
+                    atten.setInd1ID(ensafQueryExport.indiFromIndiT(text ,cusID));
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + ensafQueryExport.indiFromIndiT(text, cusID) + " to : " + Atten.KEY_Ind1ID);
+                }else {
+                    atten.setInd1ID(text);
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " to : " + Atten.KEY_Ind1ID);
+                }
+
+            }
+        }else if (tagname.equalsIgnoreCase(Atten.KEY_Ind2ID)&&atten!=null) {
+            if (isMyFile){
+                atten.setInd2ID(text);
+                Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " directly to : " + Atten.KEY_Ind2ID);
+            }else {
+                //ensafQueryExport.indiFromIndiT(text ,cusID)
+                if (ensafQueryExport.indiFromIndiF(text ,cusID)!=null){
+                    atten.setInd2ID(ensafQueryExport.indiFromIndiF(text ,cusID));
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + ensafQueryExport.indiFromIndiF(text, cusID) + " to : " + Atten.KEY_Ind2ID);
+                }else if(ensafQueryExport.indiFromIndiT(text ,cusID)!=null){
+                    atten.setInd2ID(ensafQueryExport.indiFromIndiT(text ,cusID));
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + ensafQueryExport.indiFromIndiT(text, cusID) + " to : " + Atten.KEY_Ind2ID);
+                }else {
+                    atten.setInd2ID(text);
+                    Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " to : " + Atten.KEY_Ind2ID);
+                }
+
+            }
+        }else if (tagname.equalsIgnoreCase(Atten.KEY_AttenDate)&&atten!=null) {
+            atten.setAttenDate(text);
+            Log.d("ensaf::::::::", TAG + " endTagSyncFile> add " + text + " to : " + Atten.KEY_AttenDate);
             //#############
         }else if (tagname.equalsIgnoreCase(GPoint.TABLE)) {
             // insert gPoint
