@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.parandak.ensaf8.bookMarkPage.BookMarkPageQuery;
 import com.parandak.ensaf8.dataBase.DatabaseManager;
+import com.parandak.ensaf8.dataBase.model_Indivi.Atten;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
 import com.parandak.ensaf8.dataBase.model_Indivi.CusAccount;
@@ -39,6 +40,7 @@ public class EnsafQueryExport {
         StringBuilder XMLall0000 = new StringBuilder();
         BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
         Cursor phaseCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getPhaseBookMark(bTypeID));
+        Cursor attenCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getAttenBookMark(bTypeID));
         Cursor gPointCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getGPointBookMark(bTypeID));
         Cursor gPointPlaceCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getGPointPlaceBookMark(bTypeID));
         Cursor indiCursor = bookMarkPageQuery.runSqlQuery(bookMarkPageQuery.getIndiBookMark(bTypeID));
@@ -88,6 +90,19 @@ public class EnsafQueryExport {
                                 "    </" + Cons_Phase.TABLE + ">  \n");
             }while (phaseCursor.moveToNext());
         }
+
+        if (attenCursor.moveToFirst()) {
+            do  {
+                XMLall0000.append(
+                        "   \n <"+ Atten.TABLE+">  \n" +
+                                "        <"+Atten.KEY_ID_Atten+">" + attenCursor.getString(0) + "</"+Atten.KEY_ID_Atten+">  \n" +
+                                "        <"+Atten.KEY_Ind1ID+">" + attenCursor.getString(1) + "</"+Atten.KEY_Ind1ID+">  \n" +
+                                "        <"+Atten.KEY_Ind2ID+">" + attenCursor.getString(2) + "</"+Atten.KEY_Ind2ID+"> \n" +
+                                "        <"+Atten.KEY_AttenDate+">" + attenCursor.getString(3) + "</"+Atten.KEY_AttenDate+"> \n" +
+                                "    </" + Atten.TABLE + ">  \n");
+            }while (attenCursor.moveToNext());
+        }
+
         if (gPointCursor.moveToFirst()) {
             do  {
                 XMLall0000.append(

@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.parandak.ensaf8.bookMarkPage.rv.BookMarkFolder;
 import com.parandak.ensaf8.dataBase.DatabaseManager;
+import com.parandak.ensaf8.dataBase.model_Indivi.Atten;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMark;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dataBase.model_Indivi.Cons_Phase;
@@ -125,6 +126,18 @@ public class BookMarkPageQuery {
                 + " WHERE " + Cons_Phase.TABLE + "." + Cons_Phase.KEY_IndID + " IN "
                 + "(" + getIndiIDBookMark(B_type_id) + ")";
                 //+ " ORDER BY " + Cons_Phase.TABLE + "." + Cons_Phase.KEY_IndID + " ASC";
+
+    }
+
+    public String getAttenBookMark(String B_type_id){
+        return "SELECT " + Atten.TABLE + "." + Atten.KEY_ID_Atten + ","
+                + Atten.TABLE + "." + Atten.KEY_Ind1ID + ","
+                + Atten.TABLE + "." + Atten.KEY_Ind2ID + ","
+                + Atten.TABLE + "." + Atten.KEY_AttenDate
+                + " FROM " + Atten.TABLE
+                + " WHERE " + Atten.TABLE + "." + Atten.KEY_Ind2ID + " IN "
+                + "(" + getIndiIDBookMark(B_type_id) + ")";
+        //+ " ORDER BY " + Cons_Phase.TABLE + "." + Cons_Phase.KEY_IndID + " ASC";
 
     }
 

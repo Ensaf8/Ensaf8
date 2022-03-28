@@ -18,11 +18,11 @@ public class AttenRepo {
 
     public static String createTable(){
         return "CREATE TABLE IF NOT EXISTS "+ Atten.TABLE+" ("
-                + Atten.KEY_ID_Tend +" INTEGER "+" , "
+                + Atten.KEY_ID_Atten +" INTEGER "+" , "
                 + Atten.KEY_Ind1ID +" INTEGER "+" , "
                 + Atten.KEY_Ind2ID +" INTEGER "+" , "
                 + Atten.KEY_AttenDate +" TEXT "+" , "
-                + " PRIMARY KEY(" + Atten.KEY_ID_Tend + ")"
+                + " PRIMARY KEY(" + Atten.KEY_ID_Atten + ")"
                 + " FOREIGN KEY(" + Atten.KEY_Ind1ID + ")"
                 + " REFERENCES " + Individual.TABLE + " ( " + Individual.KEY_ID_Indi + ") ON DELETE CASCADE " + ","
                 + " FOREIGN KEY(" + Atten.KEY_Ind2ID + ")"
@@ -52,7 +52,7 @@ public class AttenRepo {
 
     public boolean deleteID_Atten(String ID_Atten){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-        boolean b = db.delete(Atten.TABLE,Atten.KEY_ID_Tend + "=?",new String[]{ID_Atten})>0;
+        boolean b = db.delete(Atten.TABLE,Atten.KEY_ID_Atten + "=?",new String[]{ID_Atten})>0;
         DatabaseManager.getInstance().closeDatabase();
         return b;
     }

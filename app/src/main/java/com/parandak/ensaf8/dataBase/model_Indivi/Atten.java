@@ -4,7 +4,7 @@ public class Atten {
 
     public static final String TABLE = "Atten";
 
-    public static final String KEY_ID_Tend = "ID_Atten";
+    public static final String KEY_ID_Atten = "ID_Atten";
     public static final String KEY_Ind1ID = "ind1ID";
     public static final String KEY_Ind2ID = "ind2ID";
     public static final String KEY_AttenDate = "attenDate";
