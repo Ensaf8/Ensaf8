@@ -33,7 +33,11 @@ public class ConnectSQLite {
     public String getID_UserName(String username){
         Cursor cursor = homePageQuery.checkUserName(username);
         if (cursor.moveToFirst()){
-            return cursor.getString(2);
+            if (homePageQuery.checkIfFromIndi_f("1",cursor.getString(2)) != null){
+                return homePageQuery.checkIfFromIndi_f("1",cursor.getString(2));
+            }else {
+                return cursor.getString(2);
+            }
         }else {
             return "error!";
         }

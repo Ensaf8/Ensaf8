@@ -107,6 +107,22 @@ public class HomePageQuery {
         return cursor;
     }
 
+    public String checkIfFromIndi_f(String CusID, String IndiFID){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = " SELECT "
+                + Individual.syncLink.KEY_IndiID
+                + " FROM "
+                + Individual.syncLink.TABLE_F
+                + " WHERE " +  Individual.syncLink.KEY_IndiFID + " = " + " '" + IndiFID + "' AND "
+                + Individual.syncLink.KEY_CusId + " = " + " '" + CusID + "'";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()){
+            return cursor.getString(0);
+        }else {
+            return null;
+        }
+    }
+
     public int isCons(String indiID){
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = " SELECT "
