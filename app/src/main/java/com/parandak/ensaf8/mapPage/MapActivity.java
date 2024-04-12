@@ -136,7 +136,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         return bundle;
     }
     int itemIdBefore;
-    Context context = this;
+    Context context = MapActivity.this;
     Activity activity = this;
 
     Double lat,lon;

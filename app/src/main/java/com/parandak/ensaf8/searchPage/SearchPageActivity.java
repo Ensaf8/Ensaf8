@@ -251,6 +251,7 @@ public class SearchPageActivity extends BaseActivity {
                 editText_customer_name = (EditText) promptsView.findViewById(R.id.ediCustomerName);
                 editText_customer_phone = (EditText)promptsView.findViewById(R.id.ediCustomerPhone);
                 alertDialogBuilder.setCancelable(true).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @SuppressLint("SuspiciousIndentation")
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Individual individual = new Individual();
