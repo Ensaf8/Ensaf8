@@ -8,12 +8,12 @@ buildscript {
         
     }
     dependencies {
-        //classpath 'com.android.tools.build:gradle:7.1.2'
-<<<<<<< HEAD
-        classpath 'com.android.tools.build:gradle:3.5.4'
-=======
-        classpath 'com.android.tools.build:gradle:4.0.2'
->>>>>>> f5a8aeb (someImproBuild)
+        classpath 'com.android.tools.build:gradle:7.0.4'
+
+        //classpath 'com.android.tools.build:gradle:3.5.4'
+
+        //classpath 'com.android.tools.build:gradle:4.0.2'
+
         ///gradle/wrapper/gradle-wrapper.properties
         //distributionUrl=https\://services.gradle.org/distributions/gradle-7.2-all.zip
         // NOTE: Do not place your application dependencies here; they belong
