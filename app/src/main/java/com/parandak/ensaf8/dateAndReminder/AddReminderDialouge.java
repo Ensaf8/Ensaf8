@@ -14,10 +14,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
+/*import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.time.RadialPickerLayout;
 import com.mohamadamin.persianmaterialdatetimepicker.time.TimePickerDialog;
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;*/
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.dataBase.DBQuery;
 import com.parandak.ensaf8.dataBase.DataContract;
@@ -37,7 +37,8 @@ import static com.parandak.ensaf8.homePage.HomePageActivity.ID_CONNECT_Indi1;
 
 import org.osmdroid.util.GeoPoint;
 
-public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+//public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+    public class AddReminderDialouge{
     Context context;
     Activity activity;
     Button btnAddDateToFollow;
@@ -91,7 +92,7 @@ public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, 
             @Override
             public void onClick(View v) {
 
-                PersianCalendar persianCalendar = new PersianCalendar();
+                /*PersianCalendar persianCalendar = new PersianCalendar();
                 DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
                         AddReminderDialouge.this,
                         persianCalendar.getPersianYear(),
@@ -100,6 +101,8 @@ public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, 
                 );
                 datePickerDialog.setThemeDark(true);
                 datePickerDialog.show(activity.getFragmentManager(), "Datepickerdialog");
+
+                 */
             }
         });
 
@@ -198,7 +201,7 @@ public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, 
                 @Override
                 public void onClick(View v) {
 
-                    PersianCalendar persianCalendar = new PersianCalendar();
+                    /*PersianCalendar persianCalendar = new PersianCalendar();
                     DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
                             AddReminderDialouge.this,
                             persianCalendar.getPersianYear(),
@@ -207,7 +210,9 @@ public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, 
                     );
                     datePickerDialog.setThemeDark(true);
                     datePickerDialog.show(activity.getFragmentManager(), "Datepickerdialog");
+                */
                 }
+
             });
 
         } else {
@@ -219,7 +224,7 @@ public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, 
     return isChange[0];
     }
 
-    @Override
+    /*@Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         int correct = monthOfYear+1;
         final Calendar[] gregorian = new Calendar[1];
@@ -267,5 +272,5 @@ public class AddReminderDialouge implements DatePickerDialog.OnDateSetListener, 
         finalResult = finalResult +" "+ hourDay +":"+ minuteDay;
         btnAddDateToFollow.setText(finalResult_fa);
         isTimeEdited = true ;
-    }
+    }*/
 }

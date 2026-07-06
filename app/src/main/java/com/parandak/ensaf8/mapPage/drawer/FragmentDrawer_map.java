@@ -24,10 +24,10 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
+/*import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.time.RadialPickerLayout;
 import com.mohamadamin.persianmaterialdatetimepicker.time.TimePickerDialog;
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;*/
 import com.parandak.ensaf8.R;
 import com.parandak.ensaf8.dataBase.model_Indivi.BookMarkType;
 import com.parandak.ensaf8.dateAndReminder.AddReminderDialouge;
@@ -40,7 +40,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnDateSetListener {
+//public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnDateSetListener {
+    public class FragmentDrawer_map extends Fragment {
     private static String TAG = FragmentDrawer_map.class.getSimpleName();
     TextView txtFilterSeek,txtFilterDate;//TODO solve all warnings
     String titleFilterSeek;
@@ -220,7 +221,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         btnDateFilter01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PersianCalendar persianCalendar = new PersianCalendar();
+                /*PersianCalendar persianCalendar = new PersianCalendar();
                 DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
                         FragmentDrawer_map.this,
                         persianCalendar.getPersianYear(),
@@ -228,7 +229,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
                         persianCalendar.getPersianDay()
                 );
                 datePickerDialog.setThemeDark(true);
-                datePickerDialog.show(mactivity.getFragmentManager(), "Datepickerdialog");
+                datePickerDialog.show(mactivity.getFragmentManager(), "Datepickerdialog");*/
                 btnDateFilter01_Isclick =true;
                 checkBox03.setChecked(true);
             }
@@ -236,7 +237,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
         btnDateFilter02.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PersianCalendar persianCalendar = new PersianCalendar();
+                /*PersianCalendar persianCalendar = new PersianCalendar();
                 DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
                         FragmentDrawer_map.this,
                         persianCalendar.getPersianYear(),
@@ -244,7 +245,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
                         persianCalendar.getPersianDay()
                 );
                 datePickerDialog.setThemeDark(true);
-                datePickerDialog.show(mactivity.getFragmentManager(), "Datepickerdialog");
+                datePickerDialog.show(mactivity.getFragmentManager(), "Datepickerdialog");*/
                 btnDateFilter01_Isclick =false;
                 checkBox03.setChecked(true);
             }
@@ -451,7 +452,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
     }
 
 
-    @Override
+    /*@Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         int correct = monthOfYear+1;
         final Calendar[] gregorian = new Calendar[1];
@@ -484,7 +485,7 @@ public class FragmentDrawer_map extends Fragment implements DatePickerDialog.OnD
             DateFilter02 = finalResult;
         }
 
-    }
+    }*/
 
     private void initSpinner(View view){
         spinner = (MultiSelectionSpinner) view.findViewById(R.id.spinner);
