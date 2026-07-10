@@ -1002,8 +1002,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         }else if (isTapOn == 2){
             editSelectedCons(false);
         }else if (isTapOn == 0){
-            insertNewPlace();
-            //inseringNewCons();
+            //insertNewPlace();
+            inseringNewCons();
         }
         showOnMap();
         hideKeyboard();
@@ -1156,7 +1156,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         drawerFragmentMap.setCheckBox03(false);
         drawerFragmentMap.setCheckBoxBook(false);
     }
-    private void insertNewPlace(){
+    /*private void insertNewPlace(){
         Individual individual = new Individual();
         IndividualRepo individualRepo = new IndividualRepo();
         individual.setIndiName(bottom_sheet_name.getText().toString());
@@ -1181,7 +1181,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         drawerFragmentMap.setCheckBox02(false);
         drawerFragmentMap.setCheckBox03(false);
         drawerFragmentMap.setCheckBoxBook(false);
-    }
+    }*/
     public void showDialog(Activity activity){
         dialog = new Dialog(activity);
         // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
