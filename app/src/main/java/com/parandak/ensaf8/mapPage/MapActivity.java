@@ -881,9 +881,9 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                         bookMarkSelectedList.clear();
                         initRating = 0;
                         isBookTouch = false;
-                        List<ConsState> emtyList = new ArrayList<>();
+                        /*List<ConsState> emtyList = new ArrayList<>();
                         viewPager2 = findViewById(R.id.viewPager2);
-                        viewPager2.setAdapter(new ViewPagerAdapter2(context, emtyList, viewPager2));
+                        viewPager2.setAdapter(new ViewPagerAdapter2(context, emtyList, viewPager2));*/
                         imgBtnBottom = (ImageButton) findViewById(R.id.imgBtnBottom);
                         imgBtnBottom.setImageDrawable(null);
                         //Log.d("ensaf::::::::", TAG + "BottomSheetBehavior.STATE_HIDDEN isBookTouch is " + isBookTouch);
@@ -1236,6 +1236,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 lon = p.getLongitude();
                 mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 mController.animateTo(p);
+                Toast.makeText(getBaseContext(), "longPressHelper", Toast.LENGTH_SHORT).show();
                 return false;
             }
         };
@@ -1515,6 +1516,8 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             bottom_sheet_name.setText(cursor.getString(1));
             init_bottom_sheet_name = cursor.getString(1);
             viewPager2.setCurrentItem(cursor.getInt(4));
+            Toast.makeText(getBaseContext(), "viewPager2 setCurrentItem : " + String.valueOf(cursor.getInt(4)), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), "consStateList.size() : " + String.valueOf(consStateList.size()), Toast.LENGTH_SHORT).show();
             inisatatus =cursor.getInt(4);
             String [] arrOfFomattedDate = cursor.getString(5).split(" ",2);
             String [] arrOfGreDate = arrOfFomattedDate[0].split("-",3);
@@ -1532,6 +1535,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 initRating = 0;
             }
         }else if (cursorPlace.moveToFirst()){//TODO this is for test
+            Toast.makeText(getBaseContext(), "This is Place", Toast.LENGTH_LONG).show();
             isTapOn = 2;
             imageBottomSheet();
             bottom_sheet_name.setText(cursorPlace.getString(1));
