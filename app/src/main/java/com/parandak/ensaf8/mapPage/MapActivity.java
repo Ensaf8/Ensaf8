@@ -223,7 +223,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         Intent intent = getIntent();
         itemIdBefore = intent.getIntExtra("itemIdBefore",R.id.navigation_home);
         Log.d("ensaf::::::::", TAG + "> onCreate savedInstanceState : " + savedInstanceState);
-        hideKeyboard();
+        MapUtils.hideKeyboard(this);
         checkExternalStorageState();
         checkAndroid6 ();
         osmInternal();
@@ -705,7 +705,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                     View view = inflater.inflate(R.layout.attendance_promp,null);
                     ImageView imageViewAtten = view.findViewById(R.id.img_atten_promp);
                     TextView txtAtten = view.findViewById(R.id.txt_atten_promp);
-                    int distance = distance(dbQuery.getConsGeoPoint(ID_CONS_SELECTED),mLocationOverlay.getMyLocation());
+                    int distance = MapUtils.distance(dbQuery.getConsGeoPoint(ID_CONS_SELECTED),mLocationOverlay.getMyLocation());
                     String posBtn = "ok";
                     String Message = "ثبت حضور مقدور نیست.";
                     boolean isInRange = false;
@@ -906,28 +906,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             }
         });
     }
-    private int distance(GeoPoint geoPoint01, GeoPoint geoPoint02) {
-        double lat1 = geoPoint01.getLatitude() , lon1 = geoPoint01.getLongitude();
-        double lat2 = geoPoint02.getLatitude() , lon2 = geoPoint02.getLongitude();
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-        return (int) (dist * 1609.344);
-    }
-    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    /*::  This function converts decimal degrees to radians             :*/
-    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    private double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
-    }
-    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    /*::  This function converts radians to decimal degrees             :*/
-    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    private double rad2deg(double rad) {
-        return (rad * 180.0 / Math.PI);
-    }
     private void deletePlace(){
         mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
         IndividualRepo individualRepo = new IndividualRepo();
@@ -1006,7 +984,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             inseringNewCons();
         }
         showOnMap();
-        hideKeyboard();
+        MapUtils.hideKeyboard(this);
     }
     private void editSelectedCons(boolean isCons){
         if (!init_bottom_sheet_name.equals(bottom_sheet_name.getText().toString())) {
@@ -1204,15 +1182,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
         dialog.show();
     }
-    private void hideKeyboard(){
-        ///////Close/hide the Android Soft Keyboard###########################
-        InputMethodManager imm = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
-        View view = getCurrentFocus();
-        if(view != null){
-            imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            ///////Close/hide the Android Soft Keyboard
-        }
-    }
     private void mapEvent(){
         MapEventsReceiver mapEventsReceiver = new MapEventsReceiver() {
             @Override
@@ -1330,7 +1299,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             bottomRVAdapter.notifyDataSetChanged();
             mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
-        hideKeyboard();
+        MapUtils.hideKeyboard(this);
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 
 
@@ -1378,7 +1347,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         super.onRestart();
         //customerAdapter.notifyDataSetChanged();
         bottomRVAdapter.notifyDataSetChanged();
-        hideKeyboard();
+        MapUtils.hideKeyboard(this);
     }
     public void onDestroy() {
         super.onDestroy();
