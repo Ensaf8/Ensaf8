@@ -135,6 +135,9 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         bundle.putString("NAME","MAP PAGE! from MapActivity!");
         return bundle;
     }
+
+    private MapPermissionManager mapPermissionManager;
+
     int itemIdBefore;
     Context context = MapActivity.this;
     Activity activity = this;
@@ -225,6 +228,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         Log.d("ensaf::::::::", TAG + "> onCreate savedInstanceState : " + savedInstanceState);
         MapUtils.hideKeyboard(this);
         checkExternalStorageState();
+        mapPermissionManager = new MapPermissionManager();
         checkAndroid6 ();
         osmInternal();
         locationButton();
@@ -1280,7 +1284,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         if (Build.VERSION.SDK_INT >= 23) {
             // check permissions
             Log.d("MainActivity", "Checking permissions...");
-            mMissingPermissions = checkPermissions();
+            mMissingPermissions = mapPermissionManager.checkPermissions(this);
             mPermissionsGranted = mMissingPermissions.size() == 0;
         } else {
             mPermissionsGranted = true;
@@ -1354,23 +1358,6 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         Log.d("ensaf::::::::", TAG + "> : onDestroy");
     }
     ///####permission Staff
-    /* Check which permissions have been granted */
-    private List<String> checkPermissions() {
-        List<String> permissions = new ArrayList<>();
-
-        // check for location permission
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // add missing permission
-            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        }
-        // check for storage permission
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            // add missing permission
-            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-
-        return permissions;
-    }
     /* Checks the state of External Storage */
     private void checkExternalStorageState() {
 
