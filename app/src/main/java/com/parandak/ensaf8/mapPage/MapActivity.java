@@ -1395,35 +1395,29 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS:	{
-                Map<String, Integer> perms = new HashMap<>();
-                perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
-                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-                for (int i = 0; i < permissions.length; i++)
-                    perms.put(permissions[i], grantResults[i]);
+        if (requestCode == REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS) {
+            boolean permissionsGranted =
+                    mapPermissionManager.arePermissionsGranted(
+                            permissions,
+                            grantResults);
 
-                // check for ACCESS_FINE_LOCATION and WRITE_EXTERNAL_STORAGE
-                Boolean location = perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-                Boolean storage = perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            if (permissionsGranted) {
+                // permissions granted - notify user
+                Toast.makeText(this, R.string.toast_message_permissions_granted, Toast.LENGTH_SHORT).show();
+                mPermissionsGranted = true;
 
-                if (location && storage) {
-                    // permissions granted - notify user
-                    Toast.makeText(this, R.string.toast_message_permissions_granted, Toast.LENGTH_SHORT).show();
-                    mPermissionsGranted = true;
-                    // for refresh Activity
-                    finish();
-                    startActivity(getIntent());
-                    //setContentView(R.layout.activity_map);
-                } else {
-                    // permissions denied - notify user
-                    Toast.makeText(this, R.string.toast_message_unable_to_start_app, Toast.LENGTH_SHORT).show();
-                    mPermissionsGranted = false;
-                }
+                // for refresh Activity
+                finish();
+                startActivity(getIntent());
+                //setContentView(R.layout.activity_map);
+
+            } else {
+                // permissions denied - notify user
+                Toast.makeText(this, R.string.toast_message_unable_to_start_app, Toast.LENGTH_SHORT).show();
+                mPermissionsGranted = false;
             }
-            break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
     @Override
