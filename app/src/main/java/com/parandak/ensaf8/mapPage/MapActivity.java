@@ -1131,7 +1131,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 bottom_sheet_status_data.setText("Now : " + formattedDate);
                 lat = p.getLatitude();
                 lon = p.getLongitude();
-                bottomSheetManager.hide();
+                bottomSheetManager.collapse();
                 mController.animateTo(p);
                 Toast.makeText(getBaseContext(), "longPressHelper", Toast.LENGTH_SHORT).show();
                 return false;
