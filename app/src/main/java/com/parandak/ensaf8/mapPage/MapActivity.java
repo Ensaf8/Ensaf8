@@ -175,7 +175,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     Drawable marker_home,historyBlack,historyGrey;
     /////BottomSheet
     LinearLayout bottom_container;
-    private BottomSheetBehavior mBottomSheetBehaviour;
+    private MapBottomSheetManager bottomSheetManager;
 
     Button button_edit,bottom_sheet_status_data;
     ImageButton bottom_sheet_add_reminder,bottom_sheet_attendance,button_add_customer;
@@ -233,8 +233,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         osmInternal();
         locationButton();
         bottomRecyclerView();
-        bottomSheet();
-        mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
+        setupBottomSheetManager();
         initDrawer();
         filterButton();
         if (mPermissionsGranted){
@@ -531,387 +530,312 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             }
         });
     }
-    private void bottomSheet(){
-        button_edit = (Button)findViewById(R.id.button_edit);
-        checkBoxBookmark = (CheckBox) findViewById(R.id.checkBoxBookmark);
-        txt_bottom_book_type = (TextView) findViewById(R.id.txt_bottom_book_type);
-        bottom_sheet_name = (EditText)findViewById(R.id.bottom_sheet_name);
-        bottom_container = (LinearLayout)findViewById(R.id.bottom_container);
+    // ──────────────────────────────────────────────────────────────
+// BottomSheet manager wiring (Phase 1)
+// ──────────────────────────────────────────────────────────────
+    private void setupBottomSheetManager() {
+        bottomSheetManager = new MapBottomSheetManager(this, this, new MapBottomSheetManager.Callback() {
 
-        bottom_sheet_status_data = (Button)findViewById(R.id.btn_date);
-        bottom_sheet_add_reminder = (ImageButton) findViewById(R.id.bottom_sheet_add_reminder);
-        bottom_sheet_attendance = (ImageButton) findViewById(R.id.bottom_sheet_attendance);
-        button_add_customer = (ImageButton) findViewById(R.id.button_add_customer);
-        bottom_tend_history = (ImageButton) findViewById(R.id.bottom_tend_history);
-
-        checkBoxBookmark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isBookTouch = true;
-                //Log.d("ensaf::::::::", TAG + "setOnCheckedChange isBookTouch is " + isBookTouch);
-                if (!isChecked){
-                    txt_bottom_book_type.setEnabled(false);
-                    txt_bottom_book_type.setText("* * *");
-                    txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.darkGray));
-                    bookMarkSelectedList.clear();
-                    //bookedTypeID = "0";
-                }else {
-                    /*if (bookedTypeID.equals("0")){
-                        bookedTypeID = "1";
-                    }*/
-                    if (bookMarkSelectedList.size() == 0){
-                        bookMarkSelectedList.add("1");
-                    }
-                    MapPageQuery mapPageQuery = new MapPageQuery();
-                    txt_bottom_book_type.setEnabled(true);
-                    txt_bottom_book_type.setText(mapPageQuery.getBookmarkTypeTitle(bookMarkSelectedList.get(0)));
-                    txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
-                    checkBoxBookmark.setChecked(true);
-                }
+            public String getIdConsSelected() {
+                return ID_CONS_SELECTED;
             }
-        });
 
-        checkBoxBookmark.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                isBookTouch = true;
-                //Log.d("ensaf::::::::", TAG + "setOnLongClickListener isBookTouch is " + isBookTouch);
-                final BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
-                //Log.d("ensaf::::::::", TAG + "> onLongClick");
-                bookMarkFolderList =  bookMarkPageQuery.getBookMarkFolderListString();
-                bookMarkFolderListID = bookMarkPageQuery.getBookMarkFolderListIntID();
-                //Log.d("ensaf::::::::", TAG + "> bookMarkFolderList>" + bookMarkFolderList.size());
-                //Log.d("ensaf::::::::", TAG + "> bookMarkFolderListID>" + bookMarkFolderListID.size());
-                //Log.d("ensaf::::::::", TAG + "> initBookMarkFolderList>" + initBookMarkFolderList.size());
-                final AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
-
-                View rowList = getLayoutInflater().inflate(R.layout.bookmark_listview, null);
-                ListView listView = rowList.findViewById(R.id.listView);
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                        bookMarkFolderList);
-                builderInner.setCancelable(true);
-                listView.setAdapter(adapter);
-                int ij = 0;
-                while (bookMarkFolderList.size()>ij){
-                    //Log.d("ensaf::::::::", TAG + "> bookMarkFolderList : "+ bookMarkFolderList.get(ij) +" while >" + ij);
-                    int ijj = 0;
-                    while (initBookMarkFolderList.size()>ijj){
-                        //Log.d("ensaf::::::::", TAG + "> initBookMarkFolderList : " + initBookMarkFolderList.get(ijj) +" while >" + ijj);
-                        if (bookMarkFolderList.get(ij).equals(initBookMarkFolderList.get(ijj))){
-                            Log.d("ensaf::::::::", TAG + "> initBookMarkFolderList : " + initBookMarkFolderList.get(ijj) +" > " + ijj +
-                                    " Equal  bookMarkFolderList : " + bookMarkFolderList.get(ij) + " > " + ij);
-                            listView.setItemChecked(ij,true);
-                        }
-                        ijj++;
-                    }
-                    ij++;
-                }
-
-                final SparseBooleanArray sparseBooleanArray = listView.getCheckedItemPositions();
-                builderInner.setView(rowList);
-                builderInner.setTitle("BOOKMARKS FOLDERS");
-
-                builderInner.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        int ii = 0 ;
-                        String bookTxtTitle = "";
-                        MapPageQuery mapPageQuery = new MapPageQuery();
-                        bookMarkSelectedList.clear();
-                        while (ii < sparseBooleanArray.size()) {
-                            if (sparseBooleanArray.valueAt(ii)) {
-                                bookMarkSelectedList.add(bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii)));
-                                Log.d("ensaf::::::::", TAG + "> bookMarkSelectedList + " + bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii)));
-                                bookTxtTitle += mapPageQuery.getBookmarkTypeTitle(bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii))) + ",";
-                            }
-                            ii++ ;
-                        }
-
-                        if (bookMarkSelectedList.size()>0){
-                            txt_bottom_book_type.setText(bookTxtTitle);
-                            checkBoxBookmark.setChecked(true);
-                            txt_bottom_book_type.setEnabled(true);
-                            txt_bottom_book_type.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
-                        }else {
-                            checkBoxBookmark.setChecked(false);
-                            txt_bottom_book_type.setText("* * *");
-                            txt_bottom_book_type.setEnabled(false);
-                        }
-                        Log.d("ensaf::::::::", TAG + "> bookMarkSelectedListSize : "+ bookMarkSelectedList.size());
-                    }
-                });
-                final Dialog dialog = builderInner.create();
-                adapter.notifyDataSetChanged();
-                dialog.show();
-                return false;
+            public boolean isConnected() {
+                return isConnected; // static import from HomePageActivity
             }
-        });
-        bottom_tend_history.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
-                builderInner.setMessage("Wanna DELETE : " + ID_CONS_SELECTED);
-                builderInner.setTitle("Are you Sure?");
-                builderInner.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (isTapOn == 1){
-                            deleteCons();
-                        }else if (isTapOn == 2){
-                            deletePlace();
-                        }
 
-                        showOnMap();
-                    }
-                });
-                builderInner.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+            @Override
+            public void onRatingChanged(float rating, boolean fromUser) {
+                isRatingBottomChange = true;
+            }
 
-                builderInner.show();
-            }
-        });
-        bottom_sheet_add_reminder.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (isConnected){
-                    AddReminderDialouge addReminderDialouge = new AddReminderDialouge(context,activity);
-                    ///TODO NullException
-                    addReminderDialouge.showDialogueADD(ID_CONS_SELECTED);
-                } else {
-                    Toast.makeText(getApplicationContext(),"SignIn First !"  , Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        bottom_sheet_add_reminder.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                TendHistoryDialog tendHistoryDialog = new TendHistoryDialog(context,activity,ID_CONS_SELECTED);
-                tendHistoryDialog.showDialogHistory();
-                return true;
-            }
-        });
-        bottom_sheet_attendance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isConnected){
-                    //TODO Add Attendance
-                    //AddReminderDialouge addReminderDialouge = new AddReminderDialouge(context,activity);
-                    ///TODO NullException
-                    //addReminderDialouge.showDialogueADD(ID_CONS_SELECTED,mLocationOverlay.getMyLocation());
-                    DBQuery dbQuery = new DBQuery();
-                    final AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
-                    LayoutInflater inflater = LayoutInflater.from(MapActivity.this);
-                    View view = inflater.inflate(R.layout.attendance_promp,null);
-                    ImageView imageViewAtten = view.findViewById(R.id.img_atten_promp);
-                    TextView txtAtten = view.findViewById(R.id.txt_atten_promp);
-                    int distance = MapUtils.distance(dbQuery.getConsGeoPoint(ID_CONS_SELECTED),mLocationOverlay.getMyLocation());
-                    String posBtn = "ok";
-                    String Message = "ثبت حضور مقدور نیست.";
-                    boolean isInRange = false;
-                    if (distance<30){
-                        posBtn = "ثبت";
-                        Message = "ثبت حضور.";
-                        isInRange = true;
-                        imageViewAtten.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_event_available_50));
-                    }
-                    builderInner.setView(view);
-                    builderInner.setTitle("فاصله شما : " + distance + " متر                   ");
-                    txtAtten.setText(Message);
-                    final boolean finalIsInRange = isInRange;
-                    builderInner.setPositiveButton(posBtn, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (finalIsInRange){
-                                if (isConnected && ID_CONNECT_Indi1!=null){
-                                    Atten atten = new Atten();
-                                    AttenRepo attenRepo = new AttenRepo();
-                                    atten.setInd1ID(ID_CONNECT_Indi1);
-                                    atten.setInd2ID(ID_CONS_SELECTED);
-                                    Date c = Calendar.getInstance().getTime();
-                                    SimpleDateFormat df = new SimpleDateFormat(dateFormat);
-                                    String formattedDate = df.format(c);
-                                    atten.setAttenDate(formattedDate);
-                                    if (attenRepo.insert(atten)>0){
-                                        AlertDialog.Builder builderInnerAtten = new AlertDialog.Builder(MapActivity.this);
-                                        builderInnerAtten.setTitle("حضور شما ثبت شد.                       ");
-                                        String [] arrOfFomattedDate1 = formattedDate.split(" ",2);
-                                        String [] arrOfGreDate1 = arrOfFomattedDate1[0].split("-",3);
-                                        builderInnerAtten.setMessage("                  " + getPersianDate(Integer.valueOf(arrOfGreDate1[0]), Integer.valueOf(arrOfGreDate1[1]), Integer.valueOf(arrOfGreDate1[2]))+ "         " + arrOfFomattedDate1[1]);
-                                        builderInnerAtten.setPositiveButton("ok",null);
-                                        builderInnerAtten.show();
-                                        Toast.makeText(getApplicationContext(),"Atten Successfully Inserted"  , Toast.LENGTH_SHORT).show();
-                                    }else {
-                                        Toast.makeText(getApplicationContext(),"Atten NOT Inserted !!!"  , Toast.LENGTH_SHORT).show();
-                                    }
-                                }else {
-                                    Toast.makeText(getApplicationContext(),"You Are Not Connected !!!"  , Toast.LENGTH_SHORT).show();
-                                }
-
-
-                            }
-                        }
-                    });
-                    builderInner.show();
-                } else {
-                    Toast.makeText(getApplicationContext(),"SignIn First !"  , Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        bottom_sheet_attendance.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
+            public void onBottomSheetHidden() {
+                // Original STATE_HIDDEN reset – Activity still owns the state
+                BOTTOM_SHEET_IS_HIDDEN = true;
+                statusdate = "";
+                customerList.clear();
+                if (bottomRVAdapter != null) bottomRVAdapter.notifyDataSetChanged();
                 historyList.clear();
-                MapPageQuery mapPageQuery = new MapPageQuery();
-                Cursor cursorAttenHistory = mapPageQuery.getAtten(ID_CONS_SELECTED);
-                if (cursorAttenHistory.moveToFirst()){
-                    do {
-                        History history =new History();
-                        String [] arrOfFomattedDate1 = cursorAttenHistory.getString(1).split(" ",2);
-                        String [] arrOfGreDate1 = arrOfFomattedDate1[0].split("-",3);
-                        history.setDate(getPersianDate(Integer.valueOf(arrOfGreDate1[0]), Integer.valueOf(arrOfGreDate1[1]), Integer.valueOf(arrOfGreDate1[2]))+ " " + arrOfFomattedDate1[1]);
-                        history.setState("ID : " + cursorAttenHistory.getString(0));
-                        historyList.add(history);
-                    }while (cursorAttenHistory.moveToNext());
-                }
-                showDialog(MapActivity.this);
-                return true;
-            }
-        });
-        bottom_sheet_status_data.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ///TODO organizing to better way
-                historyList.clear();
-                MapPageQuery mapPageQuery = new MapPageQuery();
-                Cursor cursorHistory = mapPageQuery.getHistoryConsPhase(ID_CONS_SELECTED);
-                if (cursorHistory.moveToFirst()){
-                    do {
-                        History history =new History();
-                        if (cursorHistory.getInt(1)<11){
-                            String [] arrOfFomattedDate1 = cursorHistory.getString(2).split(" ",2);
-                            String [] arrOfGreDate1 = arrOfFomattedDate1[0].split("-",3);
-                            history.setState(consStateList.get(cursorHistory.getInt(1)).getState());
-                            history.setDate(getPersianDate(Integer.valueOf(arrOfGreDate1[0]), Integer.valueOf(arrOfGreDate1[1]), Integer.valueOf(arrOfGreDate1[2]))+ " " + arrOfFomattedDate1[1]);
-                        }else {
-                            history.setState("ثبت شده");
-                            history.setDate(cursorHistory.getString(2));
-                        }
+                bookMarkSelectedList.clear();
+                initRating = 0;
+                isRatingBottomChange = false;
+                isBookTouch = false;
 
-                        historyList.add(history);
-                    }while (cursorHistory.moveToNext());
+                imgBtnBottom = (ImageButton) findViewById(R.id.imgBtnBottom);
+                if (imgBtnBottom != null) {
+                    imgBtnBottom.setImageDrawable(null);
                 }
-                showDialog(MapActivity.this);
             }
-        });
-        button_add_customer.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), SearchPageActivity.class);
-                intent.putExtra("ID",ID_CONS_SELECTED);
-                context.startActivity(intent);
+            public void onBottomSheetStateChanged(int newState) {
+                BOTTOM_SHEET_IS_HIDDEN = (newState == BottomSheetBehavior.STATE_HIDDEN);
             }
-        });
-        button_edit.setOnClickListener(new View.OnClickListener() {
+
+            // Deferred high-risk listeners
             @Override
-            public void onClick(View v) {
+            public void onBookmarkCheckedChanged(boolean isChecked) {
+                handleBookmarkCheckedChanged(isChecked);
+            }
+
+            @Override
+            public void onBookmarkLongClick() {
+                handleBookmarkLongClick();
+            }
+
+            @Override
+            public void onDeleteRequested() {
+                handleDeleteRequested();
+            }
+
+            @Override
+            public void onAttendanceClick() {
+                handleAttendanceClick();
+            }
+
+            @Override
+            public void onAttendanceLongClick() {
+                handleAttendanceLongClick();
+            }
+
+            @Override
+            public void onStatusDataClick() {
+                handleStatusDataClick();
+            }
+
+            @Override
+            public void onEditClick() {
                 bottomSheetEdiButton();
             }
         });
-        bottom_container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(getBaseContext(),"container is clicked !!! "  ,Toast.LENGTH_LONG).show();
-                ratingBottom.setRating(0);
-            }
-        });
-        ratingBottom = (RatingBar)findViewById(R.id.ratingBottom);
-        ratingBottom.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                isRatingBottomChange = true;
-            }
-        });
-        View nestedScrollView = (View) findViewById(R.id.nestedScrollView);
-        mBottomSheetBehaviour = BottomSheetBehavior.from(nestedScrollView);
-        mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
-        mBottomSheetBehaviour.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View view, int newState) {
-                String state = "";
-                switch (newState) {
-                    case BottomSheetBehavior.STATE_DRAGGING: {
-                        state = "DRAGGING";
-                        BOTTOM_SHEET_IS_HIDDEN = false;
-                        break;
-                    }
-                    case BottomSheetBehavior.STATE_SETTLING: {
-                        state = "SETTLING";
-                        BOTTOM_SHEET_IS_HIDDEN = false;
-                        break;
-                    }
-                    case BottomSheetBehavior.STATE_EXPANDED: {
-                        state = "EXPANDED";
-                        BOTTOM_SHEET_IS_HIDDEN = false;
-                        fab_map.hide();
-                        break;
-                    }
-                    case BottomSheetBehavior.STATE_COLLAPSED: {
-                        bottomRVAdapter.notifyDataSetChanged();
-                        state = "COLLAPSED";
-                        BOTTOM_SHEET_IS_HIDDEN = false;
-                        fab_map.hide();
-                        break;
-                    }
-                    case BottomSheetBehavior.STATE_HIDDEN: {
-                        state = "HIDDEN";
-                        BOTTOM_SHEET_IS_HIDDEN = true;
-                        fab_map.show();
-                        bottom_sheet_name.setText("");
-                        bottom_sheet_status_data.setText("");
-                        statusdate = "";
-                        customerList.clear();
-                        //customerAdapter.notifyDataSetChanged();
-                        bottomRVAdapter.notifyDataSetChanged();
-                        historyList.clear();
-                        checkBoxBookmark.setChecked(false);
-                        txt_bottom_book_type.setText("پیش فرض");
-                        ratingBottom.setRating(0);
-                        isRatingBottomChange = false;
-                        bookMarkSelectedList.clear();
-                        initRating = 0;
-                        isBookTouch = false;
-                        /*List<ConsState> emtyList = new ArrayList<>();
-                        viewPager2 = findViewById(R.id.viewPager2);
-                        viewPager2.setAdapter(new ViewPagerAdapter2(context, emtyList, viewPager2));*/
-                        imgBtnBottom = (ImageButton) findViewById(R.id.imgBtnBottom);
-                        imgBtnBottom.setImageDrawable(null);
-                        //Log.d("ensaf::::::::", TAG + "BottomSheetBehavior.STATE_HIDDEN isBookTouch is " + isBookTouch);
-                        break;
-                    }
-                    case BottomSheetBehavior.STATE_HALF_EXPANDED: {
-                        //customerAdapter.notifyDataSetChanged();
-                        bottomRVAdapter.notifyDataSetChanged();
-                        fab_map.hide();
-                        state = "HALF";
-                        break;
-                    }
 
+        // fab_map is already found by locationButton() which runs before this
+        bottomSheetManager.setup(findViewById(android.R.id.content), fab_map);
+        // Keep original field names so the rest of the Activity does not break
+        bottom_sheet_name        = bottomSheetManager.getBottomSheetName();
+        bottom_sheet_status_data = bottomSheetManager.getStatusDataButton();
+        ratingBottom             = bottomSheetManager.getRatingBar();
+        checkBoxBookmark         = bottomSheetManager.getBookmarkCheckBox();
+        txt_bottom_book_type     = bottomSheetManager.getBookmarkTypeText();
+        button_edit              = bottomSheetManager.getEditButton();
+        bottomSheetManager.hide();
+    }
+
+// ──────────────────────────────────────────────────────────────
+// Deferred bodies (still owned by Activity)
+// ──────────────────────────────────────────────────────────────
+
+    private void handleBookmarkCheckedChanged(boolean isChecked) {
+        isBookTouch = true;
+        if (!isChecked) {
+            txt_bottom_book_type.setEnabled(false);
+            txt_bottom_book_type.setText("* * *");
+            txt_bottom_book_type.setTextColor(ContextCompat.getColor(context, R.color.darkGray));
+            bookMarkSelectedList.clear();
+        } else {
+            if (bookMarkSelectedList.size() == 0) {
+                bookMarkSelectedList.add("1");
+            }
+            MapPageQuery mapPageQuery = new MapPageQuery();
+            txt_bottom_book_type.setEnabled(true);
+            txt_bottom_book_type.setText(mapPageQuery.getBookmarkTypeTitle(bookMarkSelectedList.get(0)));
+            txt_bottom_book_type.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+            checkBoxBookmark.setChecked(true);
+        }
+    }
+
+    private void handleBookmarkLongClick() {
+        isBookTouch = true;
+        final BookMarkPageQuery bookMarkPageQuery = new BookMarkPageQuery();
+        bookMarkFolderList = bookMarkPageQuery.getBookMarkFolderListString();
+        bookMarkFolderListID = bookMarkPageQuery.getBookMarkFolderListIntID();
+
+        final AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
+        View rowList = getLayoutInflater().inflate(R.layout.bookmark_listview, null);
+        ListView listView = rowList.findViewById(R.id.listView);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
+                android.R.layout.simple_list_item_multiple_choice, bookMarkFolderList);
+        builderInner.setCancelable(true);
+        listView.setAdapter(adapter);
+
+        int ij = 0;
+        while (bookMarkFolderList.size() > ij) {
+            int ijj = 0;
+            while (initBookMarkFolderList.size() > ijj) {
+                if (bookMarkFolderList.get(ij).equals(initBookMarkFolderList.get(ijj))) {
+                    listView.setItemChecked(ij, true);
                 }
-                //Toast.makeText(getBaseContext(), "Bottom Sheet State Changed to: " + state, Toast.LENGTH_SHORT).show();
+                ijj++;
             }
-            @Override
-            public void onSlide(@NonNull View view, float v) {
+            ij++;
+        }
 
+        final SparseBooleanArray sparseBooleanArray = listView.getCheckedItemPositions();
+        builderInner.setView(rowList);
+        builderInner.setTitle("BOOKMARKS FOLDERS");
+
+        builderInner.setPositiveButton("OK", (dialogInterface, i) -> {
+            int ii = 0;
+            String bookTxtTitle = "";
+            MapPageQuery mapPageQuery = new MapPageQuery();
+            bookMarkSelectedList.clear();
+            while (ii < sparseBooleanArray.size()) {
+                if (sparseBooleanArray.valueAt(ii)) {
+                    bookMarkSelectedList.add(bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii)));
+                    bookTxtTitle += mapPageQuery.getBookmarkTypeTitle(
+                            bookMarkFolderListID.get(sparseBooleanArray.keyAt(ii))) + ",";
+                }
+                ii++;
+            }
+
+            if (bookMarkSelectedList.size() > 0) {
+                txt_bottom_book_type.setText(bookTxtTitle);
+                checkBoxBookmark.setChecked(true);
+                txt_bottom_book_type.setEnabled(true);
+                txt_bottom_book_type.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+            } else {
+                checkBoxBookmark.setChecked(false);
+                txt_bottom_book_type.setText("* * *");
+                txt_bottom_book_type.setEnabled(false);
             }
         });
+
+        final Dialog dialog = builderInner.create();
+        adapter.notifyDataSetChanged();
+        dialog.show();
+    }
+
+    private void handleDeleteRequested() {
+        AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
+        builderInner.setMessage("Wanna DELETE : " + ID_CONS_SELECTED);
+        builderInner.setTitle("Are you Sure?");
+        builderInner.setPositiveButton("YES", (dialog, which) -> {
+            if (isTapOn == 1) {
+                deleteCons();
+            } else if (isTapOn == 2) {
+                deletePlace();
+            }
+            showOnMap();
+        });
+        builderInner.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+        builderInner.show();
+    }
+
+    private void handleAttendanceClick() {
+        if (isConnected) {
+            DBQuery dbQuery = new DBQuery();
+            final AlertDialog.Builder builderInner = new AlertDialog.Builder(MapActivity.this);
+            LayoutInflater inflater = LayoutInflater.from(MapActivity.this);
+            View view = inflater.inflate(R.layout.attendance_promp, null);
+            ImageView imageViewAtten = view.findViewById(R.id.img_atten_promp);
+            TextView txtAtten = view.findViewById(R.id.txt_atten_promp);
+            int distance = MapUtils.distance(dbQuery.getConsGeoPoint(ID_CONS_SELECTED),
+                    mLocationOverlay.getMyLocation());
+            String posBtn = "ok";
+            String Message = "ثبت حضور مقدور نیست.";
+            boolean isInRange = false;
+            if (distance < 30) {
+                posBtn = "ثبت";
+                Message = "ثبت حضور.";
+                isInRange = true;
+                imageViewAtten.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_event_available_50));
+            }
+            builderInner.setView(view);
+            builderInner.setTitle("فاصله شما : " + distance + " متر                   ");
+            txtAtten.setText(Message);
+            final boolean finalIsInRange = isInRange;
+            builderInner.setPositiveButton(posBtn, (dialog, which) -> {
+                if (finalIsInRange) {
+                    if (isConnected && ID_CONNECT_Indi1 != null) {
+                        Atten atten = new Atten();
+                        AttenRepo attenRepo = new AttenRepo();
+                        atten.setInd1ID(ID_CONNECT_Indi1);
+                        atten.setInd2ID(ID_CONS_SELECTED);
+                        Date c = Calendar.getInstance().getTime();
+                        SimpleDateFormat df = new SimpleDateFormat(dateFormat);
+                        String formattedDate = df.format(c);
+                        atten.setAttenDate(formattedDate);
+                        if (attenRepo.insert(atten) > 0) {
+                            AlertDialog.Builder builderInnerAtten =
+                                    new AlertDialog.Builder(MapActivity.this);
+                            builderInnerAtten.setTitle("حضور شما ثبت شد.                       ");
+                            String[] arrOfFomattedDate1 = formattedDate.split(" ", 2);
+                            String[] arrOfGreDate1 = arrOfFomattedDate1[0].split("-", 3);
+                            builderInnerAtten.setMessage("                  " +
+                                    getPersianDate(Integer.valueOf(arrOfGreDate1[0]),
+                                            Integer.valueOf(arrOfGreDate1[1]),
+                                            Integer.valueOf(arrOfGreDate1[2])) +
+                                    "         " + arrOfFomattedDate1[1]);
+                            builderInnerAtten.setPositiveButton("ok", null);
+                            builderInnerAtten.show();
+                            Toast.makeText(getApplicationContext(),
+                                    "Atten Successfully Inserted", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    "Atten NOT Inserted !!!", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "You Are Not Connected !!!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            builderInner.show();
+        } else {
+            Toast.makeText(getApplicationContext(), "SignIn First !", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void handleAttendanceLongClick() {
+        historyList.clear();
+        MapPageQuery mapPageQuery = new MapPageQuery();
+        Cursor cursorAttenHistory = mapPageQuery.getAtten(ID_CONS_SELECTED);
+        if (cursorAttenHistory.moveToFirst()) {
+            do {
+                History history = new History();
+                String[] arrOfFomattedDate1 = cursorAttenHistory.getString(1).split(" ", 2);
+                String[] arrOfGreDate1 = arrOfFomattedDate1[0].split("-", 3);
+                history.setDate(getPersianDate(
+                        Integer.valueOf(arrOfGreDate1[0]),
+                        Integer.valueOf(arrOfGreDate1[1]),
+                        Integer.valueOf(arrOfGreDate1[2])) + " " + arrOfFomattedDate1[1]);
+                history.setState("ID : " + cursorAttenHistory.getString(0));
+                historyList.add(history);
+            } while (cursorAttenHistory.moveToNext());
+        }
+        showDialog(MapActivity.this);
+    }
+
+    private void handleStatusDataClick() {
+        historyList.clear();
+        MapPageQuery mapPageQuery = new MapPageQuery();
+        Cursor cursorHistory = mapPageQuery.getHistoryConsPhase(ID_CONS_SELECTED);
+        if (cursorHistory.moveToFirst()) {
+            do {
+                History history = new History();
+                if (cursorHistory.getInt(1) < 11) {
+                    String[] arrOfFomattedDate1 = cursorHistory.getString(2).split(" ", 2);
+                    String[] arrOfGreDate1 = arrOfFomattedDate1[0].split("-", 3);
+                    history.setState(consStateList.get(cursorHistory.getInt(1)).getState());
+                    history.setDate(getPersianDate(
+                            Integer.valueOf(arrOfGreDate1[0]),
+                            Integer.valueOf(arrOfGreDate1[1]),
+                            Integer.valueOf(arrOfGreDate1[2])) + " " + arrOfFomattedDate1[1]);
+                } else {
+                    history.setState("ثبت شده");
+                    history.setDate(cursorHistory.getString(2));
+                }
+                historyList.add(history);
+            } while (cursorHistory.moveToNext());
+        }
+        showDialog(MapActivity.this);
     }
     private void deletePlace(){
-        mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetManager.hide();
         IndividualRepo individualRepo = new IndividualRepo();
         GPointRepo gPointRepo = new GPointRepo();
         MapPageQuery mapPageQuery = new MapPageQuery();
@@ -924,7 +848,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
     }
     private void deleteCons(){
         String test = "nothing";
-        mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetManager.hide();
         IndividualRepo individualRepo = new IndividualRepo();
         Indi_GeopRepo indi_geopRepo = new Indi_GeopRepo();
         Cons_PhaseRepo cons_phaseRepo = new Cons_PhaseRepo();
@@ -978,7 +902,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         });
     }
     private void bottomSheetEdiButton(){
-        mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetManager.hide();
         if(isTapOn == 1 ){
             editSelectedCons(true);
         }else if (isTapOn == 2){
@@ -1192,7 +1116,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             public boolean singleTapConfirmedHelper(GeoPoint p) {
                 //Toast.makeText(getBaseContext(),"Short",Toast.LENGTH_SHORT).show();
                 if (!BOTTOM_SHEET_IS_HIDDEN){
-                    mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
+                    bottomSheetManager.hide();
                 }
                 return false;
             }
@@ -1207,7 +1131,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
                 bottom_sheet_status_data.setText("Now : " + formattedDate);
                 lat = p.getLatitude();
                 lon = p.getLongitude();
-                mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                bottomSheetManager.hide();
                 mController.animateTo(p);
                 Toast.makeText(getBaseContext(), "longPressHelper", Toast.LENGTH_SHORT).show();
                 return false;
@@ -1301,7 +1225,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
         Log.d("ensaf::::::::", TAG + "> : onResume");
         if(mPermissionsGranted){
             bottomRVAdapter.notifyDataSetChanged();
-            mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
+            bottomSheetManager.hide();
         }
         MapUtils.hideKeyboard(this);
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
@@ -1428,7 +1352,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
             if (BOTTOM_SHEET_IS_HIDDEN){
                 this.finish();
             }else {
-                mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
+                bottomSheetManager.hide();
             }           //moveTaskToBack(true);
 
 
@@ -1452,7 +1376,7 @@ public class MapActivity extends BaseActivity implements ItemizedIconOverlay.OnI
 
         MapPageQuery mapPageQuery = new MapPageQuery();
 
-        mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        bottomSheetManager.collapse();
 
         //Toast.makeText(getBaseContext(), "The Item ID is : " + item.getPoint().getLatitude(), Toast.LENGTH_SHORT).show();
         Cursor cursor = mapPageQuery.singleTapOnConsIndFirst(ID_CONS_SELECTED);
